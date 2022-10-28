@@ -11,9 +11,9 @@ This is the repository for Friday Night Funkin' Test Engine. A modification of a
 
 # Test Engine Credits
 
-- Ty_1991 - The whole engine lmfao
+- (Ty_1991 - The whole engine lmfao){https://twitter.com/Ty_1991}
 
-- Luckydog7 - Mobile Code
+- (Luckydog7 - Mobile Code){https://github.com/luckydog7}
 
 # Regular FNF Shit
 Play the FNF Ludum Dare prototype here: https://ninja-muffin24.itch.io/friday-night-funkin
