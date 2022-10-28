@@ -2,6 +2,13 @@
 
 This is the repository for Friday Night Funkin' Test Engine. A modification of a game originally made for Ludum Dare 47 "Stuck In a Loop".
 
+# Features of Test Engine
+
+- Ghost Tapping
+- Fuck "W,D,A,S" we got DFJK
+- Working settings menu
+- Modding support without source
+
 # Test Engine Credits
 
 - Ty_1991 - The whole engine lmfao
