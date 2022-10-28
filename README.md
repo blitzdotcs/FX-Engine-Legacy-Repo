@@ -5,7 +5,7 @@ This is the repository for Friday Night Funkin' Test Engine. A modification of a
 # Features of Test Engine
 
 - Ghost Tapping
-- Fuck "W,D,A,S" we got DFJK
+- Fuck "W,S,A,D" we got DFJK
 - Working settings menu
 - Modding support without source
 
