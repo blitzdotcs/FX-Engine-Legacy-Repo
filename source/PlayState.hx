@@ -2,7 +2,7 @@ package;
 
 import shaders.ScanlineShader;
 import shaders.ChromaticAbberationShader.ChromaticAberrationShader;
-import shaders.VHSShader;
+import shaders.GameboyDesaturator;
 #if cpp
 import Discord.DiscordClient;
 #end
@@ -129,7 +129,7 @@ class PlayState extends MusicBeatState
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
-	public static var vhsShader:VHSShader;
+	public static var GameboyShader:GameboyDesaturator;
 	public static var chromaticAbberation:ChromaticAberrationShader;
 	var scanline:ScanlineShader;
 
@@ -512,10 +512,10 @@ class PlayState extends MusicBeatState
 						chromaticAbberation = new ChromaticAberrationShader();
 						chromaticAbberation.setChrome(0.005);
 
-						vhsShader = new VHSShader(); // Based VHS shader
-						vhsShader.setNoisePercent(75 / 100);
+						GameboyShader = new GameboyDesaturator();
+						GameboyShader.setNoisePercent(75 / 100);
 
-						FlxG.camera.setFilters([new ShaderFilter(vhsShader), new ShaderFilter(chromaticAbberation)]);
+						FlxG.camera.setFilters([new ShaderFilter(GameboyShader), new ShaderFilter(chromaticAbberation)]);
 
 						var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
 						var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
@@ -1399,7 +1399,7 @@ class PlayState extends MusicBeatState
 				// phillyCityLights.members[curLight].alpha -= (Conductor.crochet / 1000) * FlxG.elapsed;
 
 				case 'schoolEvil':
-					vhsShader.update(elapsed);
+					GameboyShader.update(elapsed);
 		}
 
 		super.update(elapsed);
