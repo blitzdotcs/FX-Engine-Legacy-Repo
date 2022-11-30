@@ -129,7 +129,7 @@ class PlayState extends MusicBeatState
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
-	public static var GameboyShader:GameboyDesaturator;
+	public static var GameboyShader:GameboyShader;
 	public static var chromaticAbberation:ChromaticAberrationShader;
 	var scanline:ScanlineShader;
 
