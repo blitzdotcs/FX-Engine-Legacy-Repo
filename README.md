@@ -13,8 +13,6 @@ This is the repository for Friday Night Funkin' Test Engine. A modification of a
 
 - [Ty_1991](https://twitter.com/Ty_1991) - The whole engine
 
-- [ZacksGamerz](https://github.com/zacksgamerz) - Gameboy Filter lmao 
-
 - [Luckydog7](https://github.com/luckydog7) - Mobile Code
 
 # Regular FNF Shit
