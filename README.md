@@ -2,6 +2,10 @@
 
 This is the repository for Friday Night Funkin' Test Engine. A modification of a game originally made for Ludum Dare 47 "Stuck In a Loop".
 
+# NOTE
+
+* I AM NOT IN THE FNF COMMUNITY I'M JUST CONTINUING THIS TO LEARN MORE ABOUT HAXE.
+
 # Features of Test Engine
 
 - Ghost Tapping
