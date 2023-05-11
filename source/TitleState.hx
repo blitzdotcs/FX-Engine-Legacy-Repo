@@ -90,8 +90,12 @@ mod_dirs = FlxG.save.data.mods;
 					"week4" => "week4",
 					"week5" => "week5",
 <<<<<<< HEAD
+<<<<<<< HEAD
 					"week6" => "week6",
 					"week7" => "week7"
+=======
+					"week6" => "week6"
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 =======
 					"week6" => "week6"
 >>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
