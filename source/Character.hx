@@ -307,6 +307,7 @@ class Character extends FlxSprite
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			case 'bf-holding-gf':
 				var tex = Paths.getSparrowAtlas('bfAndGF');
 				frames = tex;
@@ -353,6 +354,8 @@ class Character extends FlxSprite
 
 				flipX = true;
 
+=======
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 =======
 >>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 =======

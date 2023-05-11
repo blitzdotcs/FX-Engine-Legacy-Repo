@@ -41,7 +41,11 @@ class DiscordClient
 			largeImageKey: 'icon',
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			largeImageText: "FX Engine"
+=======
+			largeImageText: "FNF: Test Engine"
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 =======
 			largeImageText: "FNF: Test Engine"
 >>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
@@ -85,7 +89,11 @@ class DiscordClient
 			largeImageKey: 'icon',
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			largeImageText: "FX Engine",
+=======
+			largeImageText: "FNF: Test Engine",
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 =======
 			largeImageText: "FNF: Test Engine",
 >>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)

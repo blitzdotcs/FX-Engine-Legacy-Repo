@@ -1,5 +1,8 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 =======
 >>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 Tutorial:gf:0:0xFFC75B8E:100
@@ -22,6 +25,7 @@ Senpai:senpai:6:0xFFFFC49C:144
 Roses:senpai:6:0xFFFFC49C:120
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 Thorns:spirit:6:0xFFFFC49C:190
 Ugh:tankman:7:FFAE42
 Guns:tankman:7:FFAE42
@@ -32,6 +36,9 @@ Thorns:spirit:6:0xFFFFC49C:190
 =======
 Tutorial
 >>>>>>> parent of 90739ab (I uhh, broke a fuckton of stuff)
+=======
+Thorns:spirit:6:0xFFFFC49C:190
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 =======
 Thorns:spirit:6:0xFFFFC49C:190
 >>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)

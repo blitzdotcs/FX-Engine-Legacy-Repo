@@ -31,8 +31,12 @@ class StoryMenuState extends MusicBeatState
 		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		['Senpai', 'Roses', 'Thorns'],
 		['Ugh', 'Guns', 'Stress']
+=======
+		['Senpai', 'Roses', 'Thorns']
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 =======
 		['Senpai', 'Roses', 'Thorns']
 >>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
@@ -53,8 +57,12 @@ class StoryMenuState extends MusicBeatState
 		['parents-christmas', 'bf', 'gf'],
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		['senpai', 'bf', 'gf'],
 		['tankman', 'bf', 'gf']
+=======
+		['senpai', 'bf', 'gf']
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 =======
 		['senpai', 'bf', 'gf']
 >>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
@@ -72,8 +80,12 @@ class StoryMenuState extends MusicBeatState
 		"RED SNOW",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		"hating simulator ft. moawling",
         "TANKMAN"		
+=======
+		"hating simulator ft. moawling"
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 =======
 		"hating simulator ft. moawling"
 >>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
