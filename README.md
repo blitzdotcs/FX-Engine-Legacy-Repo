@@ -1,21 +1,21 @@
-# Friday Night Funkin Test Engine
+# FX Engine
 
-This is the repository for Friday Night Funkin' Test Engine. A modification of a game originally made for Ludum Dare 47 "Stuck In a Loop".
+This is the repository for FX Engine. A modification of a game originally made for Ludum Dare 47 "Stuck In a Loop".
 
 # NOTE
 
 * I AM NOT IN THE FNF COMMUNITY I'M JUST CONTINUING THIS TO LEARN MORE ABOUT HAXE.
 
-# Features of Test Engine
+# Features of FX Engine
 
 - Ghost Tapping
 - Fuck "W,S,A,D" we got DFJK
 - Working settings menu
 - W.i.p. Modding support without source
 
-# Test Engine Credits
+# FX Engine Credits
 
-- [Ty_1991](https://twitter.com/Ty_1991) - The whole engine
+- [TyDev](https://twitter.com/TyDev_) - The whole engine
 
 - [Luckydog7](https://github.com/luckydog7) - Mobile Code
 
