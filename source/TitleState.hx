@@ -80,7 +80,8 @@ mod_dirs = FlxG.save.data.mods;
 				#end
 			},
 			frameworkParams: {
-				assetLibraryPaths: [
+				assetLibraryPaths: 
+				[
 					"songs" => "songs",
 					"shared" => "shared",
 					"week1" => "week1",
@@ -88,7 +89,8 @@ mod_dirs = FlxG.save.data.mods;
 					"week3" => "week3",
 					"week4" => "week4",
 					"week5" => "week5",
-					"week6" => "week6"
+					"week6" => "week6",
+					"week7" => "week7"
 				]
 			}
 		});		
