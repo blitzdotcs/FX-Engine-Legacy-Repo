@@ -197,6 +197,38 @@ class Character extends FlxSprite
 				addOffset("singDOWN", 20, -160);
 
 				playAnim('idle');
+			case 'tankman':
+				// TANKMAN ANIMATION LOADING CODE
+				tex = Paths.getSparrowAtlas('tankmanCaptain');
+				frames = tex;
+				animation.addByPrefix('idle', 'Tankman Idle Dance instance', 24);
+				animation.addByPrefix('singUP', 'Tankman UP note instance', 24);
+				animation.addByPrefix('singRIGHT', 'Tankman Right Note instance', 24);
+				animation.addByPrefix('singDOWN', 'Tankman DOWN note instance', 24);
+				animation.addByPrefix('singLEFT', 'Tankman Note Left instance', 24);
+				animation.addByPrefix('ugh', 'TANKMAN UGH instance', 24);
+				animation.addByPrefix('prettygood', 'PRETTY GOOD tankman instance', 24);
+				playAnim('idle');
+
+				addOffset('idle');
+				addOffset("singUP", -6, 50);
+				addOffset("singRIGHT", 0, 27);
+				addOffset("singLEFT", -10, 10);
+				addOffset("singDOWN", 0, -30);
+				addOffset('singUPalt');
+				addOffset('singDOWNalt');
+			case 'picoSpeaker':
+				// Erm PEECO CODE
+				tex = Paths.getSparrowAtlas('picoSpeaker');
+				frames = tex;
+				animation.addByPrefix('Pico shoot', 'Pico shoot', 24);
+				
+				addOffset('shoot1', 0, 0);
+				addOffset('shoot2', -1, -128);
+				addOffset('shoot3', 412, -64);
+				addOffset('shoot4', 439, -19);
+				
+				playAnim('Pico shoot');								
 			case 'monster':
 				tex = Paths.getSparrowAtlas('Monster_Assets');
 				frames = tex;
@@ -300,6 +332,52 @@ class Character extends FlxSprite
 				addOffset('deathLoop', 37, 5);
 				addOffset('deathConfirm', 37, 69);
 				addOffset('scared', -4);
+
+				playAnim('idle');
+
+				flipX = true;
+
+			case 'bf-holding-gf':
+				var tex = Paths.getSparrowAtlas('bfAndGF');
+				frames = tex;
+				animation.addByPrefix('idle', 'BF idle dance', 24, false);
+				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
+				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
+				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
+				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
+				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
+				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
+				animation.addByPrefix('bfCatch', 'BF catches GF', 24, false);
+
+				addOffset('idle', -5);
+				addOffset("singUP", -29, 27);
+				addOffset("singRIGHT", -38, -7);
+				addOffset("singLEFT", 12, -6);
+				addOffset("singDOWN", -10, -50);
+				addOffset("singUPmiss", -29, 27);
+				addOffset("singRIGHTmiss", -30, 21);
+				addOffset("singLEFTmiss", 12, 24);
+				addOffset("singDOWNmiss", -11, -19);
+				addOffset('bfCatch', -5);
+
+				playAnim('idle');
+
+				flipX = true;
+
+			case 'bf-holding-gf-dead':
+				var tex = Paths.getSparrowAtlas('bfHoldingGF-DEAD');
+				frames = tex;
+				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
+				animation.addByPrefix('firstDeath', 'BF Dies with GF', 24, false);
+				animation.addByPrefix('deathLoop', 'BF Dead with GF Loop', 24, false);
+				animation.addByPrefix('deathConfirm', 'RETRY confirm holding gf', 24, false);
+
+				addOffset('firstDeath', 37, 14);
+				addOffset("singUP", -5);
+				addOffset("deathLoop", 37, -3)
+				addOffset("deathConfirm", 37, 28);
 
 				playAnim('idle');
 
