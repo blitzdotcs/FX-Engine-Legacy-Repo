@@ -16,7 +16,11 @@ Eggnog:parents-christmas:5:0xFFB8E9FF:150
 Winter-Horrorland:monster-christmas:5:0xFFB8E9FF:159
 Senpai:senpai:6:0xFFFFC49C:144
 Roses:senpai:6:0xFFFFC49C:120
+<<<<<<< HEAD
 Thorns:spirit:6:0xFFFFC49C:190
 Ugh:tankman:7:FFAE42
 Guns:tankman:7:FFAE42
 Stress:tankman:7:FFAE42
+=======
+Thorns:spirit:6:0xFFFFC49C:190
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)

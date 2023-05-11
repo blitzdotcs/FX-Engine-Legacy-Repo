@@ -29,12 +29,16 @@ class StoryMenuState extends MusicBeatState
 		['Pico', 'Philly', "Blammed"],
 		['Satin-Panties', "High", "Milf"],
 		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
+<<<<<<< HEAD
 		['Senpai', 'Roses', 'Thorns'],
 		['Ugh', 'Guns', 'Stress']
+=======
+		['Senpai', 'Roses', 'Thorns']
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 	];
 	var curDifficulty:Int = 1;
 
-	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true];
+	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true];
 
 	var weekCharacters:Array<Dynamic> = [
 		['dad', 'bf', 'gf'],
@@ -43,8 +47,12 @@ class StoryMenuState extends MusicBeatState
 		['pico', 'bf', 'gf'],
 		['mom', 'bf', 'gf'],
 		['parents-christmas', 'bf', 'gf'],
+<<<<<<< HEAD
 		['senpai', 'bf', 'gf'],
 		['tankman', 'bf', 'gf']
+=======
+		['senpai', 'bf', 'gf']
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 	];
 
 	var weekNames:Array<String> = [
@@ -54,8 +62,12 @@ class StoryMenuState extends MusicBeatState
 		"PICO",
 		"MOMMY MUST MURDER",
 		"RED SNOW",
+<<<<<<< HEAD
 		"hating simulator ft. moawling",
         "TANKMAN"		
+=======
+		"hating simulator ft. moawling"
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 	];
 
 	var swagColors:Array<FlxColor> = [];

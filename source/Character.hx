@@ -197,38 +197,6 @@ class Character extends FlxSprite
 				addOffset("singDOWN", 20, -160);
 
 				playAnim('idle');
-			case 'tankman':
-				// TANKMAN ANIMATION LOADING CODE
-				tex = Paths.getSparrowAtlas('tankmanCaptain');
-				frames = tex;
-				animation.addByPrefix('idle', 'Tankman Idle Dance instance', 24);
-				animation.addByPrefix('singUP', 'Tankman UP note instance', 24);
-				animation.addByPrefix('singRIGHT', 'Tankman Right Note instance', 24);
-				animation.addByPrefix('singDOWN', 'Tankman DOWN note instance', 24);
-				animation.addByPrefix('singLEFT', 'Tankman Note Left instance', 24);
-				animation.addByPrefix('ugh', 'TANKMAN UGH instance', 24);
-				animation.addByPrefix('prettygood', 'PRETTY GOOD tankman instance', 24);
-				playAnim('idle');
-
-				addOffset('idle');
-				addOffset("singUP", -6, 50);
-				addOffset("singRIGHT", 0, 27);
-				addOffset("singLEFT", -10, 10);
-				addOffset("singDOWN", 0, -30);
-				addOffset('singUPalt');
-				addOffset('singDOWNalt');
-			case 'picoSpeaker':
-				// Erm PEECO CODE
-				tex = Paths.getSparrowAtlas('picoSpeaker');
-				frames = tex;
-				animation.addByPrefix('Pico shoot', 'Pico shoot', 24);
-				
-				addOffset('shoot1', 0, 0);
-				addOffset('shoot2', -1, -128);
-				addOffset('shoot3', 412, -64);
-				addOffset('shoot4', 439, -19);
-				
-				playAnim('Pico shoot');								
 			case 'monster':
 				tex = Paths.getSparrowAtlas('Monster_Assets');
 				frames = tex;
@@ -337,6 +305,7 @@ class Character extends FlxSprite
 
 				flipX = true;
 
+<<<<<<< HEAD
 			case 'bf-holding-gf':
 				var tex = Paths.getSparrowAtlas('bfAndGF');
 				frames = tex;
@@ -383,6 +352,8 @@ class Character extends FlxSprite
 
 				flipX = true;
 
+=======
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 			case 'bf-christmas':
 				var tex = Paths.getSparrowAtlas('christmas/bfChristmas');
 				frames = tex;

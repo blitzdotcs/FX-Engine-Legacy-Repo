@@ -39,7 +39,11 @@ class DiscordClient
 			details: "MainMenuState.hx moment",
 			state: null,
 			largeImageKey: 'icon',
+<<<<<<< HEAD
 			largeImageText: "FX Engine"
+=======
+			largeImageText: "FNF: Test Engine"
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 		});
 	}
 
@@ -75,7 +79,11 @@ class DiscordClient
 			details: details,
 			state: state,
 			largeImageKey: 'icon',
+<<<<<<< HEAD
 			largeImageText: "FX Engine",
+=======
+			largeImageText: "FNF: Test Engine",
+>>>>>>> parent of b8010c8 (week 7 stuff w.i.p.)
 			smallImageKey : smallImageKey,
 			// Obtained times are in milliseconds so they are divided so Discord can use it
 			startTimestamp : Std.int(startTimestamp / 1000),

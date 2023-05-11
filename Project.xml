@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="FX Engine" file="FX Engine" packageName="com.tydev.fxengine" package="com.tydev.fxengine" main="Main" version="1.2" company="TyDev_" />
+	<app title="FNF: Test Engine" file="Test Engine" packageName="com.ty1991.testengine" package="com.ty1991.testengine" main="Main" version="0.2.7.1" company="Ty_1991" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -47,7 +47,7 @@
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
 
-	<!-- FX ENGINE CUSTOMIZATION -->
+	<!-- TEST ENGINE CUSTOMIZATION -->
 	<define name="VIDEOS_ALLOWED" if="desktop || android" />
 
 	<assets path="example_mods" embed="false" exclude="*.ogg" if="web"/>
