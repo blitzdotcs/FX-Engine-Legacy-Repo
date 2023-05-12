@@ -17,8 +17,6 @@ This is the repository for FX Engine. A modification of a game originally made f
 
 - [TyDev](https://twitter.com/TyDev_) - The whole engine
 
-- [Leather128](https://github.com/Leather128) - Borrowed the mod support code from his engine
-
 - [Luckydog7](https://github.com/luckydog7) - Mobile Code
 
 # Regular FNF Shit
