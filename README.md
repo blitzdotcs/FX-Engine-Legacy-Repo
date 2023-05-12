@@ -17,6 +17,8 @@ This is the repository for FX Engine. A modification of a game originally made f
 
 - [TyDev](https://twitter.com/TyDev_) - The whole engine
 
+- [Leather128](https://github.com/Leather128) - Borrowed the mod support code from his engine
+
 - [Luckydog7](https://github.com/luckydog7) - Mobile Code
 
 # Regular FNF Shit
@@ -28,7 +30,7 @@ IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN 
 
 ## Credits / shoutouts
 
-- [ninjamuffin99 (me!)](https://twitter.com/ninja_muffin99) - Programmer
+- [ninjamuffin99](https://twitter.com/ninja_muffin99) - Programmer
 - [PhantomArcade3K](https://twitter.com/phantomarcade3k) and [Evilsk8r](https://twitter.com/evilsk8r) - Art
 - [Kawaisprite](https://twitter.com/kawaisprite) - Musician
 

@@ -47,12 +47,11 @@
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
 
-	<!-- TEST ENGINE CUSTOMIZATION -->
-	<define name="VIDEOS_ALLOWED" if="desktop || android" />
+	<!-- FX ENGINE CUSTOMIZATION -->
+	<define name="VIDEOS_ALLOWED" if="windows || html5 || android || mac" />
 
-	<assets path="example_mods" embed="false" exclude="*.ogg" if="web"/>
-	<assets path="example_mods" embed="false" exclude="*.mp3" unless="web"/>
-	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits"/>	
+	<assets path="mods" embed="false" exclude="*.ogg" if="web" />
+	<assets path="mods" embed="false" exclude="*.mp3" unless="web" />
 
 	<library name="videos"        preload="true" />
 	<section if="PRELOAD_ALL">
@@ -103,7 +102,6 @@
 	<assets path="assets/week7"    library="week7"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week7"    library="week7"    exclude="*.mp3" unless="web"/>
 
-	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />	
 	<assets path="CHANGELOG.md" rename='changelog.txt'/>
 

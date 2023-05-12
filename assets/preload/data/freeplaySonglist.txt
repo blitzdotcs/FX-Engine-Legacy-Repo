@@ -17,6 +17,6 @@ Winter-Horrorland:monster-christmas:5:0xFFB8E9FF:159
 Senpai:senpai:6:0xFFFFC49C:144
 Roses:senpai:6:0xFFFFC49C:120
 Thorns:spirit:6:0xFFFFC49C:190
-Ugh:tankman:7:0xFFB4B4B4:150
-Guns:tankman:7:0xFFB4B4B4:165
-Stress:tankman:7:0xFFB4B4B4:95
+Ugh:tankman:7:0xFFB4B4B4:160
+Guns:tankman:7:0xFFB4B4B4:185
+Stress:tankman:7:0xFFB4B4B4:178
