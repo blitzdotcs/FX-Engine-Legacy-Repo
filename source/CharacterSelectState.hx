@@ -16,8 +16,8 @@ class CharacterSelectState extends MusicBeatState
     var selectedChar:String = 'bf';
     var char:Int = 0;
 
-    var charList:Array<String> = ["bf", "pico"];
-    var charNameList:Array<String> = ["BOYFRIEND", "PICO"];
+    var charList:Array<String> = ["bf"];
+    var charNameList:Array<String> = ["BOYFRIEND"];
 
     var bg:FlxSprite;
     var danceey:Character;
