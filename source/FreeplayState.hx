@@ -6,6 +6,7 @@ import Discord.DiscordClient;
 #end
 import flash.text.TextField;
 import flixel.FlxG;
+import flixel.input.keyboard.FlxKeyboard;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -55,14 +56,6 @@ class FreeplayState extends MusicBeatState
 
 		//trace(songs);
 		trace(songColors);
-
-		/* 
-			if (FlxG.sound.music != null)
-			{
-				if (!FlxG.sound.music.playing)
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			}
-		 */
 
 		#if windows
 		// Updating Discord Rich Presence
