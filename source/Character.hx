@@ -210,7 +210,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('singDOWNalt', 'PRETTY GOOD tankman instance', 24);
 				playAnim('idle');
 
-				addOffset('idle');
+				addOffset("idle", 0, -243);
 				addOffset("singUP", 0, -243);
 				addOffset("singRIGHT", 0, -243);
 				addOffset("singLEFT", 0, -243);
