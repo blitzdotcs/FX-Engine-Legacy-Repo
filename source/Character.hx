@@ -219,7 +219,6 @@ class Character extends FlxSprite
 				addOffset('singDOWNalt');
 
 				flipX = true;
-				
 			case 'picoSpeaker':
 				// Erm PEECO CODE
 				tex = Paths.getSparrowAtlas('picoSpeaker');

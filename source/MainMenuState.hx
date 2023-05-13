@@ -26,7 +26,7 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'mods', 'options'];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'options'];
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -34,7 +34,7 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 
-	var engineVer:String = "1.0.1";
+	var engineVer:String = "1.0.2";
 	
 	override function create()
 	{
@@ -197,12 +197,6 @@ class MainMenuState extends MusicBeatState
 										FlxG.switchState(new FreeplayState());
 
 										trace("Freeplay Menu Selected");
-
-									case 'mods':
-								//		FlxG.switchState(new ModsMenu());
-
-										trace("Mods Menu Selected");
-
 									case 'options':
 										//FlxTransitionableState.skipNextTransIn = true;
 										//FlxTransitionableState.skipNextTransOut = true;

@@ -155,6 +155,9 @@ class OptionsMenu extends MusicBeatState
 					case 1:
 						FlxG.save.data.freeplayBop = !FlxG.save.data.freeplayBop;
 						trace(FlxG.save.data.freeplayBop);
+
+					case 2:
+					MusicBeatState.switchState(new KeybindState());	
 				}
 				*/
 

@@ -9,7 +9,7 @@ This is the repository for FX Engine. A modification of a game originally made f
 # Features of Test Engine
 
 - Ghost Tapping
-- Fuck "W,S,A,D" we got ZXNM
+- Fuck "W,S,A,D" we got ZXNM and DFJK!
 - Working settings menu
 - W.i.p. Modding support without source
 
