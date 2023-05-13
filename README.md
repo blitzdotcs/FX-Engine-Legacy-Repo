@@ -18,8 +18,6 @@ This is the repository for FX Engine. A modification of a game originally made f
 
 - [TyDev](https://twitter.com/TyDev_) - The whole engine
 
-- [Luckydog7](https://github.com/luckydog7) - Mobile Code
-
 # Regular FNF Shit
 Play the FNF Ludum Dare prototype here: https://ninja-muffin24.itch.io/friday-night-funkin
 Play the FNF Newgrounds one here: https://www.newgrounds.com/portal/view/770371
