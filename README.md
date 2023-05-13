@@ -6,14 +6,14 @@ This is the repository for FX Engine. A modification of a game originally made f
 
 * I AM NOT IN THE FNF COMMUNITY I'M JUST CONTINUING THIS TO LEARN MORE ABOUT HAXE.
 
-# Features of Test Engine
+# Features of FX Engine
 
 - Ghost Tapping
 - Fuck "W,S,A,D" we got ZXNM and DFJK!
 - Working settings menu
 - W.i.p. Modding support without source
 
-# Test Engine Credits
+# FX Engine Credits
 
 - [TyDev](https://twitter.com/TyDev_) - The whole engine
 
