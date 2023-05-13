@@ -206,8 +206,8 @@ class Character extends FlxSprite
 				animation.addByPrefix('singRIGHT', 'Tankman Right Note instance', 24);
 				animation.addByPrefix('singDOWN', 'Tankman DOWN note instance', 24);
 				animation.addByPrefix('singLEFT', 'Tankman Note Left instance', 24);
-				animation.addByPrefix('ugh', 'TANKMAN UGH instance', 24);
-				animation.addByPrefix('prettygood', 'PRETTY GOOD tankman instance', 24);
+				animation.addByPrefix('singUPalt', 'TANKMAN UGH instance', 24);
+				animation.addByPrefix('singDOWNalt', 'PRETTY GOOD tankman instance', 24);
 				playAnim('idle');
 
 				addOffset('idle');
@@ -215,8 +215,8 @@ class Character extends FlxSprite
 				addOffset("singRIGHT", 0, 27);
 				addOffset("singLEFT", -10, 10);
 				addOffset("singDOWN", 0, -30);
-				addOffset('singUPalt');
-				addOffset('singDOWNalt');
+				addOffset("singUPalt", -6. 50);
+				addOffset("singDOWNalt", 0, -30);
 
 				flipX = true;
 			case 'picoSpeaker':
