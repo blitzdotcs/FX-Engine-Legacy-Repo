@@ -97,6 +97,8 @@ class PlayState extends MusicBeatState
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 
+	var dancingLeft:Bool = false;
+
 	var halloweenBG:FlxSprite;
 	var isHalloween:Bool = false;
 
@@ -2480,6 +2482,18 @@ class PlayState extends MusicBeatState
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
+
+		dancingLeft = !dancingLeft;
+
+		if (FlxG.save.data.iconbops)
+			if (dancingLeft)
+			{
+				iconP1.angle = 8; iconP2.angle = 8; // maybe i should do it with tweens, but i'm lazy // i'll make it in -1.0.0, i promise
+			} 
+			else 
+			{ 
+				iconP1.angle = -8; iconP2.angle = -8;
+			}
 
 		if (curBeat % gfSpeed == 0)
 		{

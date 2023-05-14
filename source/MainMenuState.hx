@@ -1,6 +1,6 @@
 package;
 
-#if cpp
+#if desktop
 import Discord.DiscordClient;
 #end
 import flixel.FlxG;
@@ -15,6 +15,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 //import io.newgrounds.NG;
+import Controls.KeyboardScheme;
 import lime.app.Application;
 
 using StringTools;
@@ -26,7 +27,7 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'options'];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'options'];
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -38,7 +39,7 @@ class MainMenuState extends MusicBeatState
 	
 	override function create()
 	{
-		#if cpp
+		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("MainMenuState.hx Moment!!", null);
 		#end
@@ -116,6 +117,12 @@ class MainMenuState extends MusicBeatState
 		add(versionShit);
 
 		// NG.core.calls.event.logEvent('swag').send();
+
+
+		if (FlxG.save.data.zxnm)
+			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
+		else
+			controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
 
 		changeItem();
 
@@ -197,6 +204,8 @@ class MainMenuState extends MusicBeatState
 										FlxG.switchState(new FreeplayState());
 
 										trace("Freeplay Menu Selected");
+									case 'credits':
+										FlxG.switchState(new Credits());	
 									case 'options':
 										//FlxTransitionableState.skipNextTransIn = true;
 										//FlxTransitionableState.skipNextTransOut = true;

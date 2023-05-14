@@ -37,7 +37,7 @@ class StoryMenuState extends MusicBeatState
 	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true];
 
 	var weekCharacters:Array<Dynamic> = [
-		['dad', 'bf', 'gf'],
+		['gf', 'bf', ''],
 		['dad', 'bf', 'gf'],
 		['spooky', 'bf', 'gf'],
 		['pico', 'bf', 'gf'],
@@ -80,7 +80,7 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
-		#if cpp
+		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In StoryMenuState.hx", null);
 		#end
@@ -103,9 +103,9 @@ class StoryMenuState extends MusicBeatState
 
 //		if (FlxG.keys.justPressed.SEVEN)
 //		{
-//			FlxG.switchState(new CharacterSelectState());
+//			FlxG.switchState(new ChartingState());
 //
-//			#if cpp
+//			#if desktop
 //			DiscordClient.changePresence("In Character Selection Screen!", null, null, true);
 //			#end
 //		}

@@ -1,7 +1,7 @@
 package;
 
 import flixel.tweens.FlxTween;
-#if windows
+#if desktop
 import Discord.DiscordClient;
 #end
 import flash.text.TextField;
@@ -17,9 +17,9 @@ import lime.utils.Assets;
 
 using StringTools;
 
-class FreeplayState extends MusicBeatState
+class Credits extends MusicBeatState
 {
-	var songs:Array<SongMetadata> = [];
+	var songs:Array<CreditsMetadata> = [];
 	var songColors:Array<FlxColor> = [];
 	var songBPM:Array<Int> = [];
 	var selector:FlxText;
@@ -34,7 +34,7 @@ class FreeplayState extends MusicBeatState
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
 
-	private var iconArray:Array<HealthIcon> = [];
+	private var iconArray:Array<CreditsIcon> = [];
 
 
 	var colorTween:FlxTween;
@@ -44,12 +44,12 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+		var initSonglist = CoolUtil.coolTextFile(Paths.txt('Creditslist'));
 
 		for (i in 0...initSonglist.length)
 		{
 			var parsedFile:Array<String> = initSonglist[i].split(":");
-			songs.push(new SongMetadata(parsedFile[0], Std.parseInt(parsedFile[2]), parsedFile[1]));
+			songs.push(new CreditsMetadata(parsedFile[0], Std.parseInt(parsedFile[2]), parsedFile[1]));
 			songColors.push(FlxColor.fromString(parsedFile[3]));
 			songBPM.push(Std.parseInt(parsedFile[4]));
 		}
@@ -85,7 +85,7 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+			var icon:CreditsIcon = new CreditsIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
 
 			// using a FlxGroup is too much fuss!
@@ -146,7 +146,7 @@ class FreeplayState extends MusicBeatState
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String)
 	{
-		songs.push(new SongMetadata(songName, weekNum, songCharacter));
+		songs.push(new CreditsMetadata(songName, weekNum, songCharacter));
 	}
 
 	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
@@ -180,11 +180,10 @@ class FreeplayState extends MusicBeatState
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
 
-		scoreText.text = "PERSONAL BEST:" + lerpScore;
+		scoreText.text = "Erm Credits Moment!";
 
 		var upP = controls.UP_P;
 		var downP = controls.DOWN_P;
-		var accepted = controls.ACCEPT;
 
 		if (upP)
 		{
@@ -195,11 +194,6 @@ class FreeplayState extends MusicBeatState
 			changeSelection(1);
 		}
 
-		if (controls.LEFT_P)
-			changeDiff(-1);
-		if (controls.RIGHT_P)
-			changeDiff(1);
-
 		if (controls.BACK)
 		{
 			if (colorTween != null)
@@ -208,21 +202,6 @@ class FreeplayState extends MusicBeatState
 				}
 	
 			FlxG.switchState(new MainMenuState());
-		}
-
-		if (accepted)
-		{
-			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
-
-			trace(poop);
-
-			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
-			PlayState.isStoryMode = false;
-			PlayState.storyDifficulty = curDifficulty;
-
-			PlayState.storyWeek = songs[curSelected].week;
-			trace('CUR WEEK' + PlayState.storyWeek);
-			LoadingState.loadAndSwitchState(new PlayState());
 		}
 	}
 
@@ -247,16 +226,6 @@ class FreeplayState extends MusicBeatState
 		#if !switch
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 		#end
-
-		switch (curDifficulty)
-		{
-			case 0:
-				diffText.text = "EASY";
-			case 1:
-				diffText.text = 'NORMAL';
-			case 2:
-				diffText.text = "HARD";
-		}
 	}
 
 	function changeSelection(change:Int = 0)
@@ -329,7 +298,7 @@ class FreeplayState extends MusicBeatState
 	}
 }
 
-class SongMetadata
+class CreditsMetadata
 {
 	public var songName:String = "";
 	public var week:Int = 0;

@@ -9,10 +9,14 @@ This is the repository for FX Engine. A modification of a game originally made f
 # Features of FX Engine
 
 - Ghost Tapping
-- Fuck "W,S,A,D" we got ZXNM and DFJK!
+- Choose between WASD and ZXNM!
 - Working settings menu
 - W.i.p. Modding support without source
 - W.i.p. Character Selection! Press 6 while in-game. (Doesn't fully work yet sadly but it's progress!)
+- Icon bopping!
+- Custom Credits Menu
+- Psych Engine Icon Support (for credits only, when I tried it for the main stuff the game kept crashing)
+- A game crasher (In the options menu)
 
 # FX Engine Credits
 
