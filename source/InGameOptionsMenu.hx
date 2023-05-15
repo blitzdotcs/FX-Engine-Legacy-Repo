@@ -1,6 +1,5 @@
 package;
 
-
 import Controls.KeyboardScheme;
 import Controls.Control;
 import flash.text.TextField;
@@ -14,21 +13,19 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 
-class OptionsMenu extends MusicBeatState
+class InGameOptionsMenu extends MusicBeatState
 {
 	var selector:FlxText;
 	var curSelected:Int = 0;
 
 	var controlsStrings:Array<String> = [];
 
-	public static var iconbops:String = 'BOP';
-
 	private var grpControls:FlxTypedGroup<Alphabet>;
 	var versionShit:FlxText;
 	override function create()
 	{
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.zxnm ? 'ZXNM' : 'WASD') + "\n" + (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP') + "\nCrash Game");
+		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.zxnm ? 'ZXNM' : 'WASD') + "\nCrash Game");
 		
 		trace(controlsStrings);
 
@@ -65,7 +62,7 @@ class OptionsMenu extends MusicBeatState
 		super.update(elapsed);
 
 			if (controls.BACK)
-				FlxG.switchState(new MainMenuState());
+				FlxG.switchState(new PlayState());
 			if (controls.UP_P)
 				changeSelection(-1);
 			if (controls.DOWN_P)
@@ -100,15 +97,6 @@ class OptionsMenu extends MusicBeatState
 							controls.setKeyboardScheme(KeyboardScheme.Solo, true);
 						else
 							controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
-						
-					case 1:
-                        FlxG.save.data.iconbops = !FlxG.save.data.iconbops;
-                        var iconbopsCtrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP'), true, false);
-                        iconbopsCtrl.isMenuItem = true;
-                        iconbopsCtrl.targetY = curSelected - 2;
-                       grpControls.add(iconbopsCtrl);
-                        if (FlxG.save.data.iconbops)
-                            OptionsMenu.iconbops = FlxG.save.data.iconbops;
 				}
 			}
 	}

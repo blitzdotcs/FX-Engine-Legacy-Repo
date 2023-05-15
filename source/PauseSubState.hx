@@ -21,7 +21,7 @@ class PauseSubState extends MusicBeatSubstate
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 	var grpOptionShit:FlxTypedGroup<FlxText>;
 
-	var menuItems:Array<String> = ['Resume', 'Toggle practice mode', 'Restart Song', 'Exit to menu'];
+	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Toggle practice mode', 'Options', 'Exit to menu'];
 	var curSelected:Int = 0;
 
 	var pauseMusic:FlxSound;
@@ -134,114 +134,24 @@ class PauseSubState extends MusicBeatSubstate
 			{
 				case "Resume":
 					antiSpam = true;
-
-					var swag:Bool = FlxG.save.data.pauseCountdown; // HARDCODING TO TRUE BCS OPTIONS ARE NOT DONE!!!
-					trace(swag);
-
-					if (FlxG.save.data.pauseCountdown)
-					{
-						remove(grpMenuShit);
-						remove(grpOptionShit);
-
-						var swagCounter:Int = 0;
-						var awesomeTimer:FlxTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
-							{
-
-								var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
-								introAssets.set('default', ['ready', "set", "go"]);
-								introAssets.set('school', ['weeb/pixelUI/ready-pixel', 'weeb/pixelUI/set-pixel', 'weeb/pixelUI/date-pixel']);
-								introAssets.set('schoolEvil', ['weeb/pixelUI/ready-pixel', 'weeb/pixelUI/set-pixel', 'weeb/pixelUI/date-pixel']);
-					
-								var introAlts:Array<String> = introAssets.get('default');
-								var altSuffix:String = "";
-					
-								for (value in introAssets.keys())
-								{
-									if (value == PlayState.curStage)
-									{
-										introAlts = introAssets.get(value);
-										altSuffix = '-pixel';
-									}
-								}
-					
-								switch (swagCounter)
-					
-								{
-									case 0:
-										FlxG.sound.play(Paths.sound('intro3'), 0.6);
-									case 1:
-										var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
-										ready.scrollFactor.set();
-										ready.updateHitbox();
-					
-										if (PlayState.curStage.startsWith('school'))
-											ready.setGraphicSize(Std.int(ready.width * PlayState.daPixelZoom));
-					
-										ready.screenCenter();
-										add(ready);
-										FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-											ease: FlxEase.cubeInOut,
-											onComplete: function(twn:FlxTween)
-											{
-												ready.destroy();
-											}
-										});
-										FlxG.sound.play(Paths.sound('intro2'), 0.6);
-									case 2:
-										var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
-										set.scrollFactor.set();
-					
-										if (PlayState.curStage.startsWith('school'))
-											set.setGraphicSize(Std.int(set.width * PlayState.daPixelZoom));
-					
-										set.screenCenter();
-										add(set);
-										FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-											ease: FlxEase.cubeInOut,
-											onComplete: function(twn:FlxTween)
-											{
-												set.destroy();
-											}
-										});
-										FlxG.sound.play(Paths.sound('intro1'), 0.6);
-									case 3:
-										var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
-										go.scrollFactor.set();
-					
-										if (PlayState.curStage.startsWith('school'))
-											go.setGraphicSize(Std.int(go.width * PlayState.daPixelZoom));
-					
-										go.updateHitbox();
-					
-										go.screenCenter();
-										add(go);
-										FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-											ease: FlxEase.cubeInOut,
-											onComplete: function(twn:FlxTween)
-											{
-												go.destroy();
-											}
-										});
-										FlxG.sound.play(Paths.sound('introGo'), 0.6);
-									case 4:
-										trace('TIME TO PLAY BABY!');
-										close();
-								}
-					
-								swagCounter += 1;
-								// generateSong('fresh');
-							}, 5);
-					}
-
-					//close();
-				case "Toggle practice mode":
-					PlayState.practiceMode = !PlayState.practiceMode;
-					practice.visible = PlayState.practiceMode;
-
-					trace("PRACTICE MODE: " + PlayState.practiceMode, practice.visible);
 					
 				case "Restart Song":
 					FlxG.resetState();
+
+				case "Toggle practice mode":
+					PlayState.practiceMode = !PlayState.practiceMode;
+					practice.visible = PlayState.practiceMode;
+					trace("PRACTICE MODE: " + PlayState.practiceMode, practice.visible);
+
+//				case 'Botplay':
+//					PlayState.instance.cpuControlled = !PlayState.instance.cpuControlled;
+//					PlayState.instance.botplayTxt.visible = PlayState.instance.cpuControlled;
+//					PlayState.instance.botplayTxt.alpha = 1;
+//					PlayState.instance.botplaySine = 0;
+
+				case "Options":
+					FlxG.switchState(new InGameOptionsMenu());
+
 				case "Exit to menu":
 					FlxG.switchState(new MainMenuState());
 			}

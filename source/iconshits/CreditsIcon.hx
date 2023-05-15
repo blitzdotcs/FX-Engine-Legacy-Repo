@@ -1,4 +1,4 @@
-package;
+package iconshits;
 
 import flixel.FlxSprite;
 

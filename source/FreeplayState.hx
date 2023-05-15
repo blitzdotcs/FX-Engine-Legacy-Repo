@@ -1,5 +1,6 @@
 package;
 
+
 import flixel.tweens.FlxTween;
 #if windows
 import Discord.DiscordClient;
@@ -14,6 +15,7 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
+import iconshits.FreePlayIcon;
 
 using StringTools;
 
@@ -34,7 +36,7 @@ class FreeplayState extends MusicBeatState
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
 
-	private var iconArray:Array<HealthIcon> = [];
+	private var iconArray:Array<FreePlayIcon> = [];
 
 
 	var colorTween:FlxTween;
@@ -85,7 +87,7 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+			var icon:FreePlayIcon = new FreePlayIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
 
 			// using a FlxGroup is too much fuss!
