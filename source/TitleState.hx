@@ -80,8 +80,7 @@ mod_dirs = FlxG.save.data.mods;
 				#end
 			},
 			frameworkParams: {
-				assetLibraryPaths: 
-				[
+				assetLibraryPaths: [
 					"songs" => "songs",
 					"shared" => "shared",
 					"week1" => "week1",
@@ -89,8 +88,7 @@ mod_dirs = FlxG.save.data.mods;
 					"week3" => "week3",
 					"week4" => "week4",
 					"week5" => "week5",
-					"week6" => "week6",
-					"week7" => "week7"
+					"week6" => "week6"
 				]
 			}
 		});		
@@ -115,6 +113,9 @@ mod_dirs = FlxG.save.data.mods;
 		trace('NEWGROUNDS LOL');
 		#end
 		*/
+
+		if (FlxG.save.data.zxnm == null)
+			FlxG.save.data.zxnm = false;
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
@@ -186,15 +187,11 @@ mod_dirs = FlxG.save.data.mods;
 
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
-
-			// HAD TO MODIFY SOME BACKEND SHIT
-			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
-			// https://github.com/HaxeFlixel/flixel-addons/pull/348
-
-			// var music:FlxSound = new FlxSound();
-			// music.loadStream(Paths.music('freakyMenu'));
-			// FlxG.sound.list.add(music);
-			// music.play();
+			
+			var music:FlxSound = new FlxSound();
+			music.loadStream(Paths.music('freakyMenu'));
+			FlxG.sound.list.add(music);
+			music.play();
 		}
 
 		Conductor.changeBPM(102);

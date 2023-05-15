@@ -55,6 +55,8 @@ class PlayState extends MusicBeatState
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
+	public static var changedDifficulty:Bool = false;
+	public static var instance:PlayState;
 
 	var halloweenLevel:Bool = false;
 
@@ -89,6 +91,13 @@ class PlayState extends MusicBeatState
 
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
+
+    // Swag shit
+	var dancingLeft:Bool = false;
+	public var cpuControlled:Bool = false;
+
+	public var botplaySine:Float = 0;
+	public var botplayTxt:FlxText;
 
 	private var iconP1:HealthIcon;
 	private var iconP2:HealthIcon;
@@ -773,6 +782,13 @@ class PlayState extends MusicBeatState
 		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
 
+		botplayTxt = new FlxText(400, 55, FlxG.width - 800, "BOTPLAY", 32);
+		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		botplayTxt.scrollFactor.set();
+		botplayTxt.borderSize = 1.25;
+		botplayTxt.visible = cpuControlled;
+		add(botplayTxt);
+
 		iconP1 = new HealthIcon(SONG.player1, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 		add(iconP1);
@@ -788,6 +804,7 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+		botplayTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
@@ -1404,6 +1421,13 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
+		if(botplayTxt.visible) 
+		{
+			botplaySine += 180 * elapsed;
+			botplayTxt.alpha = 1 - Math.sin((Math.PI * botplaySine) / 180);
+		}
+
+
 		scoreTxt.text = "Score:" + songScore + " | Misses:" + misses;
 
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
@@ -1423,6 +1447,15 @@ class PlayState extends MusicBeatState
 		
 			#if cpp
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+			#end
+		}
+
+		if (FlxG.keys.justPressed.SIX)
+		{
+			FlxG.switchState(new CharacterSelectState());
+
+			#if cpp
+			DiscordClient.changePresence("In Character Selection Screen!", null, null, true);
 			#end
 		}
 
@@ -1838,6 +1871,7 @@ class PlayState extends MusicBeatState
 		{
 			trace('WENT BACK TO FREEPLAY??');
 			FlxG.switchState(new FreeplayState());
+			changedDifficulty = false;
 		}
 	}
 
@@ -2471,6 +2505,18 @@ class PlayState extends MusicBeatState
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
+
+		dancingLeft = !dancingLeft;
+
+		if (FlxG.save.data.iconbops)
+			if (dancingLeft)
+			{
+				iconP1.angle = 8; iconP2.angle = 8; // maybe i should do it with tweens, but i'm lazy // i'll make it in -1.0.0, i promise
+			} 
+			else 
+			{ 
+				iconP1.angle = -8; iconP2.angle = -8;
+			}
 
 		if (curBeat % gfSpeed == 0)
 		{

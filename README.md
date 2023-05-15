@@ -9,15 +9,23 @@ This is the repository for FX Engine. A modification of a game originally made f
 # Features of FX Engine
 
 - Ghost Tapping
-- Fuck "W,S,A,D" we got DFJK
+- Choose between WASD and ZXNM!
 - Working settings menu
 - W.i.p. Modding support without source
+- W.i.p. Character Selection! Press 6 while in-game. (Doesn't fully work yet sadly but it's progress!)
+- Icon bopping!
+- Custom Credits Menu
+- Psych Engine Icon Support (for credits and freeplay only, when I tried it for the in-game stuff the game kept crashing)
+- Ingame Options Menu (Check the pause menu)
+- A game crasher (In the options menu)
+
+# Bugs
+
+- Going into charting menu and selecting tankman crashes the game
 
 # FX Engine Credits
 
 - [TyDev](https://twitter.com/TyDev_) - The whole engine
-
-- [Luckydog7](https://github.com/luckydog7) - Mobile Code
 
 # Regular FNF Shit
 Play the FNF Ludum Dare prototype here: https://ninja-muffin24.itch.io/friday-night-funkin
@@ -28,7 +36,7 @@ IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN 
 
 ## Credits / shoutouts
 
-- [ninjamuffin99 (me!)](https://twitter.com/ninja_muffin99) - Programmer
+- [ninjamuffin99](https://twitter.com/ninja_muffin99) - Programmer
 - [PhantomArcade3K](https://twitter.com/phantomarcade3k) and [Evilsk8r](https://twitter.com/evilsk8r) - Art
 - [Kawaisprite](https://twitter.com/kawaisprite) - Musician
 

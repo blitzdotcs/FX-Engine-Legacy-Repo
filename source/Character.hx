@@ -203,20 +203,22 @@ class Character extends FlxSprite
 				frames = tex;
 				animation.addByPrefix('idle', 'Tankman Idle Dance instance', 24);
 				animation.addByPrefix('singUP', 'Tankman UP note instance', 24);
-				animation.addByPrefix('singRIGHT', 'Tankman Right Note instance', 24);
+				animation.addByPrefix('singRIGHT', 'Tankman Note Left instance', 24);
 				animation.addByPrefix('singDOWN', 'Tankman DOWN note instance', 24);
-				animation.addByPrefix('singLEFT', 'Tankman Note Left instance', 24);
-				animation.addByPrefix('ugh', 'TANKMAN UGH instance', 24);
-				animation.addByPrefix('prettygood', 'PRETTY GOOD tankman instance', 24);
+				animation.addByPrefix('singLEFT', 'Tankman  Right Note instance', 24);
+				animation.addByPrefix('singUPalt', 'TANKMAN UGH instance', 24);
+				animation.addByPrefix('singDOWNalt', 'PRETTY GOOD tankman instance', 24);
 				playAnim('idle');
 
-				addOffset('idle');
-				addOffset("singUP", -6, 50);
-				addOffset("singRIGHT", 0, 27);
-				addOffset("singLEFT", -10, 10);
-				addOffset("singDOWN", 0, -30);
-				addOffset('singUPalt');
-				addOffset('singDOWNalt');
+				addOffset("idle", 0, -243);
+				addOffset("singUP", 0, -243);
+				addOffset("singRIGHT", 0, -243);
+				addOffset("singLEFT", 0, -243);
+				addOffset("singDOWN", 0, -243);
+				addOffset("singUPalt", 0. -243);
+				addOffset("singDOWNalt", 0, -243);
+
+				flipX = true;
 			case 'picoSpeaker':
 				// Erm PEECO CODE
 				tex = Paths.getSparrowAtlas('picoSpeaker');

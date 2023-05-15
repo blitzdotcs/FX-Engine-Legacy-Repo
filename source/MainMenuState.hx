@@ -1,6 +1,6 @@
 package;
 
-#if cpp
+#if desktop
 import Discord.DiscordClient;
 #end
 import flixel.FlxG;
@@ -15,6 +15,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 //import io.newgrounds.NG;
+import Controls.KeyboardScheme;
 import lime.app.Application;
 
 using StringTools;
@@ -26,7 +27,7 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'options'];
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -34,13 +35,13 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 
-	var engineVer:String = "0.1.0.4a";
+	var engineVer:String = "1.0.2";
 	
 	override function create()
 	{
-		#if cpp
+		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		DiscordClient.changePresence("MainMenuState.hx Moment!!", null);
 		#end
 
 		transIn = FlxTransitionableState.defaultTransIn;
@@ -110,12 +111,18 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, null, 0.06);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "FUNKIN " + Application.current.meta.get('version') + " | FX-Engine " + engineVer, 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "FUNKIN " + Application.current.meta.get('version') + " | FX Engine " + engineVer, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
 		// NG.core.calls.event.logEvent('swag').send();
+
+
+		if (FlxG.save.data.zxnm)
+			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
+		else
+			controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
 
 		changeItem();
 
@@ -197,7 +204,8 @@ class MainMenuState extends MusicBeatState
 										FlxG.switchState(new FreeplayState());
 
 										trace("Freeplay Menu Selected");
-
+									case 'credits':
+										FlxG.switchState(new Credits());	
 									case 'options':
 										//FlxTransitionableState.skipNextTransIn = true;
 										//FlxTransitionableState.skipNextTransOut = true;

@@ -1,0 +1,22 @@
+{
+    "groupName": "HardMods",
+    "pathName": "Every Hard Mod I know",
+    "weeks": [
+        {
+            "imagePath": "week0",
+            "songs": [
+                "Run",
+                "bloodshed"
+            ],
+            "characters": [
+                "bf",
+                "bf",
+                "gf"
+            ],
+            "weekTitle": "holy shit old thing",
+            "difficulties": [
+                ["easy", "normal", "hard"]
+            ]
+        }
+    ]
+}

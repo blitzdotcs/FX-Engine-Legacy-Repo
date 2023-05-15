@@ -8,7 +8,6 @@ import flixel.text.FlxText;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.util.FlxTimer;
 import flixel.graphics.frames.FlxAtlasFrames;
-import Song.SwagSong;
 
 class CharacterSelectState extends MusicBeatState
 {
@@ -17,8 +16,8 @@ class CharacterSelectState extends MusicBeatState
     var selectedChar:String = 'bf';
     var char:Int = 0;
 
-    var charList:Array<String> = ["bf", "pico"];
-    var charNameList:Array<String> = ["BOYFRIEND", "PICO"];
+    var charList:Array<String> = ["bf"];
+    var charNameList:Array<String> = ["BOYFRIEND"];
 
     var bg:FlxSprite;
     var danceey:Character;
@@ -123,9 +122,8 @@ class CharacterSelectState extends MusicBeatState
         if (controls.LEFT_P)
             changeChar(-1);
 
-        if (controls.BACK)
-            FlxG.sound.play(Paths.sound("cancelMenu"));
-            FlxG.switchState(new FreeplayState());
+		if (FlxG.keys.justPressed.ESCAPE)
+		    FlxG.switchState(new FreeplayState());
 
         if (controls.ACCEPT)
         {

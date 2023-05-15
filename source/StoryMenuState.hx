@@ -30,21 +30,21 @@ class StoryMenuState extends MusicBeatState
 		['Satin-Panties', "High", "Milf"],
 		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
 		['Senpai', 'Roses', 'Thorns'],
-		['Ugh', 'Guns', 'Stress']
+		['Ugh', 'Guns', 'Stress'],
 	];
 	var curDifficulty:Int = 1;
 
 	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true];
 
 	var weekCharacters:Array<Dynamic> = [
-		['dad', 'bf', 'gf'],
+		['gf', 'bf', ''],
 		['dad', 'bf', 'gf'],
 		['spooky', 'bf', 'gf'],
 		['pico', 'bf', 'gf'],
 		['mom', 'bf', 'gf'],
 		['parents-christmas', 'bf', 'gf'],
 		['senpai', 'bf', 'gf'],
-		['tankman', 'bf', 'gf']
+		['tankman', 'bf', 'gf']		
 	];
 
 	var weekNames:Array<String> = [
@@ -55,7 +55,7 @@ class StoryMenuState extends MusicBeatState
 		"MOMMY MUST MURDER",
 		"RED SNOW",
 		"hating simulator ft. moawling",
-        "TANKMAN"		
+		"TANKMAN"
 	];
 
 	var swagColors:Array<FlxColor> = [];
@@ -80,6 +80,11 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence("In StoryMenuState.hx", null);
+		#end
+
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
@@ -95,6 +100,15 @@ class StoryMenuState extends MusicBeatState
 		{
 			swagColors.push(FlxColor.fromString(daColorFile[i]));
 		}
+
+//		if (FlxG.keys.justPressed.SEVEN)
+//		{
+//			FlxG.switchState(new ChartingState());
+//
+//			#if desktop
+//			DiscordClient.changePresence("In Character Selection Screen!", null, null, true);
+//			#end
+//		}
 
 		persistentUpdate = persistentDraw = true;
 
