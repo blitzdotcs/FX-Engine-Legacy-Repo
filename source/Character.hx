@@ -203,9 +203,9 @@ class Character extends FlxSprite
 				frames = tex;
 				animation.addByPrefix('idle', 'Tankman Idle Dance instance', 24);
 				animation.addByPrefix('singUP', 'Tankman UP note instance', 24);
-				animation.addByPrefix('singRIGHT', 'Tankman Right Note instance', 24);
+				animation.addByPrefix('singRIGHT', 'Tankman Note Left instance', 24);
 				animation.addByPrefix('singDOWN', 'Tankman DOWN note instance', 24);
-				animation.addByPrefix('singLEFT', 'Tankman Note Left instance', 24);
+				animation.addByPrefix('singLEFT', 'Tankman  Right Note instance', 24);
 				animation.addByPrefix('singUPalt', 'TANKMAN UGH instance', 24);
 				animation.addByPrefix('singDOWNalt', 'PRETTY GOOD tankman instance', 24);
 				playAnim('idle');

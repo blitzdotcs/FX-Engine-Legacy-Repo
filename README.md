@@ -18,6 +18,10 @@ This is the repository for FX Engine. A modification of a game originally made f
 - Psych Engine Icon Support (for credits only, when I tried it for the main stuff the game kept crashing)
 - A game crasher (In the options menu)
 
+# Bugs
+
+- Going into charting menu and selecting tankman crashes the game
+
 # FX Engine Credits
 
 - [TyDev](https://twitter.com/TyDev_) - The whole engine
