@@ -26,16 +26,12 @@ class MainMenuState extends MusicBeatState
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
-	#if !switch
 	var optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'options'];
-	#else
-	var optionShit:Array<String> = ['story mode', 'freeplay'];
-	#end
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 
-	var engineVer:String = "1.0.2";
+	var engineVer:String = "1.1.0";
 	
 	override function create()
 	{
@@ -117,7 +113,6 @@ class MainMenuState extends MusicBeatState
 		add(versionShit);
 
 		// NG.core.calls.event.logEvent('swag').send();
-
 
 		if (FlxG.save.data.zxnm)
 			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
@@ -216,6 +211,15 @@ class MainMenuState extends MusicBeatState
 					});
 				}
 			}
+		}
+
+		if (FlxG.keys.justPressed.SEVEN)
+		{
+			FlxG.switchState(new ExtrasState());
+
+			#if cpp
+			DiscordClient.changePresence("In the secret songs menu", null, null, true);
+			#end
 		}
 
 		super.update(elapsed);

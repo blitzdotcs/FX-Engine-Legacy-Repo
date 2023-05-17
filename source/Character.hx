@@ -203,20 +203,21 @@ class Character extends FlxSprite
 				frames = tex;
 				animation.addByPrefix('idle', 'Tankman Idle Dance instance', 24);
 				animation.addByPrefix('singUP', 'Tankman UP note instance', 24);
-				animation.addByPrefix('singRIGHT', 'Tankman Note Left instance', 24);
+				animation.addByPrefix('singLEFT', 'Tankman Right Note instance', 24);
 				animation.addByPrefix('singDOWN', 'Tankman DOWN note instance', 24);
-				animation.addByPrefix('singLEFT', 'Tankman  Right Note instance', 24);
-				animation.addByPrefix('singUPalt', 'TANKMAN UGH instance', 24);
-				animation.addByPrefix('singDOWNalt', 'PRETTY GOOD tankman instance', 24);
-				playAnim('idle');
+				animation.addByPrefix('singRIGHT', 'Tankman Note Left instance', 24);
+				animation.addByPrefix('tankmangood', 'PRETTY GOOD tankman instance', 24);
+				animation.addByPrefix('ughAnim', 'TANKMAN UGH instance', 24);
 
-				addOffset("idle", 0, -243);
-				addOffset("singUP", 0, -243);
-				addOffset("singRIGHT", 0, -243);
-				addOffset("singLEFT", 0, -243);
-				addOffset("singDOWN", 0, -243);
-				addOffset("singUPalt", 0. -243);
-				addOffset("singDOWNalt", 0, -243);
+				addOffset("idle", 1, -48);
+				addOffset("singUP", 40, -13);
+				addOffset("singRIGHT", 90, -111);
+				addOffset("singLEFT", 0, -83);
+				addOffset("singDOWN", 90, -174);
+				addOffset("tankmangood", 100, -34); 
+				addOffset("ughAnim", -10, -63); 
+
+				playAnim('idle');
 
 				flipX = true;
 			case 'picoSpeaker':
@@ -644,6 +645,28 @@ class Character extends FlxSprite
 			switch (curCharacter)
 			{
 				case 'gf':
+					if (!animation.curAnim.name.startsWith('hair'))
+					{
+						danced = !danced;
+
+						if (danced)
+							playAnim('danceRight');
+						else
+							playAnim('danceLeft');
+					}
+
+				case 'twohotgirls':
+					if (!animation.curAnim.name.startsWith('hair'))
+					{
+						danced = !danced;
+
+						if (danced)
+							playAnim('danceRight');
+						else
+							playAnim('danceLeft');
+					}
+
+				case 'bentover':
 					if (!animation.curAnim.name.startsWith('hair'))
 					{
 						danced = !danced;
