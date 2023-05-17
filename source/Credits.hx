@@ -60,7 +60,7 @@ class Credits extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In Freeplay mode", null);
+		DiscordClient.changePresence("Checking out the credits!", null);
 		#end
 
 		var isDebug:Bool = false;
