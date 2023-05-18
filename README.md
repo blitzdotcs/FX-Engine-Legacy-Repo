@@ -1,6 +1,6 @@
 # FX Engine
 
-This is the repository for FX Engine. A modification of a game originally made for Ludum Dare 47 "Stuck In a Loop".
+This is the repository for FX Engine. A modification of a game that was originally made for Ludum Dare 47 "Stuck In a Loop".
 
 # NOTE
 
@@ -16,13 +16,13 @@ This is the repository for FX Engine. A modification of a game originally made f
 - Icon bopping!
 - Custom Credits Menu
 - Downscroll
-- Psych Engine Icon Support (for credits and freeplay only, when I tried it for the in-game stuff the game kept crashing)
+- Psych Engine Icon Support (for credits and freeplay only, when I tried it for the in-game stuff, the game kept crashing)
 - Ingame Options Menu (Check the pause menu)
 - A game crasher (In the options menu)
 
 # Bugs
 
-- Going into charting menu and selecting any different character crashes the game.
+- Going into charting menu and selecting any different character crashes the game. (Probs something to do with the Character.hx file lolz)
 
 # FX Engine Credits
 
@@ -33,7 +33,7 @@ This is the repository for FX Engine. A modification of a game originally made f
 ## Installing the Required Programs
 
 First, you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep updated with that setup (which is pretty simple). 
-1. [Install Haxe 4.1.5](https://haxe.org/download/version/4.1.5/) (Download 4.1.5 instead of 4.2.0 because 4.2.0 is broken and is not working with gits properly...)
+1. [Install Haxe 4.1.5](https://haxe.org/download/version/4.1.5/) (Any ver should work but I prefer 4.1.5)
 2. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) after downloading Haxe
 
 Other installations you'd need are the additional libraries, a fully updated list will be in `Project.xml` in the project root. Currently, these are all of the things you need to install:
