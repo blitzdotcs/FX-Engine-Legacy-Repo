@@ -15,6 +15,7 @@ This is the repository for FX Engine. A modification of a game originally made f
 - W.i.p. Character Selection! Press 6 while in-game. (Doesn't fully work yet sadly but it's progress!)
 - Icon bopping!
 - Custom Credits Menu
+- Downscroll
 - Psych Engine Icon Support (for credits and freeplay only, when I tried it for the in-game stuff the game kept crashing)
 - Ingame Options Menu (Check the pause menu)
 - A game crasher (In the options menu)
