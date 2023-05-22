@@ -1,8 +1,5 @@
 package;
 
-#if desktop
-import Discord.DiscordClient;
-#end
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -35,11 +32,6 @@ class MainMenuState extends MusicBeatState
 	
 	override function create()
 	{
-		#if desktop
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("MainMenuState.hx Moment!!", null);
-		#end
-
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 		
@@ -220,10 +212,6 @@ class MainMenuState extends MusicBeatState
 		if (FlxG.keys.justPressed.SEVEN)
 		{
 			FlxG.switchState(new ExtrasState());
-
-			#if cpp
-			DiscordClient.changePresence("In the secret songs menu", null, null, true);
-			#end
 		}
 
 		super.update(elapsed);

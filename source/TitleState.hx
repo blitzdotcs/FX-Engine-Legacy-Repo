@@ -4,10 +4,6 @@ import haxe.Json;
 import openfl.filters.ShaderFilter;
 import flixel.FlxCamera;
 import Controls.KeyboardScheme;
-#if windows
-import Discord.DiscordClient;
-import sys.thread.Thread;
-#end
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -107,14 +103,6 @@ class TitleState extends MusicBeatState
 		{
 			startIntro();
 		});
-		#end
-
-		#if windows
-		DiscordClient.initialize();
-		
-		Application.current.onExit.add (function (exitCode) {
-			DiscordClient.shutdown();
-		 });
 		#end
 	}
 

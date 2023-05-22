@@ -1,8 +1,5 @@
 package;
 
-#if windows
-import Discord.DiscordClient;
-#end
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
@@ -80,11 +77,6 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
-		#if desktop
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In StoryMenuState.hx", null);
-		#end
-
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
@@ -100,15 +92,6 @@ class StoryMenuState extends MusicBeatState
 		{
 			swagColors.push(FlxColor.fromString(daColorFile[i]));
 		}
-
-//		if (FlxG.keys.justPressed.SEVEN)
-//		{
-//			FlxG.switchState(new ChartingState());
-//
-//			#if desktop
-//			DiscordClient.changePresence("In Character Selection Screen!", null, null, true);
-//			#end
-//		}
 
 		persistentUpdate = persistentDraw = true;
 
@@ -140,11 +123,6 @@ class StoryMenuState extends MusicBeatState
 		add(grpLocks);
 
 		trace("Line 70");
-		
-		#if windows
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Story Mode", null);
-		#end
 
 		for (i in 0...weekData.length)
 		{

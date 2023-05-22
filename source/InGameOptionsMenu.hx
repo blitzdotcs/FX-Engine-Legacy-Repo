@@ -1,5 +1,6 @@
 package;
 
+
 import Controls.KeyboardScheme;
 import Controls.Control;
 import flash.text.TextField;
@@ -13,7 +14,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 
-class InGameOptionsMenu extends MusicBeatState
+class OptionsMenu extends MusicBeatState
 {
 	var selector:FlxText;
 	var curSelected:Int = 0;
@@ -25,7 +26,7 @@ class InGameOptionsMenu extends MusicBeatState
 	override function create()
 	{
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.zxnm ? 'ZXNM' : 'WASD') + "\nCrash Game");
+		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.mobilecontrols ? 'Custom Controls') + "\n" + (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll') + "\n" + "\nCrash Game");
 		
 		trace(controlsStrings);
 
@@ -54,6 +55,10 @@ class InGameOptionsMenu extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
+		#if mobileC
+		addVirtualPad(UP_DOWN, A_B);
+		#end
+
 		super.create();
 	}
 
@@ -62,7 +67,7 @@ class InGameOptionsMenu extends MusicBeatState
 		super.update(elapsed);
 
 			if (controls.BACK)
-				FlxG.switchState(new PlayState());
+				FlxG.switchState(new MainMenuState());
 			if (controls.UP_P)
 				changeSelection(-1);
 			if (controls.DOWN_P)
@@ -88,15 +93,20 @@ class InGameOptionsMenu extends MusicBeatState
 				switch(curSelected)
 				{
 					case 0:
-						FlxG.save.data.zxnm = !FlxG.save.data.zxnm;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.zxnm ? 'ZXNM' : 'WASD'), true, false);
+						FlxG.save.data.mobilecontrols = !FlxG.save.data.mobilecontrols;
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.mobilecontrols ? 'Custom Controls'));
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected;
 						grpControls.add(ctrl);
-						if (FlxG.save.data.zxnm)
-							controls.setKeyboardScheme(KeyboardScheme.Solo, true);
-						else
-							controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
+						FlxG.switchState(new options.CustomControlsState());
+
+					case 1:
+						FlxG.save.data.downscroll = !FlxG.save.data.downscroll;
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll'), true, false);
+						ctrl.isMenuItem = true;
+						ctrl.targetY = curSelected - 2;
+						grpControls.add(ctrl);
+
 				}
 			}
 	}

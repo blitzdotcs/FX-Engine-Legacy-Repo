@@ -8,9 +8,6 @@ import haxe.Constraints.Function;
 import MP4Handler;
 import Controls;
 import PlayState;
-#if desktop
-import Discord.DiscordClient;
-#end
 
 class VideoState extends MusicBeatState {
 	public var path:String;
@@ -38,11 +35,6 @@ class VideoState extends MusicBeatState {
 	
 	override function create() {
 		super.create();
-		
-		#if desktop
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In Cutscene", null);
-		#end
 
 		player = new MP4Handler();
 		player.playMP4(path);
