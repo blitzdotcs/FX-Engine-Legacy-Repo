@@ -46,7 +46,6 @@ jobs:
           mkdir -p "%HAXELIB_ROOT%"
           haxelib setup "%HAXELIB_ROOT%"
           haxelib install lime 7.9.0
-          RefreshEnv
           haxelib install openfl
           haxelib --never install flixel 4.11.0
           haxelib run lime setup flixel
