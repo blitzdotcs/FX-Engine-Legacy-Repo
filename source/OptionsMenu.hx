@@ -100,7 +100,7 @@ class OptionsMenu extends MusicBeatState
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected;
 						grpControls.add(ctrl);
-						FlxG.switchState(new options.CustomControlsState());
+						FlxG.switchState(new CustomControlsState());
 
 					case 1:
 						FlxG.save.data.downscroll = !FlxG.save.data.downscroll;
