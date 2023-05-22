@@ -28,7 +28,7 @@ class OptionsMenu extends MusicBeatState
 	override function create()
 	{
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.zxnm ? 'ZXNM' : 'WASD') + "\n" + (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll') + "\n" + (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP') + "\nCrash Game");
+		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.mobilecontrols ? 'Custom Controls') + "\n" + (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll') + "\n" + (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP') + "\nCrash Game");
 		
 		trace(controlsStrings);
 
@@ -56,6 +56,10 @@ class OptionsMenu extends MusicBeatState
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
+
+		#if mobileC
+		addVirtualPad(UP_DOWN, A_B);
+		#end
 
 		super.create();
 	}
@@ -91,15 +95,12 @@ class OptionsMenu extends MusicBeatState
 				switch(curSelected)
 				{
 					case 0:
-						FlxG.save.data.zxnm = !FlxG.save.data.zxnm;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.zxnm ? 'ZXNM' : 'WASD'), true, false);
+						FlxG.save.data.mobilecontrols = !FlxG.save.data.mobilecontrols;
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.mobilecontrols ? 'Custom Controls'));
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected;
 						grpControls.add(ctrl);
-						if (FlxG.save.data.zxnm)
-							controls.setKeyboardScheme(KeyboardScheme.Solo, true);
-						else
-							controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
+						FlxG.switchState(new options.CustomControlsState());
 
 					case 1:
 						FlxG.save.data.downscroll = !FlxG.save.data.downscroll;

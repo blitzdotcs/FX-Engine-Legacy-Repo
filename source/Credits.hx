@@ -174,6 +174,13 @@ class Credits extends MusicBeatState
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
 
+		#if android
+		if (FlxG.android.justReleased.BACK)
+		{
+			FlxG.switchState(new OptionsMenu());
+		}
+		#end
+
 		Conductor.songPosition = FlxG.sound.music.time;
 
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.4));

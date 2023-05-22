@@ -27,6 +27,10 @@ class OutdatedSubState extends MusicBeatState
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();
 		add(txt);
+
+		#if mobileC
+		addVirtualPad(NONE, A_B);
+		#end	
 	}
 
 	override function update(elapsed:Float)

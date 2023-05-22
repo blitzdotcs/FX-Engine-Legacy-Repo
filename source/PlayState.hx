@@ -46,6 +46,7 @@ import lime.utils.Assets;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
+import ui.Mobilecontrols;
 
 using StringTools;
 
@@ -109,6 +110,9 @@ class PlayState extends MusicBeatState
 	private var iconP2:HealthIcon;
 	private var camHUD:FlxCamera;
 	private var camGame:FlxCamera;
+	#if mobileC
+	var mcontrols:Mobilecontrols; 
+	#end
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 
@@ -885,6 +889,30 @@ class PlayState extends MusicBeatState
 		botplayTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
+		#if mobileC
+			mcontrols = new Mobilecontrols();
+			switch (mcontrols.mode)
+			{
+				case VIRTUALPAD_RIGHT | VIRTUALPAD_LEFT | VIRTUALPAD_CUSTOM:
+					controls.setVirtualPad(mcontrols._virtualPad, FULL, NONE);
+				case HITBOX:
+					controls.setHitBox(mcontrols._hitbox);
+				default:
+			}
+			trackedinputs = controls.trackedinputs;
+			controls.trackedinputs = [];
+
+			var camcontrol = new FlxCamera();
+			FlxG.cameras.add(camcontrol);
+			camcontrol.bgColor.alpha = 0;
+			mcontrols.cameras = [camcontrol];
+
+			mcontrols.visible = false;
+
+			add(mcontrols);
+		#end
+
+
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
 		// UI_camera.zoom = 1;
@@ -1036,6 +1064,11 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
+
+		#if mobileC
+		mcontrols.visible = true;
+		#end
+
 		inCutscene = false;
 
 		generateStaticArrows(0);
@@ -1902,6 +1935,11 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
+
+		#if mobileC
+		mcontrols.visible = false;
+		#end
+
 		deathCounter = 0;
 
 		canPause = false;
@@ -2200,26 +2238,45 @@ class PlayState extends MusicBeatState
 
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit)
+				if (daNote.isSustainNote && daNote.canBeHit && daNote.mustPress && holdArray[daNote.noteData])
+				goodNoteHit(daNote);
+			    });
+			}
+
+			// PRESSES, check for note hits
+			if (pressArray.contains(true) && /*!boyfriend.stunned && */ generatedMusic)
+			{
+				boyfriend.holdTimer = 0;
+
+				var possibleNotes:Array<Note> = []; // notes that can be hit
+				var directionList:Array<Int> = []; // directions that can be hit
+				var dumbNotes:Array<Note> = []; // notes to kill later
+				var directionsAccounted:Array<Bool> = [false,false,false,false]; // we don't want to do judgments for more than one presses
+
+				notes.forEachAlive(function(daNote:Note)
 				{
-					if (!directionsAccounted[daNote.noteData])
-					{
-						if (directionList.contains(daNote.noteData))
-						{
-							directionsAccounted[daNote.noteData] = true;
-							for (coolNote in possibleNotes)
-							{
-								if (coolNote.noteData == daNote.noteData && Math.abs(daNote.strumTime - coolNote.strumTime) < 10)
-								{ // if it's the same note twice at < 10ms distance, just delete it
-									// EXCEPT u cant delete it in this loop cuz it fucks with the collection lol
-									dumbNotes.push(daNote);
-									break;
-								}
-								else if (coolNote.noteData == daNote.noteData && daNote.strumTime < coolNote.strumTime)
-								{ // if daNote is earlier than existing note (coolNote), replace
-									possibleNotes.remove(coolNote);
-									possibleNotes.push(daNote);
-									break;
+					if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit)
+				    {
+					    if (!directionsAccounted[daNote.noteData])
+					    {
+						    if (directionList.contains(daNote.noteData))
+						    {
+							    directionsAccounted[daNote.noteData] = true;
+							    for (coolNote in possibleNotes)
+							    {
+								    if (coolNote.noteData == daNote.noteData && Math.abs(daNote.strumTime - coolNote.strumTime) < 10)
+								    { 
+										// if it's the same note twice at < 10ms distance, just delete it
+									    // EXCEPT u cant delete it in this loop cuz it fucks with the collection lol
+									    dumbNotes.push(daNote);
+									    break;
+								    }
+								    else if (coolNote.noteData == daNote.noteData && daNote.strumTime < coolNote.strumTime)
+								    { 
+										// if daNote is earlier than existing note (coolNote), replace
+									    possibleNotes.remove(coolNote);
+									    possibleNotes.push(daNote);
+									    break;
 								}
 							}
 						}
