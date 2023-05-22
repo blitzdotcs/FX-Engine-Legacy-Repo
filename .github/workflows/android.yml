@@ -61,7 +61,6 @@ jobs:
           haxelib install actuate 
           haxelib install hxCodec
           haxelib git extension-webm https://github.com/luckydog7/extension-webm
-          lime rebuild extension-webm windows
           haxelib install actuate 
           haxelib list
           haxelib run lime build android
