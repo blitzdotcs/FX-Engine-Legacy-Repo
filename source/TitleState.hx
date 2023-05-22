@@ -75,12 +75,6 @@ class TitleState extends MusicBeatState
 			FlxG.save.data.zxnm = false;
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
-
-
-		if(FlxG.save.data.mods == null)
-			FlxG.save.data.mods = [];
-
-		reloadMods();		
 		
 		Highscore.load();
 
