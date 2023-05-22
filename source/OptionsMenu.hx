@@ -28,7 +28,7 @@ class OptionsMenu extends MusicBeatState
 	override function create()
 	{
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.mobilecontrols ? 'Custom Controls' : '') + "\n" + (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll') + "\n" + (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP') + "\nCrash Game");
+		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.mobilecontrols ? 'Custom Controls' : 'Custom Controls') + "\n" + (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll') + "\n" + (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP') + "\nCrash Game");
 		
 		trace(controlsStrings);
 
@@ -96,7 +96,7 @@ class OptionsMenu extends MusicBeatState
 				{
 					case 0:
 						FlxG.save.data.mobilecontrols = !FlxG.save.data.mobilecontrols;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.mobilecontrols ? 'Custom Controls' : ''));
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.mobilecontrols ? 'Custom Controls' : 'Custom Controls'));
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected;
 						grpControls.add(ctrl);

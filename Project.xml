@@ -28,7 +28,7 @@
 
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false"/>
-	<define name="mobileC" if="mobile" />
+	<define name="mobileC" if="android" />
 	<assets path="assets/shared/images/hitbox"/>
 
 	<!--Switch-specific-->
