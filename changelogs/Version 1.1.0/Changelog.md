@@ -2,7 +2,7 @@
 
 # What's new
 
-* ANDROID BUILD!! (Untested since my phone is broken and Nox Player is laggy lol)
+* ANDROID BUILD!! (Untested since my phone is broken and Nox Player is laggy lol) Check 1.1.0 Release page, it's on there.
 
 * Fixed Tankman's offsets fully
 
