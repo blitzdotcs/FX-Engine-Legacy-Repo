@@ -696,18 +696,7 @@ class PlayState extends MusicBeatState
 				gfVersion = 'gf-pixel';
 			case 'schoolEvil':
 				gfVersion = 'gf-pixel';
-			case 'tank':
-				gfVersion = 'gf-tankmen';	
 		}
-
-        // STILL A WORK IN PROGRESS LOLZ
-		/*
-		switch(Paths.formatToSongPath(SONG.song))
-		{
-			case 'stress':
-				gfVersion = 'pico-speaker';
-		}
-		*/
 
 		if (curStage == 'limo')
 			gfVersion = 'gf-car';
