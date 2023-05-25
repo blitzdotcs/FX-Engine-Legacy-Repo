@@ -809,6 +809,9 @@ class PlayState extends MusicBeatState
 		if (FlxG.save.data.downscroll)
 			strumLine.y = FlxG.height - 165;
 
+		if (FlxG.save.data.midscroll)
+			strumLine.y = FlxG.height / 2 - strumLine.height / 2;
+
 		strumLineNotes = new FlxTypedGroup<FlxSprite>();
 		add(strumLineNotes);
 
@@ -1190,11 +1193,6 @@ class PlayState extends MusicBeatState
 		noteData = songData.notes;
 
 		var playerCounter:Int = 0;
-
-	    if (FlxG.save.data.midscroll)
-	    {
-		    //Do the uhh middle scroll shit
-	    }
 
 		var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
 		for (section in noteData)

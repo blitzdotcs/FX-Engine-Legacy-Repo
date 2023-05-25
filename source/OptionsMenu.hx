@@ -28,7 +28,7 @@ class OptionsMenu extends MusicBeatState
 	override function create()
 	{
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.zxnm ? 'ZXNM' : 'WASD') + "\n" + (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll') + "\n" + (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP') + "\nCrash Game");
+		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.zxnm ? 'ZXNM' : 'WASD') + "\n" + (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll') + "\n" + (FlxG.save.data.midscroll ? 'MiddleScroll' : 'RegScroll') + "\n" + (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP') + "\nCrash Game");
 		
 		trace(controlsStrings);
 
@@ -109,6 +109,13 @@ class OptionsMenu extends MusicBeatState
 						grpControls.add(ctrl);
 
 					case 2:
+						FlxG.save.data.midscroll = !FlxG.save.data.midscroll;
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.midscroll ? 'MiddleScroll' : 'RegScroll'), true, false);
+						ctrl.isMenuItem = true;
+						ctrl.targetY = curSelected - 2;
+						grpControls.add(ctrl);
+
+					case 3:
                         FlxG.save.data.iconbops = !FlxG.save.data.iconbops;
                         var iconbopsCtrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP'), true, false);
                         iconbopsCtrl.isMenuItem = true;
