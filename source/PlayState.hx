@@ -6,6 +6,9 @@ import shaders.VHSShader;
 #if cpp
 import Discord.DiscordClient;
 #end
+#if desktop
+import hxcodec.VideoHandler;
+#end
 import Section.SwagSection;
 import Song.SwagSong;
 import WiggleEffect.WiggleEffectType;
@@ -227,6 +230,18 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('roses/rosesDialogue'));
 			case 'thorns':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
+		}
+
+		switch (curSong.toLowerCase())
+		{
+		  case 'ugh':
+			playCutscene('ughCutscene.mp4');
+		  case 'guns':
+			playCutscene('gunsCutscene.mp4');
+			case 'stress':
+				playCutscene('stressCutscene.mp4');	
+		  default:
+			startCountdown();
 		}
 
 		#if deesktop
@@ -948,6 +963,30 @@ class PlayState extends MusicBeatState
 		}
 
 		super.create();
+	}
+
+	function playCutscene(name:String, atEndOfSong:Bool = false)
+	{
+		inCutscene = true;
+		FlxG.sound.music.stop();
+		
+		var video:VideoHandler = new VideoHandler();
+		video.finishCallback = function()
+		{
+		    if (atEndOfSong)
+			{
+			    if (storyPlaylist.length <= 0)
+				FlxG.switchState(new StoryMenuState());
+			    else
+			    {
+				    SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
+				    FlxG.switchState(new PlayState());
+			    }
+			}
+			else
+			startCountdown();
+		}
+		  video.playVideo(Paths.video(name));
 	}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
@@ -1972,6 +2011,10 @@ class PlayState extends MusicBeatState
 
 				switch(curSong.toLowerCase())
 				{
+					case 'ugh':
+						playCutscene('gunsCutscene.mp4', true);
+					case 'guns':
+						playCutscene('stressCutscene.mp4', true);
 					default: 
 						LoadingState.loadAndSwitchState(new PlayState());		
 			    }
