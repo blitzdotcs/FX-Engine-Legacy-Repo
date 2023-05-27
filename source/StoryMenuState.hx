@@ -30,14 +30,14 @@ class StoryMenuState extends MusicBeatState
 		['Satin-Panties', "High", "Milf"],
 		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
 		['Senpai', 'Roses', 'Thorns'],
-		['Ugh', 'Guns', 'Stress'],
+		['Ugh', 'Guns', 'Stress']
 	];
 	var curDifficulty:Int = 1;
 
 	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true];
 
 	var weekCharacters:Array<Dynamic> = [
-		['gf', 'bf', ''],
+		['dad', 'bf', 'gf'],
 		['dad', 'bf', 'gf'],
 		['spooky', 'bf', 'gf'],
 		['pico', 'bf', 'gf'],
@@ -80,7 +80,7 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
-		#if desktop
+		#if cpp
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In StoryMenuState.hx", null);
 		#end
@@ -103,9 +103,9 @@ class StoryMenuState extends MusicBeatState
 
 //		if (FlxG.keys.justPressed.SEVEN)
 //		{
-//			FlxG.switchState(new ChartingState());
+//			FlxG.switchState(new CharacterSelectState());
 //
-//			#if desktop
+//			#if cpp
 //			DiscordClient.changePresence("In Character Selection Screen!", null, null, true);
 //			#end
 //		}
