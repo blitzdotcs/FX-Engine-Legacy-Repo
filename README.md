@@ -6,6 +6,8 @@ This is the repository for FX Engine. A modification of a game that was original
 
 * I AM NOT IN THE FNF COMMUNITY I'M JUST CONTINUING THIS TO LEARN MORE ABOUT HAXE.
 
+* THE ANDROID PORT WILL NOT BE UPDATED ALL THE TIME SINCE IT'S A DAMN HASSLE TO GET IT TO BUILD!
+
 # Features of FX Engine
 
 - Ghost Tapping
