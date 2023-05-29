@@ -1,5 +1,6 @@
 package;
 
+import haxe.Http;
 import haxe.Json;
 import openfl.filters.ShaderFilter;
 import flixel.FlxCamera;
@@ -62,7 +63,7 @@ class TitleState extends MusicBeatState
 	{
 		
 		#if polymod
-mod_dirs = FlxG.save.data.mods;
+        mod_dirs = FlxG.save.data.mods;
 
 		var new_dirs:Array<String> = [];
 
@@ -85,12 +86,14 @@ mod_dirs = FlxG.save.data.mods;
 				assetLibraryPaths: [
 					"songs" => "songs",
 					"shared" => "shared",
+					"preload" => "preload",
 					"week1" => "week1",
 					"week2" => "week2",
 					"week3" => "week3",
 					"week4" => "week4",
 					"week5" => "week5",
-					"week6" => "week6"
+					"week6" => "week6",
+					"week7" => "week7"
 				]
 			}
 		});		
@@ -351,7 +354,7 @@ mod_dirs = FlxG.save.data.mods;
 			transitioning = true;
 			// FlxG.sound.music.stop();
 
-			new FlxTimer().start(0.25, function(tmr:FlxTimer)
+			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				// Check if version is outdated
 
