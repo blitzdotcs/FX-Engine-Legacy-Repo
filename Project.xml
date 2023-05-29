@@ -50,9 +50,6 @@
 	<!-- FX ENGINE CUSTOMIZATION -->
 	<define name="CRASH_HANDLER" if="desktop" />
 
-	<assets path="mods" embed="false" exclude="*.ogg" if="web" />
-	<assets path="mods" embed="false" exclude="*.mp3" unless="web" />
-
 	<library name="videos"        preload="true" />
 	<section if="PRELOAD_ALL">
 		<library name="songs"    preload="true" />
@@ -102,7 +99,13 @@
 	<assets path="assets/week7"    library="week7"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week7"    library="week7"    exclude="*.mp3" unless="web"/>
 
-	<assets path='art/readme.txt' rename='do NOT readme.txt' />	
+	<!-- <assets path='example_mods' rename='mods' embed='false'/> -->
+
+	<template path="example_mods" rename="mods" />
+
+	<assets path='art/readme.txt' rename='do NOT readme.txt' />
+	<!-- <template path='mods' /> -->
+	
 	<assets path="CHANGELOG.md" rename='changelog.txt'/>
 
 	<!-- NOTE FOR FUTURE SELF SINCE FONTS ARE ALWAYS FUCKY 
