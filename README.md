@@ -24,9 +24,13 @@ This is the repository for FX Engine. A modification of a game that was original
 
 - Going into charting menu and selecting any different character crashes the game. (Probs something to do with the Character.hx file lolz)
 
-# FX Engine Credits
+# FX Engine Main Credits
 
-- [TyDev](https://twitter.com/TyDev_) - The whole engine
+- LOOK IN THE CREDITS MENU DORK
+
+# FX Engine Extra Credits
+
+* Eddsworld Team - You'll see :)
 
 ### Build instructions
 

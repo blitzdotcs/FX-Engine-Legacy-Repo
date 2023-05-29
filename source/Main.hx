@@ -88,14 +88,11 @@ class Main extends Sprite
 		addChild(new Mem(10, 3, 0xFFFFFF));
 		#end
 
-		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
-		#end
 	}
 
 	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", which psych uses so big props to both of them!!!
 	// very cool people for real they don't get enough credit for their work
-	#if CRASH_HANDLER
 	function onCrash(e:UncaughtErrorEvent):Void
 	{
 		var errMsg:String = "";
@@ -130,6 +127,4 @@ class Main extends Sprite
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 		Sys.exit(1);
 	}
-	#end
-
 }

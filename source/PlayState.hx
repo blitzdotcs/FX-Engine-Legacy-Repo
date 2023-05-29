@@ -47,6 +47,7 @@ import lime.utils.Assets;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
+import hxcodec.VideoHandler;
 
 using StringTools;
 
@@ -843,6 +844,20 @@ class PlayState extends MusicBeatState
 
 		generateSong(SONG.song);
 
+		switch (curSong.toLowerCase())
+		{
+		  case 'ugh':
+			playCutscene('ughCutscene.mp4');
+		  case 'guns':
+				playCutscene('gunsCutscene.mp4');
+		  case 'stress':
+					playCutscene('stressCutscene.mp4');		
+		  case 'theend-two':
+		            playCutscene('secrets/theendpt2.mp4');													
+		  default:
+			startCountdown();
+		}
+
 		// add(strumLine);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -971,6 +986,30 @@ class PlayState extends MusicBeatState
 		}
 
 		super.create();
+	}
+
+	function playCutscene(name:String, atEndOfSong:Bool = false)
+	{
+		inCutscene = true;
+		FlxG.sound.music.stop();
+	
+		var video:VideoHandler = new VideoHandler();
+		video.finishCallback = function()
+		{
+			if (atEndOfSong)
+			{
+			  if (storyPlaylist.length <= 0)
+				FlxG.switchState(new StoryMenuState());
+			  else
+			  {
+				SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
+				FlxG.switchState(new PlayState());
+			  }
+			}
+			else
+			  startCountdown();
+		}
+		video.playVideo(Paths.video(name));
 	}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
@@ -1207,8 +1246,6 @@ class PlayState extends MusicBeatState
 					// String for when the game is paused
 					detailsPausedText = "Paused on " + detailsText;
 	
-				DiscordClient.changePresence(detailsText, "Version " + Application.current.meta.get('version'), 
-					iconRPC);
 				updateLoop();
 			}, 5000);
 			#end
@@ -2019,6 +2056,14 @@ class PlayState extends MusicBeatState
 
 				switch(curSong.toLowerCase())
 				{
+					case 'ugh':
+						playCutscene('ughCutscene.mp4', true);
+					case 'guns':
+						playCutscene('gunsCutscene.mp4', true);
+					case 'stress':
+						playCutscene('stressCutscene.mp4', true);
+			        case 'theend-two':
+						playCutscene('secrets/theendpt2.mp4');								
 					default: 
 						LoadingState.loadAndSwitchState(new PlayState());		
 			    }

@@ -54,6 +54,8 @@ class TitleState extends MusicBeatState
 
 	var wackyImage:FlxSprite;
 
+	public static var updateVersion:String = '';
+
 	public static var mod_dirs:Array<String> = [];
 
 	public static function reloadMods()
@@ -117,7 +119,7 @@ mod_dirs = FlxG.save.data.mods;
 		if (FlxG.save.data.zxnm == null)
 			FlxG.save.data.zxnm = false;
 
-		FlxG.save.bind('funkin', 'ninjamuffin99');
+		FlxG.save.bind('fxengine', 'tydevx');
 
 
 		if(FlxG.save.data.mods == null)
