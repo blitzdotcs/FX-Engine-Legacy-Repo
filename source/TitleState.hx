@@ -117,7 +117,7 @@ mod_dirs = FlxG.save.data.mods;
 		if (FlxG.save.data.zxnm == null)
 			FlxG.save.data.zxnm = false;
 
-		FlxG.save.bind('fxengine', 'tydev');
+		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 
 		if(FlxG.save.data.mods == null)
