@@ -108,7 +108,7 @@ class Paths
 
 	inline static public function video(key:String)
 	{
-		return 'assets/videos/$key';
+		  return 'assets/videos/$key';
 	}
 
 	inline static public function font(key:String)

@@ -1207,8 +1207,6 @@ class PlayState extends MusicBeatState
 					// String for when the game is paused
 					detailsPausedText = "Paused on " + detailsText;
 	
-				DiscordClient.changePresence(detailsText, "Version " + Application.current.meta.get('version'), 
-					iconRPC);
 				updateLoop();
 			}, 5000);
 			#end

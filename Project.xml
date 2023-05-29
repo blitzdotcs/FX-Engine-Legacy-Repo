@@ -101,10 +101,9 @@
 
 	<!-- <assets path='example_mods' rename='mods' embed='false'/> -->
 
-	<template path="example_mods" rename="mods" />
+	<assets path="mods" if="desktop" />
 
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
-	<!-- <template path='mods' /> -->
 	
 	<assets path="CHANGELOG.md" rename='changelog.txt'/>
 
