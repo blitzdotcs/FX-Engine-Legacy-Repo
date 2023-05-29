@@ -1,5 +1,6 @@
 package;
 
+import haxe.Timer;
 import shaders.ScanlineShader;
 import shaders.ChromaticAbberationShader.ChromaticAberrationShader;
 import shaders.VHSShader;
@@ -143,6 +144,8 @@ class PlayState extends MusicBeatState
 	var misses:Int = 0;
 	var scoreTxt:FlxText;
 
+	var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
+
 	public static var practiceMode:Bool = false;
 
 	public static var campaignScore:Int = 0;
@@ -189,6 +192,14 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD);
 
+		// fake notesplash cache type deal so that it loads in the graphic?
+
+		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
+
+		var noteSplash:NoteSplash = new NoteSplash(100, 100, 0);
+		grpNoteSplashes.add(noteSplash);
+		noteSplash.alpha = 0.1;
+
 		FlxCamera.defaultCameras = [camGame];
 
 		persistentUpdate = true;
@@ -229,7 +240,7 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 		}
 
-		#if deesktop
+		#if desktop
 		// Making difficulty text for Discord Rich Presence.
 		switch (storyDifficulty)
 		{
@@ -241,11 +252,14 @@ class PlayState extends MusicBeatState
 				storyDifficultyText = "Hard";
 		}
 
+		storyDifficultyText = CoolUtil.difficultyString();
 		iconRPC = SONG.player2;
 
 		// To avoid having duplicate images in Discord assets
 		switch (iconRPC)
 		{
+			case 'bf-old':
+				iconRPC = 'bf';
 			case 'senpai-angry':
 				iconRPC = 'senpai';
 			case 'monster-christmas':
@@ -261,14 +275,23 @@ class PlayState extends MusicBeatState
 		}
 		else
 		{
-			detailsText = "Freeplay";
+			detailsText = "Freeplay Mode!";
 		}
 
 		// String for when the game is paused
-		detailsPausedText = "Paused - " + detailsText;
+		detailsPausedText = "Paused on " + detailsText;
 		
 		// Updating Discord Rich Presence.
-		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+		DiscordClient.changePresence(detailsText
+			+ " "
+			+ SONG.song
+			+ " ("
+			+ storyDifficultyText
+			+ ") "
+			+ "% | Score: "
+			+ songScore		
+			+ " | Misses: "
+			+ misses, iconRPC);		
 		#end
 
 		switch (SONG.song.toLowerCase())
@@ -809,11 +832,10 @@ class PlayState extends MusicBeatState
 		if (FlxG.save.data.downscroll)
 			strumLine.y = FlxG.height - 165;
 
-		if (FlxG.save.data.midscroll)
-			strumLine.y = FlxG.height / 2 - strumLine.height / 2;
-
 		strumLineNotes = new FlxTypedGroup<FlxSprite>();
 		add(strumLineNotes);
+
+		add(grpNoteSplashes);
 
 		playerStrums = new FlxTypedGroup<FlxSprite>();
 
@@ -878,6 +900,7 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
+		grpNoteSplashes.cameras = [camHUD];
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
@@ -1163,8 +1186,33 @@ class PlayState extends MusicBeatState
 
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength);
+		updateLoop();
 		#end
 	}
+
+	function updateLoop()
+		{
+			#if desktop
+			var timer = Timer.delay(function()
+			{
+				if (isStoryMode)
+					{
+						detailsText = "Story Mode: " + SONG.song;
+					}
+					else
+					{
+						detailsText = "Free Play: " + SONG.song;
+					}
+	
+					// String for when the game is paused
+					detailsPausedText = "Paused on " + detailsText;
+	
+				DiscordClient.changePresence(detailsText, "Version " + Application.current.meta.get('version'), 
+					iconRPC);
+				updateLoop();
+			}, 5000);
+			#end
+		}
 
 	var debugNum:Int = 0;
 
@@ -1366,6 +1414,13 @@ class PlayState extends MusicBeatState
 			babyArrow.x += 50;
 			babyArrow.x += ((FlxG.width / 2) * player);
 
+			if (FlxG.save.data.midscroll) {
+				babyArrow.x -= 275;
+				if (player != 1) {
+					babyArrow.visible = false;
+				}
+			}
+
 			strumLineNotes.add(babyArrow);
 		}
 	}
@@ -1405,15 +1460,9 @@ class PlayState extends MusicBeatState
 				startTimer.active = true;
 			paused = false;
 
-			#if cpp
+			#if desktop
 			if (startTimer.finished)
-			{
 				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength - Conductor.songPosition);
-			}
-			else
-			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
-			}
 			#end
 		}
 
@@ -1428,10 +1477,6 @@ class PlayState extends MusicBeatState
 			if (Conductor.songPosition > 0.0)
 			{
 				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength - Conductor.songPosition);
-			}
-			else
-			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 			}
 		}
 		#end
@@ -1468,10 +1513,10 @@ class PlayState extends MusicBeatState
 			+ storyDifficultyText
 			+ ") "
 			+ "% | Score: "
-			+ songScore
+			+ songScore		
 			+ " | Misses: "
-			+ misses, iconRPC);
-		#end		
+			+ misses, iconRPC);		
+		#end
 	}
 
 	private var paused:Bool = false;
@@ -1549,8 +1594,10 @@ class PlayState extends MusicBeatState
 				boyfriendPos.put();
 			}
 
-			#if discord_rpc
-			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+			var detailsPausedText = "Paused on " + SONG.song;
+
+			#if desktop
+			detailsPausedText = "Paused - " + detailsText + " " + SONG.song + " "  + songScore;
 			#end
 		}
 
@@ -1987,7 +2034,7 @@ class PlayState extends MusicBeatState
 
 	var endingSong:Bool = false;
 
-	private function popUpScore(strumtime:Float):Void
+	private function popUpScore(strumtime:Float, daNote:Note):Void
 	{
 		var noteDiff:Float = Math.abs(strumtime - Conductor.songPosition);
 		// boyfriend.playAnim('hey');
@@ -2005,20 +2052,33 @@ class PlayState extends MusicBeatState
 
 		var daRating:String = "sick";
 
+		var isSick:Bool = true;
+
 		if (noteDiff > Conductor.safeZoneOffset * 0.9)
 		{
 			daRating = 'shit';
 			score = 50;
+			isSick = false;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
 		{
 			daRating = 'bad';
 			score = 100;
+			isSick = false;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
 		{
 			daRating = 'good';
 			score = 200;
+			isSick = false;
+		}
+
+		if (isSick)
+		{
+			var noteSplash:NoteSplash = new NoteSplash(daNote.x, daNote.y, daNote.noteData);
+			add(noteSplash);
+
+			noteSplash.cameras = [camHUD];			
 		}
 
 		songScore += score;
@@ -2424,7 +2484,7 @@ class PlayState extends MusicBeatState
 		{
 			if (!note.isSustainNote)
 			{
-				popUpScore(note.strumTime);
+				popUpScore(note.strumTime, note);
 				combo += 1;
 			}
 
