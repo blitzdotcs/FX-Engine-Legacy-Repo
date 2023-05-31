@@ -20,10 +20,6 @@ This is the repository for FX Engine. A modification of a game that was original
 - Ingame Options Menu (Check the pause menu)
 - A game crasher (In the options menu)
 
-# Bugs
-
-- Going into charting menu and selecting any different character crashes the game. (Probs something to do with the Character.hx file lolz)
-
 # FX Engine Main Credits
 
 - LOOK IN THE CREDITS MENU DORK
