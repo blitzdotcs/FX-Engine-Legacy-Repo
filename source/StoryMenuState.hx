@@ -37,7 +37,7 @@ class StoryMenuState extends MusicBeatState
 	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true];
 
 	var weekCharacters:Array<Dynamic> = [
-		['dad', 'bf', 'gf'],
+		['gf', 'bf'],
 		['dad', 'bf', 'gf'],
 		['spooky', 'bf', 'gf'],
 		['pico', 'bf', 'gf'],
@@ -48,7 +48,7 @@ class StoryMenuState extends MusicBeatState
 	];
 
 	var weekNames:Array<String> = [
-		"",
+		"HOW 2 RAP",
 		"Daddy Dearest",
 		"Spooky Month",
 		"PICO",
@@ -140,11 +140,6 @@ class StoryMenuState extends MusicBeatState
 		add(grpLocks);
 
 		trace("Line 70");
-		
-		#if windows
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Story Mode", null);
-		#end
 
 		for (i in 0...weekData.length)
 		{
@@ -449,6 +444,9 @@ class StoryMenuState extends MusicBeatState
 
 			case 'dad':
 				grpWeekCharacters.members[0].offset.set(120, 200);
+				grpWeekCharacters.members[0].setGraphicSize(Std.int(grpWeekCharacters.members[0].width * 1));
+			case 'tankman':
+				grpWeekCharacters.members[0].offset.set(60, -20);
 				grpWeekCharacters.members[0].setGraphicSize(Std.int(grpWeekCharacters.members[0].width * 1));
 
 			default:

@@ -2695,7 +2695,7 @@ class PlayState extends MusicBeatState
 		super.beatHit();
 		if (curSong.toLowerCase() == 'ugh' && curStep == 70)
 		{
-			dad.playAnim('ugh', true);
+			dad.playAnim('ughAnim', true);
 		}
 
 		if (generatedMusic)

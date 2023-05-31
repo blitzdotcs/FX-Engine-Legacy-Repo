@@ -14,6 +14,14 @@ import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 
 import haxe.io.Path;
+#if desktop
+import openfl.events.UncaughtErrorEvent;
+import polymod.Polymod;
+import sys.FileSystem;
+import sys.io.File;
+#end
+
+using StringTools;
 
 class LoadingState extends MusicBeatState
 {
