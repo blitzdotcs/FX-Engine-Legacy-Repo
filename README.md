@@ -6,6 +6,10 @@ This is the repository for FX Engine. A modification of a game that was original
 
 * I AM NOT IN THE FNF COMMUNITY I'M JUST CONTINUING THIS TO LEARN MORE ABOUT HAXE.
 
+# Links
+
+* [Gamebanana Page](https://gamebanana.com/mods/447020)
+
 # Features of FX Engine
 
 - Ghost Tapping
