@@ -49,6 +49,7 @@
 
 	<!-- FX ENGINE CUSTOMIZATION -->
 	<define name="CRASH_HANDLER" if="desktop" />
+	<define name="MODDING_ENABLED" if="desktop" />
 
 	<assets path="mods" embed="false" exclude="*.ogg" if="web" />
 	<assets path="mods" embed="false" exclude="*.mp3" unless="web" />
@@ -126,6 +127,7 @@
 	<haxelib name="polymod"/>
 	<haxelib name="discord_rpc" if="windows"/>
 	<haxelib name="hxCodec" if="desktop || android" />
+	<haxelib name="linc_luajit"/>
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
 	<!-- <haxelib name="markdown" /> -->

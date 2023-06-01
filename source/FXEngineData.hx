@@ -18,6 +18,12 @@ class FXEngineData
         if (FlxG.save.data.iconbops == null)
             FlxG.save.data.iconbops = false;     
 
+        if (FlxG.save.data.quaverbar == null)
+            FlxG.save.data.quaverbar = false; 
+
+        if (FlxG.save.data.icons == null)
+            FlxG.save.data.icons = false; 
+
         if (FlxG.save.data.songPosition == null)
             FlxG.save.data.songPosition = false;
     }
