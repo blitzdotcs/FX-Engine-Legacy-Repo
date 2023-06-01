@@ -168,12 +168,6 @@ class FreeplayState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-
-		if (FlxG.keys.justPressed.ONE)
-		{
-			FlxG.switchState(new ErectFreeplayState());
-		}
-
 		super.update(elapsed);
 
 		if (FlxG.sound.music.volume < 0.7)

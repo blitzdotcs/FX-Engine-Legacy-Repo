@@ -1,3 +1,0 @@
-Bopeebo:dad:1:0xFFCB87E8:100
-Dadbattle:dad:1:0xFFCB87E8:180
-South:spooky:2:0xFFB4B4B4:165
