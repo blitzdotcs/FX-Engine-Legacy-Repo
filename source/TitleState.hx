@@ -124,6 +124,7 @@ class TitleState extends MusicBeatState
 
 		FlxG.save.bind('fxengine', 'tydevx');
 
+		FXEngineData.initSave();
 
 		if(FlxG.save.data.mods == null)
 			FlxG.save.data.mods = [];
