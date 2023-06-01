@@ -19,7 +19,7 @@ import iconshits.FreePlayIcon;
 
 using StringTools;
 
-class FreeplayState extends MusicBeatState
+class ErectFreeplayState extends MusicBeatState
 {
 	var songs:Array<SongMetadata> = [];
 	var songColors:Array<FlxColor> = [];
@@ -38,7 +38,6 @@ class FreeplayState extends MusicBeatState
 
 	private var iconArray:Array<FreePlayIcon> = [];
 
-
 	var colorTween:FlxTween;
 	var daColor:FlxColor;
 
@@ -46,7 +45,7 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+		var initSonglist = CoolUtil.coolTextFile(Paths.txt('erectSonglist'));
 
 		for (i in 0...initSonglist.length)
 		{
@@ -61,7 +60,7 @@ class FreeplayState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In Freeplay mode", null);
+		DiscordClient.changePresence("In Erect Freeplay mode", null);
 		#end
 
 		var isDebug:Bool = false;
@@ -168,12 +167,6 @@ class FreeplayState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-
-		if (FlxG.keys.justPressed.ONE)
-		{
-			FlxG.switchState(new ErectFreeplayState());
-		}
-
 		super.update(elapsed);
 
 		if (FlxG.sound.music.volume < 0.7)
