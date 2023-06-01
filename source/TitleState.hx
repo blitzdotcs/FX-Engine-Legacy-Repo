@@ -34,6 +34,9 @@ import lime.app.Application;
 import openfl.Assets;
 
 import shaders.ColorSwapShader;
+#if sys
+import sys.io.File;
+#end
 
 using StringTools;
 
@@ -128,7 +131,7 @@ class TitleState extends MusicBeatState
 			FlxG.save.data.zxnm = false;
 
 		FlxG.save.bind('fxengine', 'tydevx');
-
+		
 		FXEngineData.initSave();
 
 		if(FlxG.save.data.mods == null)

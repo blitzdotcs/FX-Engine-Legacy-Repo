@@ -4,6 +4,9 @@ import Section.SwagSection;
 import haxe.Json;
 import haxe.format.JsonParser;
 import lime.utils.Assets;
+#if sys
+import sys.io.File;
+#end
 
 using StringTools;
 
@@ -38,9 +41,18 @@ class Song
 		this.bpm = bpm;
 	}
 
-	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
+	public static function loadFromJson(jsonInput:String, ?folder:String, customSong:Bool = false, customFolder:String = ''):SwagSong
 	{
-		var rawJson = Assets.getText(Paths.json(folder.toLowerCase() + '/' + jsonInput.toLowerCase())).trim();
+		var rawJson:Dynamic;
+		#if sys
+		if(customSong) {
+			trace(('mods/weeks/${customFolder}/' + folder.toLowerCase() + '/' + jsonInput.toLowerCase() + '.json'));
+			rawJson = File.getContent('mods/weeks/${customFolder}/' + folder.toLowerCase() + '/' + jsonInput.toLowerCase() + '.json');
+		} else {
+		    rawJson = File.getContent('assets/data/' + folder.toLowerCase() + '/' + jsonInput.toLowerCase() + '.json');		}
+		#else
+		rawJson = Assets.getText(Paths.json(folder.toLowerCase() + '/' + jsonInput.toLowerCase())).trim();
+        #end
 
 		while (!rawJson.endsWith("}"))
 		{
