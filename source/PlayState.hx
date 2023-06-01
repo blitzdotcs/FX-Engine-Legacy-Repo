@@ -1273,12 +1273,18 @@ class PlayState extends MusicBeatState
 		remove(songPosBar);
 		remove(songName);
 
+		songPosBG = new FlxSprite(0, strumLine.y - 15).loadGraphic(Paths.image('healthBar'));
+		if (FlxG.save.data.downscroll)
+			songPosBG.y = FlxG.height * 0.9 + 45; 
+		songPosBG.screenCenter(X);
+		songPosBG.scrollFactor.set();
+		add(songPosBG);
+
 		if (curStage.contains("school") && FlxG.save.data.downscroll)
 			songPosBG.y -= 45;
 
 		songPosBar = new FlxBar(songPosBG.x + 4, songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 8), Std.int(songPosBG.height - 8), this,
-			'songPositionBar', 0, songLength - 1000);
-		songPosBar.numDivisions = 1000;	
+			'songPositionBar', 0, 90000);
 		songPosBar.scrollFactor.set();
 		songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
 		add(songPosBar);
@@ -2288,6 +2294,7 @@ class PlayState extends MusicBeatState
 		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
 		comboSpr.screenCenter();
 		comboSpr.x = coolText.x;
+		comboSpr.y += 200;
 		comboSpr.acceleration.y = 600;
 		comboSpr.velocity.y -= 150;
 
@@ -2322,7 +2329,7 @@ class PlayState extends MusicBeatState
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
 			numScore.screenCenter();
 			numScore.x = coolText.x + (43 * daLoop) - 90;
-			numScore.y += 80;
+			numScore.y += 80 + 200;
 
 			if (!curStage.startsWith('school'))
 			{
