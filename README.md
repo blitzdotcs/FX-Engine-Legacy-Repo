@@ -42,27 +42,11 @@ This is the repository for FX Engine. A modification of a game that was original
 First, you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep updated with that setup (which is pretty simple). 
 1. [Install Haxe 4.1.5](https://haxe.org/download/version/4.1.5/) (Any ver should work but I prefer 4.1.5)
 2. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) after downloading Haxe
+3. Open up a Command Prompt/PowerShell or Terminal, type `haxelib install hmm`
+4. After it finishes, simply type `haxelib run hmm install` in order to install all the needed libraries for *Psych Engine!*
 
-Other installations you'd need are the additional libraries, a fully updated list will be in `Project.xml` in the project root. Currently, these are all of the things you need to install:
-```
-flixel 4.11.0
-flixel-addons 2.11.0
-openfl
-flixel-ui
-hscript
-actuate
-hxCodec
-lime 7.9.0
-```
-So for each of those type `haxelib install [library]` so shit like `haxelib install newgrounds`
-
-You'll also need to install a couple things that involve Gits. To do this, you need to do a few things first.
-1. Download [git-scm](https://git-scm.com/downloads). Works for Windows, Mac, and Linux, just select your build.
-2. Follow instructions to install the application properly.
-3. Run `haxelib git polymod https://github.com/larsiusprime/polymod.git` to install Polymod.
-4. Run `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc` to install Discord RPC.
-5. Run `haxelib git extension-webm https://github.com/KadeDev/extension-webm` to install extension-webm
-6. After that run `lime rebuild extension-webm <ie. windows, macos, linux>`
+# Thingy for extension-webm video support
+1. After that run `lime rebuild extension-webm <ie. windows, macos, linux>`
 
 You should have everything ready for compiling the game! Follow the guide below to continue!
 
