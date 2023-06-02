@@ -47,29 +47,9 @@ class FreeplayState extends MusicBeatState
 
 	var bg:FlxSprite;
 
-	var songFolders:Array<String> = [];
-
 	override function create()
 	{
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
-
-		#if sys
-		var fullDirs:Array<String> = ModLoader.getFreeplayFolders();
-		for(i in 0...initSonglist.length)
-		{
-			songFolders.push('');
-		}
-		for(i in 0...fullDirs.length)
-		{
-			songFolders.push(fullDirs[i]);
-		}
-
-		var customTracks:Array<String> = ModLoader.getFreeplaySongs();
-		for(i in 0...customTracks.length)
-		{
-			songBPM.push(Std.parseInt(customTracks[i]));
-		}
-		#end
 
 		for (i in 0...initSonglist.length)
 		{

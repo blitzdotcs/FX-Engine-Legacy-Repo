@@ -59,8 +59,6 @@ class PlayState extends MusicBeatState
 	public static var isStoryMode:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
-	public static var isCustomWeek:Bool = false;
-	public static var sourceFolder:String = '';	
 	public static var storyDifficulty:Int = 1;
 	public static var deathCounter:Int = 0;
 	public static var changedDifficulty:Bool = false;
@@ -194,7 +192,6 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
-		#if !sys isCustomWeek = false; #end
 		Script.onCreate();
 
 		if (FlxG.sound.music != null)
@@ -1049,7 +1046,7 @@ class PlayState extends MusicBeatState
 				FlxG.switchState(new StoryMenuState());
 			  else
 			  {
-				SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase(), storyPlaylist[0].toLowerCase(), isCustomWeek, sourceFolder);
+				SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
 				FlxG.switchState(new PlayState());
 			  }
 			}
@@ -1262,11 +1259,7 @@ class PlayState extends MusicBeatState
 		lastReportedPlayheadPosition = 0;
 
 		if (!paused)
-			if(!isCustomWeek) {
-			    FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
-			} else {
-				FlxG.sound.playMusic("mods/weeks/" + sourceFolder + '/' + SONG.song.toLowerCase(), 1, false);
-			}				
+			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
 		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
 
@@ -1341,16 +1334,10 @@ class PlayState extends MusicBeatState
 
 		curSong = songData.song;
 
-		if (SONG.needsVoices) {
-			if(!isCustomWeek) {
-			    vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
-			} else {
-				vocals = new FlxSound().loadEmbedded("mods/weeks/" + sourceFolder + '/' + SONG.song.toLowerCase());
-			}
-		}
-		else {
+		if (SONG.needsVoices)
+			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
+		else
 			vocals = new FlxSound();
-		}	
 
 		FlxG.sound.list.add(vocals);
 
@@ -2204,7 +2191,7 @@ class PlayState extends MusicBeatState
 				FlxTransitionableState.skipNextTransOut = true;
 				prevCamFollow = camFollow;
 
-				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0], isCustomWeek, sourceFolder);
+				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 				FlxG.sound.music.stop();
 
 				switch(curSong.toLowerCase())

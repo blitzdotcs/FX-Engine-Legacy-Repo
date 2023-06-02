@@ -1,1 +1,0 @@
-Just uhh look at the mods folder and like just extract the shit there, kinda like Psych 0.4.2 lmao.
