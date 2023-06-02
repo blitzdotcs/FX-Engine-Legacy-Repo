@@ -2,6 +2,6 @@
 
 * A mod handler for FX Engine (using a custom thingy!!).
 
-* Almost finished so uhh yeah, just gotta fix songs not going ingame lol.
+* This is still a work in progress so don't expect anything to work fully.
 
 * [How to use](https://github.com/TyDevX/FX-Engine/blob/master/docs/Modding.md)

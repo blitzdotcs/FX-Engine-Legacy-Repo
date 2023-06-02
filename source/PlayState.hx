@@ -1740,8 +1740,7 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.SEVEN)
 		{
 			FlxG.switchState(new ChartingState());
-			inCutscene = false;
-			
+
 			#if cpp
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
