@@ -10,6 +10,8 @@
 
 * Better StoryMenu character implementation (thanks kadedev!!)
 
+* Fixed Week 6! (The fucking icon was crashing the game.)
+
 * W.i.p. song positon bar (thanks again kadedev!!)
 
 * Being able to show or hide icons
@@ -17,7 +19,3 @@
 * Mod chart support (thanks again kadedev!)
 
 * Somewhat better Discord RPC Support (again)
-
-# Bugs
-
-* Uhh none atm (besides week 6 still being broken)
