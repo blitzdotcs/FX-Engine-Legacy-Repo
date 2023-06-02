@@ -172,6 +172,8 @@ class PlayState extends MusicBeatState
 
 	var defaultCamZoom:Float = 1.05;
 
+	var canDie:Bool = true;
+
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
 	public static var vhsShader:VHSShader;
@@ -1740,7 +1742,7 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.SEVEN)
 		{
 			FlxG.switchState(new ChartingState());
-
+			canDie = false;
 			#if cpp
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
@@ -1923,7 +1925,7 @@ class PlayState extends MusicBeatState
 			trace("User is cheating!");
 		}
 
-		if (health <= 0 && !practiceMode)
+		if (health <= 0 && !practiceMode && canDie)
 		{
 			Script.onPlayerDeath();
 
