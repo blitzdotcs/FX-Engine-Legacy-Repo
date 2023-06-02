@@ -40,7 +40,7 @@ This is the repository for FX Engine. A modification of a game that was original
 ## Installing the Required Programs
 
 First, you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep updated with that setup (which is pretty simple). 
-1. [Install Haxe 4.1.5](https://haxe.org/download/version/4.1.5/) (Any ver should work but I prefer 4.1.5)
+1. [Install Haxe 4.2.0](https://haxe.org/download/version/4.2.0/) (Any ver should work but I use 4.2.0)
 2. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) after downloading Haxe
 3. Open up a Command Prompt/PowerShell or Terminal, type `haxelib install hmm`
 4. After it finishes, simply type `haxelib run hmm install` in order to install all the needed libraries for *Psych Engine!*
