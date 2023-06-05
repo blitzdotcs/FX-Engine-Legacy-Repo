@@ -29,11 +29,7 @@ This is the repository for FX Engine. A modification of a game that was original
 
 # FX Engine Main Credits
 
-- LOOK IN THE CREDITS MENU DORK
-
-# FX Engine Extra Credits
-
-* Eddsworld Team - You'll see :)
+- LOOK IN THE CREDITS MENU DORK!1
 
 ### Build instructions
 

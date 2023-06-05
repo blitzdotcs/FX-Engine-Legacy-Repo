@@ -1,3 +1,2 @@
 uss:bf:0:0xFFC75B8E
-theend-two:bf:0:0xFFC75B8E
 sprite-test:bf:0:0xFFC75B8E

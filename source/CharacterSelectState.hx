@@ -26,7 +26,7 @@ typedef CharacterMenu = {
 
 class CharacterSelectState extends MusicBeatState
 {
-    var menuItems:Array<String> = ['bf', 'pico', 'tankman'];
+    var menuItems:Array<String> = ['bf', 'pico'];
     var curSelected:Int = 0;
     var txtDescription:FlxText;
     var shitCharacter:FlxSprite;
@@ -220,10 +220,7 @@ class CharacterSelectState extends MusicBeatState
                         menuBG.color = 0x87ceeb;
                     case "pico":
                         menuBG.loadGraphic('BG1');
-				        menuBG.color = 0xFF00FF;
-					case "tankman":
-						menuBG.loadGraphic('BG');
-						menuBG.color = 0xFFFFFF;	
+				        menuBG.color = 0xFF00FF;	
                     default:
                         menuBG.loadGraphic('BG');
 				        menuBG.color = 0xFFFFFF;
