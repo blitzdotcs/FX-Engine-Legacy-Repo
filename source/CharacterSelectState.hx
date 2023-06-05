@@ -1,141 +1,257 @@
 package;
 
-import flixel.FlxSprite;
-import flixel.text.FlxBitmapText;
+import Section.SwagSection;
+import Song.SwagSong;
 import flixel.FlxG;
-import flixel.util.FlxColor;
+import flixel.FlxSprite;
+import flixel.addons.display.FlxGridOverlay;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
 import flixel.text.FlxText;
-import flixel.addons.transition.FlxTransitionableState;
+import flixel.util.FlxColor;
+import flixel.effects.FlxFlicker;
 import flixel.util.FlxTimer;
-import flixel.graphics.frames.FlxAtlasFrames;
+import lime.utils.Assets;
+import haxe.Json;
+import Boyfriend.Boyfriend;
+import Character.Character;
+import HealthIcon.HealthIcon;
+import flixel.ui.FlxBar;
+
+typedef CharacterMenu = {
+    var name:String;
+    var characterName:String;
+    var portrait:String;
+}
 
 class CharacterSelectState extends MusicBeatState
 {
-    // default char is bf
-    var playableChar:Int = 0;
-    var selectedChar:String = 'bf';
-    var char:Int = 0;
+    var menuItems:Array<String> = ['bf', 'pico', 'tankman'];
+    var curSelected:Int = 0;
+    var txtDescription:FlxText;
+    var shitCharacter:FlxSprite;
+	var shitCharacterBetter:Boyfriend;
+    var icon:HealthIcon;
+    var menuBG:FlxSprite;
+    public var tagertY:Float = 0;
+    var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
+    public static var characterShit:Array<CharacterMenu>;
 
-    var charList:Array<String> = ["bf"];
-    var charNameList:Array<String> = ["BOYFRIEND"];
+    private var grpMenu:FlxTypedGroup<Alphabet>;
+    private var grpMenuImage:FlxTypedGroup<FlxSprite>;
+    var alreadySelected:Bool = false;
+    var doesntExist:Bool = false;
+    private var iconArray:Array<Boyfriend> = [];
 
-    var bg:FlxSprite;
-    var danceey:Character;
-    var nameTxt:FlxText;
+    var names:Array<String> = [
+        "Boyfriend",
+        "Pico's school fnf",
+		"Newgrounds fnf tankguy"
+    ];
 
-    var ui_frames:FlxAtlasFrames;
+    var txtOptionTitle:FlxText;
 
-    var leftarrow:FlxSprite;
-    var rightarrow:FlxSprite;
-
-    override public function create():Void
+    override function create() 
     {
-        bg = new FlxSprite(0, 125).makeGraphic(FlxG.width, 450, 0xFFF9CF51);
-        add(bg);
+        menuBG = new FlxSprite().loadGraphic(Paths.image('BG4'));
+        menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
+        menuBG.updateHitbox();
+        menuBG.screenCenter();
+        menuBG.antialiasing = true;
+        add(menuBG);
 
-        var titleTxt:Alphabet = new Alphabet(0, FlxG.height * 0.05, "Choose a Character", true);
-        titleTxt.screenCenter(X);
-        add(titleTxt);
+        grpMenu = new FlxTypedGroup<Alphabet>();
+        add(grpMenu);
 
-        ui_frames = Paths.getSparrowAtlas("arrows");
+        grpMenuImage = new FlxTypedGroup<FlxSprite>();
+        add(grpMenuImage);
 
-        leftarrow = new FlxSprite(FlxG.width * 0.05, 0);
-        leftarrow.frames = ui_frames;
-        leftarrow.antialiasing = true;
+        for (i in 0...menuItems.length)
+        {
+            var songText:Alphabet = new Alphabet(170, (70 * i) + 230, menuItems[i], true, false);
+            songText.isMenuItem = true;
+            songText.targetY = i;
+            grpMenu.add(songText);
+            //songText.x += 40;
+            //DON'T PUT X IN THE FIRST PARAMETER OF new ALPHABET()!
+            //songText.screenCenter(X);
+            var icon:Boyfriend = new Boyfriend(0, 0, menuItems[i]);
 
-        leftarrow.animation.addByPrefix('idle', 'left idle', 24, true);
-        leftarrow.animation.addByPrefix('press', 'left press', 24, false);
-        
-        leftarrow.animation.play('idle');
-        leftarrow.updateHitbox();
-        leftarrow.screenCenter(Y);
-        add(leftarrow);
+            icon.sprTracker = songText;
+            icon.scale.set(0.8, 0.8);
 
-        rightarrow = new FlxSprite((FlxG.width / 2) - (leftarrow.width / 2), 0);
-        rightarrow.frames = ui_frames;
-        rightarrow.antialiasing = true;
+            //Using a FlxGroup is too much fuss!
+            iconArray.push(icon);
+            add(icon);
+        }
 
-        rightarrow.animation.addByPrefix('idle', 'right idle', 24, true);
-        rightarrow.animation.addByPrefix('press', 'right press', 24, false);
-        
-        rightarrow.animation.play('idle');
-        rightarrow.updateHitbox();
-        rightarrow.screenCenter(Y);
-        add(rightarrow);
+        txtDescription = new FlxText(FlxG.width * 0.075, menuBG.y + 200, 0, "", 32);
+        txtDescription.alignment = CENTER;
+        txtDescription.setFormat("assets/fonts/vcr.ttf", 32);
+        txtDescription.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 1.5, 1);
+        txtDescription.color = FlxColor.WHITE;
+        add(txtDescription);
 
-        danceey = new Character(0, 0, charList[char]);
-        danceey.playAnim("idle");
-        add(danceey);
+        //shitCharacter = new FlxSprite(0, -20);
+        //shitCharacter.scale.set(0.45, 0.45);
+		//shitCharacter.updateHitbox();
+		//shitCharacter.screenCenter(XY);
+		//shitCharacter.antialiasing = true;
+		//shitCharacter.y += 30;
+		//add(shitCharacter);
 
-        danceey.setGraphicSize(Std.int(325));
+        var charSelHeaderText:Alphabet = new Alphabet(0, 50, 'Character Select', true, false);
+        charSelHeaderText.screenCenter(X);
+        add(charSelHeaderText);
 
-        danceey.x = (FlxG.width / 2) - (danceey.width / 2);
-        danceey.y = (FlxG.height / 2) - (danceey.height / 2);
+        txtOptionTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
+        txtOptionTitle.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, RIGHT);
+        txtOptionTitle.alpha = 0.7;
+        add(txtOptionTitle);
 
-        danceey.animation.play('bfIdle');
-        add(danceey);
+        changeSelection();
 
-        nameTxt = new FlxText(0, 125, FlxG.width, charNameList[0], 32);
-        nameTxt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
-        trace(nameTxt.x, nameTxt.y);
-        add(nameTxt);
+        cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
         super.create();
     }
 
-    function changeChar(change:Int = 0)
+    override function update(elapsed:Float) 
     {
-        char += change;
-
-        trace("change: " + change + "\n char: " + char);
-
-        FlxG.sound.play(Paths.sound('scrollMenu'));
-
-        if (char < 0) 
-            char = (charList.length - 1);
-        if (char > (charList.length - 1))
-            char = 0;
-
-        selectedChar = charList[char];
-
-        nameTxt.text = charNameList[char];
-        trace(char + 'Idle');
-        danceey.animation.play(selectedChar + 'Idle');
-    }
-    
-    override public function update(elapsed:Float)
-    {
-        super.update(elapsed);
-
-        if (controls.LEFT)
-            leftarrow.animation.play('press');
-        else
-            leftarrow.animation.play('idle');
-
-        if (controls.RIGHT)
-            rightarrow.animation.play('press');
-        else
-            rightarrow.animation.play('idle');
-
-        if (controls.RIGHT_P)
-            changeChar(1);
-        if (controls.LEFT_P)
-            changeChar(-1);
-
-		if (FlxG.keys.justPressed.ESCAPE)
-		    FlxG.switchState(new FreeplayState());
-
-        if (controls.ACCEPT)
-        {
-            FlxG.sound.play(Paths.sound('confirmMenu'));
-
-            new FlxTimer().start(1, function(tmr:FlxTimer)
+        txtOptionTitle.text = names[curSelected].toUpperCase();
+        txtOptionTitle.x = FlxG.width - (txtOptionTitle.width +10);
+        if (txtOptionTitle.text == '')
             {
-                trace(selectedChar);
-                //PlayState.selectedBf = selectedChar;
+                trace('');
+                txtOptionTitle.text = '';
+            }    
 
-                //LoadingState.loadAndSwitchState(new PlayState(), true);
-            });
+        if (iconArray[curSelected].animation.curAnim.name == 'idle' && iconArray[curSelected].animation.curAnim.finished && doesntExist)
+            iconArray[curSelected].playAnim('idle', true);
+
+        var upP = controls.LEFT_P;
+        var downP = controls.RIGHT_P;
+        var accepted = controls.ACCEPT;
+
+        if (!alreadySelected)
+        {
+            if (upP)
+                {
+                    changeSelection(-1);
+                }
+
+            if (downP)
+                {
+                    changeSelection(1);
+                }
+
+            if (accepted)
+                {
+                    alreadySelected = true;
+                    var daSelected:String = menuItems[curSelected];
+                    PlayState.hasPlayedOnce = true;
+                    if (menuItems[curSelected] != 'bf')
+                        PlayState.SONG.player1 = daSelected;
+
+                    FlxFlicker.flicker(iconArray[curSelected], 0);
+                    new FlxTimer().start(1, function(tmr:FlxTimer)
+                        {
+                            LoadingState.loadAndSwitchState(new PlayState());
+                        });
+                }
+            
+            if (controls.BACK)
+                if (PlayState.isStoryMode)
+                    FlxG.switchState(new StoryMenuState());
+                else {
+                    FlxG.switchState(new FreeplayState());
+                }
         }
+
+        super.update(elapsed);
     }
+
+    function changeSelection(change:Int = 0):Void
+        {
+            curSelected += change;
+
+            if (curSelected < 0)
+                curSelected = menuItems.length - 1;
+            if (curSelected >= menuItems.length)
+                curSelected = 0;
+
+            var otherInt:Int = 0;
+
+            for (i in 0...iconArray.length)
+                {
+                    iconArray[i].alpha = 1;
+                }
+            
+            iconArray[curSelected].alpha = 1;
+
+            for (item in grpMenu.members)
+                {
+                    item.targetY = otherInt - curSelected;
+                    otherInt++;
+
+                    item.alpha = 0;
+                    //item.setGraphicSize(Std.int(item.width * 0.8));
+
+                    if (item.targetY == 0)
+                        {
+                            // item.setGraphicSize(Std.int(item.width));
+                        }
+                }
+            
+            charCheck();
+        }
+
+        function charCheck()
+            {
+                doesntExist = false;
+                var daSelected:String = menuItems[curSelected];
+                var storedColor:FlxColor = 0xFFFFFF;
+                remove(icon);
+
+                switch (daSelected)
+                {
+                    case "bf":
+                        menuBG.loadGraphic('BG2');
+                        menuBG.color = 0x87ceeb;
+                    case "pico":
+                        menuBG.loadGraphic('BG1');
+				        menuBG.color = 0xFF00FF;
+					case "tankman":
+						menuBG.loadGraphic('BG');
+						menuBG.color = 0xFFFFFF;	
+                    default:
+                        menuBG.loadGraphic('BG');
+				        menuBG.color = 0xFFFFFF;
+                }
+
+                //shitCharacter.updateHitbox();
+		        //shitCharacter.screenCenter(XY);
+
+                doesntExist = true;
+
+                var healthBarBG:FlxSprite = new FlxSprite(0, FlxG.height * 0.9).loadGraphic('assets/shared/images/healthBar.png');
+                healthBarBG.screenCenter(X);
+		        healthBarBG.scrollFactor.set();
+		        healthBarBG.visible = false;
+		        add(healthBarBG);
+
+                var healthBar:FlxBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+                    'health', 0, 2);
+                healthBar.scrollFactor.set();
+                healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
+                healthBar.visible = false;
+                // healthBar
+                add(healthBar);
+                icon = new HealthIcon(menuItems[curSelected], true);
+                icon.y = healthBar.y - (icon.height / 2);
+                icon.screenCenter(X);
+                icon.setGraphicSize(-4);
+                icon.y -= 20;
+                add(icon); 
+            }
 }

@@ -62,10 +62,14 @@ class PlayState extends MusicBeatState
 	public static var storyDifficulty:Int = 1;
 	public static var deathCounter:Int = 0;
 	public static var changedDifficulty:Bool = false;
+	public static var selectedBF:String = 'bf';
+	public static var freeplayChar:Bool = false;
 	public static var instance:PlayState;
 
 	public static var songPosBG:FlxSprite;
 	public static var songPosBar:FlxBar;
+
+	public static var hasPlayedOnce:Bool = false;
 
 	var halloweenLevel:Bool = false;
 
@@ -782,7 +786,7 @@ class PlayState extends MusicBeatState
 				dad.y += 180;	
 		}
 
-		boyfriend = new Boyfriend(770, 450, SONG.player1);
+		boyfriend = new Boyfriend(0, 0, (!isStoryMode && freeplayChar ? selectedBF : SONG.player1));
 
 		// REPOSITIONING PER STAGE
 		switch (curStage)

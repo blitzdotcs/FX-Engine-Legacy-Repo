@@ -18,7 +18,7 @@ This is the repository for FX Engine. A modification of a game that was original
 - Choose between WASD and ZXNM!
 - Working settings menu
 - W.i.p. Modding support without source
-- W.i.p. Character Selection! Press 6 while in-game. (Doesn't fully work yet sadly but it's progress!)
+- Character Selection!
 - Icon bopping!
 - Custom Credits Menu
 - Downscroll
