@@ -896,7 +896,7 @@ class PlayState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 
-		songPosBG = new FlxSprite(0, strumLine.y - 15).loadGraphic(Paths.image('healthBar'));
+		songPosBG = new FlxSprite(0, strumLine.y - 15).loadGraphic(Paths.image('timebar'));
 		if (FlxG.save.data.downscroll)
 			songPosBG.y = FlxG.height * 0.9 + 45; 
 		songPosBG.screenCenter(X);
