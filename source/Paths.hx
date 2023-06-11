@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+import flixel.graphics.FlxGraphic;
 
 using StringTools;
 
@@ -130,4 +131,55 @@ class Paths
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 	}
+
+	inline static public function getAnimateAtlas(key:String)
+	{
+		return animate.FlxAnimate.fromAnimate(loadImage('$key/spritemap1'), file('images/$key/spritemap1.json'));
+	}
+	
+	static public function loadImage(key:String):FlxGraphic
+	{
+		var path = image(key);
+	
+		if (OpenFlAssets.exists(path))
+		{
+			var bitmap = OpenFlAssets.getBitmapData(path);
+			return FlxGraphic.fromBitmapData(bitmap);
+		}
+		else
+		{
+			trace('Could not find image at path $path');
+			return null;
+		}
+	}
+
+	static public function listSongsToCache()
+	{
+		// We need to query OpenFlAssets, not the file system, because of Polymod.
+		var soundAssets = OpenFlAssets.list(AssetType.MUSIC).concat(OpenFlAssets.list(AssetType.SOUND));
+	
+		// TODO: Maybe rework this to pull from a text file rather than scan the list of assets.
+		var songNames = [];
+	
+		for (sound in soundAssets)
+		{
+			// Parse end-to-beginning to support mods.
+			var path = sound.split('/');
+			path.reverse();
+	
+			var fileName = path[0];
+			var songName = path[1];
+	
+			if (path[2] != 'songs')
+				continue;
+	
+			// Remove duplicates.
+			if (songNames.indexOf(songName) != -1)
+				continue;
+	
+			songNames.push(songName);
+		}
+	
+		return songNames;
+	}	
 }

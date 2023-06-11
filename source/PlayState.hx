@@ -55,6 +55,12 @@ import scripting.Script;
 import sys.FileSystem;
 import sys.io.File;
 #end
+import video.*;
+import CutsceneCharacter;
+#if MODS_ALLOWED
+//import modding.PolymodHandler;
+import polymod.fs.SysFileSystem;
+#end
 
 using StringTools;
 
@@ -71,6 +77,7 @@ class PlayState extends MusicBeatState
 	public static var selectedBF:String = 'bf';
 	public static var freeplayChar:Bool = false;
 	public static var instance:PlayState;
+	public static var seenCutscene:Bool = false;
 
 	public static var songPosBG:FlxSprite;
 	public static var songPosBar:FlxBar;
@@ -1012,9 +1019,12 @@ class PlayState extends MusicBeatState
 					schoolIntro(doof);
 				case 'thorns':
 					schoolIntro(doof);
+				case 'ugh':
+					ughIntro();
 				default:
 					startCountdown();
 			}
+			seenCutscene = true;
 		}
 		else
 		{
@@ -1028,45 +1038,70 @@ class PlayState extends MusicBeatState
 		super.create();
 	}
 
-	public function startVideo(name:String)
+	function ughIntro():Void
+	{
+		inCutscene = true;
+	
+		// D
+		FlxG.camera.zoom = defaultCamZoom * 1.2;
+	
+		FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
+		FlxG.sound.music.fadeIn(5, 0, 0.5);
+	
+		dad.visible = false;
+		var tankCutscene:CutsceneCharacter = new CutsceneCharacter(-20, 320, 'tightBars');
+		tankCutscene.antialiasing = true;
+		tankCutscene.playingAnim = true;
+		gfCutsceneLayer.add(tankCutscene);
+	
+		camHUD.visible = false;
+	
+		FlxG.camera.zoom *= 1.2;
+		camFollow.y += 100;
+
+		tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('week7/wellWellWell')); // eduardo
+	
+		new FlxTimer().start(3, function(tmr:FlxTimer)
 		{
-			#if desktop
-			inCutscene = true;
+			camFollow.x += 800;
+			camFollow.y += 100;
+			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.27, {ease: FlxEase.quadInOut});
 	
-			var filepath:String = Paths.video(name);
-			#if sys
-			if(!FileSystem.exists(filepath))
-			#else
-			if(!OpenFlAssets.exists(filepath))
-			#end
+			new FlxTimer().start(1.5, function(bep:FlxTimer)
 			{
-				FlxG.log.warn('Couldnt find video file: ' + name);
-				startAndEnd();
-				return;
-			}
+				boyfriend.playAnim('singUP');
+				// Play Sound.
+				FlxG.sound.play(Paths.sound('week7/bfBeep'), function()
+				{
+					boyfriend.playAnim('idle');
+				});
+			});
 	
-			var video:MP4Handler = new MP4Handler();
-			video.playVideo(filepath);
-			video.finishCallback = function()
+			new FlxTimer().start(3, function(swaggy:FlxTimer)
 			{
-				startAndEnd();
-				return;
-			}
-			#else
-			FlxG.log.warn('Erm not a desktop platform');
-			startAndEnd();
-			return;
-			#end
-		}
-
-		function startAndEnd()
-			{
-				if(endingSong)
-					endSong();
-				else
+				camFollow.x -= 800;
+				camFollow.y -= 100;
+				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.5, {ease: FlxEase.quadInOut});
+				FlxG.sound.play(Paths.sound('week7/killYou'));
+				new FlxTimer().start(6.1, function(swagasdga:FlxTimer)
+				{
+					FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
+	
+					FlxG.sound.music.fadeOut((Conductor.crochet / 1000) * 5, 0);
+	
+					new FlxTimer().start((Conductor.crochet / 1000) * 5, function(money:FlxTimer)
+					{
+						dad.visible = true;
+						gfCutsceneLayer.remove(tankCutscene);
+					});
+	
 					startCountdown();
-			}
-
+					camHUD.visible = true;
+				});
+			});
+		});
+	}
+	
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);

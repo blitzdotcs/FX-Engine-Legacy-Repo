@@ -59,11 +59,7 @@ class Menu extends MusicBeatState
 			switch (daSelected)
 			{
 				case "Mods":
-                    #if debug
-					FlxG.switchState(new modding.ModMenuSubstate());
-                    #else
-                    FlxG.switchState(new MainMenuState());
-                    #end
+                     FlxG.switchState(new modding.ModsMenuState());
 				case "exit":
 					FlxG.switchState(new MainMenuState());
 			}
@@ -82,8 +78,6 @@ class Menu extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
 		curSelected += change;
 
 		if (curSelected < 0)

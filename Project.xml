@@ -49,7 +49,9 @@
 
 	<!-- FX ENGINE CUSTOMIZATION -->
 	<define name="CRASH_HANDLER" if="desktop" />
-	<define name="MODDING_ENABLED" if="desktop" />
+	<define name="MODS_ALLOWED" if="desktop" />
+	<define name="VIDEOS_ALLOWED" if="desktop" />
+	<define name="WEBM_ENABLED" if="android" /> <!-- Set to android for now bc idek if this works -->
 
 	<assets path="mods" embed="false" exclude="*.ogg" if="web" />
 	<assets path="mods" embed="false" exclude="*.mp3" unless="web" />
@@ -124,7 +126,7 @@
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
 	<haxelib name="faxe" if='switch'/>
-	<haxelib name="polymod"/>
+	<haxelib name= "polymod-enigma" rename="polymod" if="desktop" /> <!-- USE https://github.com/EnigmaEngine/polymod -->
 	<haxelib name="discord_rpc" if="windows"/>
 	<haxelib name="hxCodec" if="desktop || android" />
 	<haxelib name="linc_luajit"/>

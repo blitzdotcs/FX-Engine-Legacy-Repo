@@ -1,2 +1,0 @@
-Run:dad:1:0xFFCB87E8:190
-Bloodshed:dad:1:0xFFCB87E8:150
