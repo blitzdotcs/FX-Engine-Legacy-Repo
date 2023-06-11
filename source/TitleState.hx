@@ -128,7 +128,7 @@ class TitleState extends MusicBeatState
 		if (FlxG.save.data.zxnm == null)
 			FlxG.save.data.zxnm = false;
 
-		FlxG.save.bind('fxengine', 'tydevx');
+		FlxG.save.bind('fxengine', 'tydev');
 
 		FXEngineData.initSave();
 
@@ -141,7 +141,7 @@ class TitleState extends MusicBeatState
 
 		colorShader = new ColorSwapEffect();
 
-		engine.EngineData.initSave();
+		FXEngineData.initSave();
 		controls.setKeyboardScheme(KeyboardScheme.Solo);
 		trace("WASD sucks lmfao.");	
 		

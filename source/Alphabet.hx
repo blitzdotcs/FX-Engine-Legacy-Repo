@@ -6,8 +6,12 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
+import flixel.group.FlxGroup;
 
 using StringTools;
+
+// Fucking mod menu
+typedef AlphabetGroup = FlxTypedGroup<Alphabet>;
 
 /**
  * Loosley based on FlxTypeText lolol
@@ -39,6 +43,11 @@ class Alphabet extends FlxSpriteGroup
 	var splitWords:Array<String> = [];
 
 	var isBold:Bool = false;
+
+	// Dikehnbawls
+	public var menuItem:Bool = false;
+	public var groupIndex:Float = 0;
+
 
 	public function new(x:Float, y:Float, text:String = "", ?bold:Bool = false, typed:Bool = false)
 	{
@@ -227,6 +236,20 @@ class Alphabet extends FlxSpriteGroup
 			y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.48), 0.16);
 			x = FlxMath.lerp(x, (targetY * 20) + 90, 0.16);
 		}
+
+		if (menuItem) {
+			var lerpSpeed:Float = FXEngineData.framerateAdjust(0.16);
+			var scrollX:Float = FlxMath.lerp(x, (groupIndex * 20) + 90, lerpSpeed);
+			var remappedY:Float = FlxMath.remapToRange(groupIndex, 0, 1, 0, 1.3);
+			var scrollY:Float = FlxMath.lerp(y, (remappedY * 120) + (FlxG.height * 0.48), lerpSpeed);
+
+			x = scrollX;
+			y = scrollY;
+		}
+
+		// auto inactivity to prevent memory usage spikes when loading multiple members
+		for (i in 0...members.length)
+			members[i].active = groupIndex > -5 || groupIndex < 5;
 
 		super.update(elapsed);
 	}

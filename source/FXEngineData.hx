@@ -27,4 +27,10 @@ class FXEngineData
         if (FlxG.save.data.songPosition == null)
             FlxG.save.data.songPosition = false;
     }
+
+	@:keep public static inline function framerateAdjust(input:Float):Float 
+    {
+		return FlxG.elapsed * 60 * input;
+	}
+
 }

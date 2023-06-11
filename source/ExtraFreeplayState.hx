@@ -19,7 +19,7 @@ import iconshits.FreePlayIcon;
 
 using StringTools;
 
-class ExtrasState extends MusicBeatState
+class ExtraFreeplayState extends MusicBeatState
 {
 	var songs:Array<ExtraMetadata> = [];
 	var songColors:Array<FlxColor> = [];

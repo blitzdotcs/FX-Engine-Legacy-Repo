@@ -51,7 +51,10 @@ import openfl.filters.ShaderFilter;
 #elseif (hxCodec == "2.6.0") import VideoHandler as MP4Handler;
 #else import vlc.MP4Handler; #end
 import scripting.Script;
-import DialogueBoxPsych;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 using StringTools;
 
@@ -836,11 +839,6 @@ class PlayState extends MusicBeatState
 		add(dad);
 		add(boyfriend);
 
-		var file:String = Paths.json(songName + '/dialogue'); //Checks for json/Psych Engine dialogue
-		if (OpenFlAssets.exists(file)) {
-			dialogueJson = DialogueBoxPsych.parseDialogue(file);
-		}
-
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
 		// doof.x += 70;
 		// doof.y = FlxG.height * 0.5;
@@ -866,20 +864,6 @@ class PlayState extends MusicBeatState
 		// startCountdown();
 
 		generateSong(SONG.song);
-
-		switch (curSong.toLowerCase())
-		{
-		  case 'ugh':
-			playCutscene('ughCutscene.mp4');
-		  case 'guns':
-				playCutscene('gunsCutscene.mp4');
-		  case 'stress':
-					playCutscene('stressCutscene.mp4');		
-		  case 'theend-two':
-		            playCutscene('secrets/theendpt2.mp4');													
-		  default:
-			startCountdown();
-		}
 
 		// add(strumLine);
 
@@ -1075,44 +1059,13 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-	var dialogueCount:Int = 0;
-	public var psychDialogue:DialogueBoxPsych;
-	//You don't have to add a song, just saying. You can just do "startDialogue(dialogueJson);" and it should work
-	public function startDialogue(dialogueFile:DialogueFile, ?song:String = null):Void
-	{
-		// TO DO: Make this more flexible, maybe?
-		if(psychDialogue != null) return;
-
-		if(dialogueFile.dialogue.length > 0) {
-			inCutscene = true;
-			precacheList.set('dialogue', 'sound');
-			precacheList.set('dialogueClose', 'sound');
-			psychDialogue = new DialogueBoxPsych(dialogueFile, song);
-			psychDialogue.scrollFactor.set();
-			if(endingSong) {
-				psychDialogue.finishThing = function() {
-					psychDialogue = null;
+		function startAndEnd()
+			{
+				if(endingSong)
 					endSong();
-				}
-			} else {
-				psychDialogue.finishThing = function() {
-					psychDialogue = null;
+				else
 					startCountdown();
-				}
 			}
-			psychDialogue.nextDialogueThing = startNextDialogue;
-			psychDialogue.skipDialogueThing = skipDialogue;
-			psychDialogue.cameras = [camHUD];
-			add(psychDialogue);
-		} else {
-			FlxG.log.warn('Your dialogue file is badly formatted you stunoid.');
-			if(endingSong) {
-				endSong();
-			} else {
-				startCountdown();
-			}
-		}
-	}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
@@ -2251,20 +2204,6 @@ class PlayState extends MusicBeatState
 
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 				FlxG.sound.music.stop();
-
-				switch(curSong.toLowerCase())
-				{
-					case 'ugh':
-						playCutscene('ughCutscene.mp4', true);
-					case 'guns':
-						playCutscene('gunsCutscene.mp4', true);
-					case 'stress':
-						playCutscene('stressCutscene.mp4', true);
-			        case 'theend-two':
-						playCutscene('secrets/theendpt2.mp4');								
-					default: 
-						LoadingState.loadAndSwitchState(new PlayState());		
-			    }
 			}
 		}
 		else
