@@ -47,8 +47,11 @@ import lime.utils.Assets;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
-import hxcodec.flixel.VideoHandler;
+#if (hxCodec >= "2.6.1") import hxcodec.VideoHandler as MP4Handler;
+#elseif (hxCodec == "2.6.0") import VideoHandler as MP4Handler;
+#else import vlc.MP4Handler; #end
 import scripting.Script;
+import DialogueBoxPsych;
 
 using StringTools;
 
@@ -833,6 +836,11 @@ class PlayState extends MusicBeatState
 		add(dad);
 		add(boyfriend);
 
+		var file:String = Paths.json(songName + '/dialogue'); //Checks for json/Psych Engine dialogue
+		if (OpenFlAssets.exists(file)) {
+			dialogueJson = DialogueBoxPsych.parseDialogue(file);
+		}
+
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
 		// doof.x += 70;
 		// doof.y = FlxG.height * 0.5;
@@ -1036,28 +1044,74 @@ class PlayState extends MusicBeatState
 		super.create();
 	}
 
-	function playCutscene(name:String, atEndOfSong:Bool = false)
-	{
-		inCutscene = true;
-		FlxG.sound.music.stop();
-	
-		var video:VideoHandler = new VideoHandler();
-		video.finishCallback = function()
+	public function startVideo(name:String)
 		{
-			if (atEndOfSong)
+			#if desktop
+			inCutscene = true;
+	
+			var filepath:String = Paths.video(name);
+			#if sys
+			if(!FileSystem.exists(filepath))
+			#else
+			if(!OpenFlAssets.exists(filepath))
+			#end
 			{
-			  if (storyPlaylist.length <= 0)
-				FlxG.switchState(new StoryMenuState());
-			  else
-			  {
-				SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
-				FlxG.switchState(new PlayState());
-			  }
+				FlxG.log.warn('Couldnt find video file: ' + name);
+				startAndEnd();
+				return;
 			}
-			else
-			  startCountdown();
+	
+			var video:MP4Handler = new MP4Handler();
+			video.playVideo(filepath);
+			video.finishCallback = function()
+			{
+				startAndEnd();
+				return;
+			}
+			#else
+			FlxG.log.warn('Erm not a desktop platform');
+			startAndEnd();
+			return;
+			#end
 		}
-		video.playVideo(Paths.video(name));
+
+	var dialogueCount:Int = 0;
+	public var psychDialogue:DialogueBoxPsych;
+	//You don't have to add a song, just saying. You can just do "startDialogue(dialogueJson);" and it should work
+	public function startDialogue(dialogueFile:DialogueFile, ?song:String = null):Void
+	{
+		// TO DO: Make this more flexible, maybe?
+		if(psychDialogue != null) return;
+
+		if(dialogueFile.dialogue.length > 0) {
+			inCutscene = true;
+			precacheList.set('dialogue', 'sound');
+			precacheList.set('dialogueClose', 'sound');
+			psychDialogue = new DialogueBoxPsych(dialogueFile, song);
+			psychDialogue.scrollFactor.set();
+			if(endingSong) {
+				psychDialogue.finishThing = function() {
+					psychDialogue = null;
+					endSong();
+				}
+			} else {
+				psychDialogue.finishThing = function() {
+					psychDialogue = null;
+					startCountdown();
+				}
+			}
+			psychDialogue.nextDialogueThing = startNextDialogue;
+			psychDialogue.skipDialogueThing = skipDialogue;
+			psychDialogue.cameras = [camHUD];
+			add(psychDialogue);
+		} else {
+			FlxG.log.warn('Your dialogue file is badly formatted you stunoid.');
+			if(endingSong) {
+				endSong();
+			} else {
+				startCountdown();
+			}
+		}
 	}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
