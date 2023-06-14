@@ -10,6 +10,8 @@ import openfl.events.Event;
 
 import addons.Mem;
 
+using StringTools;
+
 class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -65,11 +67,7 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
-		#if mobile
-		gameWidth = 1280;
-		gameHeight = 720;
-		zoom = 1;
-		#end
+		initialState = TitleState;
 
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
 		

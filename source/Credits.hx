@@ -142,10 +142,6 @@ class Credits extends MusicBeatState
 			trace(md);
 		 */
 
-		 #if mobileC
-		 addVirtualPad(FULL, A_B);
-		 #end
-
 		super.create();
 	}
 
@@ -177,13 +173,6 @@ class Credits extends MusicBeatState
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
-
-		#if android
-		if (FlxG.android.justReleased.BACK)
-		{
-			FlxG.switchState(new OptionsMenu());
-		}
-		#end
 
 		Conductor.songPosition = FlxG.sound.music.time;
 
