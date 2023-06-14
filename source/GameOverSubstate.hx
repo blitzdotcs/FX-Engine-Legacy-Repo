@@ -6,6 +6,7 @@ import flixel.FlxSubState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.FlxCamera;
 
 class GameOverSubstate extends MusicBeatSubstate
 {
@@ -13,7 +14,6 @@ class GameOverSubstate extends MusicBeatSubstate
 	var camFollow:FlxObject;
 
 	var stageSuffix:String = "";
-	var randomGameover:Int = 1;
 
 
 	var danceTime:Bool = false;
@@ -61,10 +61,14 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		bf.playAnim('firstDeath');
 
-		randomGameover = FlxG.random.int(1, 25);		
+		#if mobileC
+		addVirtualPad(NONE, A_B);
+		var camcontrol = new FlxCamera();
+		FlxG.cameras.add(camcontrol);
+		camcontrol.bgColor.alpha = 0;
+		_virtualpad.cameras = [camcontrol];	
+		#end	
 	}
-
-	var playingDeathSound:Bool = false;
 
 	override function update(elapsed:Float)
 	{
@@ -109,9 +113,9 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.sound.music.stop();
 
 			if (PlayState.isStoryMode)
-				FlxG.switchState(new StoryMenuState());
+				FlxG.switchState(new TitleState());
 			else
-				FlxG.switchState(new FreeplayState());
+				FlxG.switchState(new TitleState());
 		}
 
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
@@ -119,35 +123,18 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.camera.follow(camFollow, LOCKON, 0.01);
 		}
 
-		switch (PlayState.storyWeek)
+		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
 		{
-		    case 7:
-			        if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
-			        {
-				        FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + randomGameover));
-						started = true;
-						awesomeShaderTime = true;
-						danceTime = true;
-			        }
-		    default:
-			    if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
-			    {
-				    FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix));
-				    started = true;
-				    awesomeShaderTime = true;
-				    danceTime = true;
-			    }
-		}	
+			FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix));
+			started = true;
+			awesomeShaderTime = true;
+			danceTime = true;
+		}
 
 		if (FlxG.sound.music.playing)
 		{
 			Conductor.songPosition = FlxG.sound.music.time;
 		}
-	}
-
-	private function coolStartDeath():Void
-	{
-		FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix));
 	}
 
 	override function beatHit()

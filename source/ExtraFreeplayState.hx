@@ -2,9 +2,6 @@ package;
 
 
 import flixel.tweens.FlxTween;
-#if windows
-import Discord.DiscordClient;
-#end
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.input.keyboard.FlxKeyboard;
@@ -58,11 +55,6 @@ class ExtraFreeplayState extends MusicBeatState
 
 		//trace(songs);
 		trace(songColors);
-
-		#if desktop
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the secret songs menu", null);
-		#end
 
 		var isDebug:Bool = false;
 

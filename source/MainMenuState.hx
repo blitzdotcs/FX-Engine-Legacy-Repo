@@ -1,8 +1,5 @@
 package;
 
-#if desktop
-import Discord.DiscordClient;
-#end
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -31,15 +28,10 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 
-	var engineVer:String = "1.1.3";
+	var engineVer:String = "1.1.0";
 	
 	override function create()
 	{
-		#if desktop
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("MainMenuState.hx Moment!!", null);
-		#end
-
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 		
@@ -120,6 +112,10 @@ class MainMenuState extends MusicBeatState
 			controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
 
 		changeItem();
+
+		#if mobileC
+		addVirtualPad(UP_DOWN, A_B);
+		#end
 
 		super.create();
 	}
@@ -213,22 +209,9 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 
-		if (FlxG.keys.justPressed.SIX)
-		{
-			FlxG.switchState(new ExtraFreeplayState());
-
-			#if cpp
-			DiscordClient.changePresence("In the secret songs menu", null, null, true);
-			#end
-		}
-
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			FlxG.switchState(new extrashit.Menu());
-	
-			#if cpp
-			DiscordClient.changePresence("In the secret songs menu", null, null, true);
-			#end
+			FlxG.switchState(new ExtrasState());
 		}
 
 		super.update(elapsed);

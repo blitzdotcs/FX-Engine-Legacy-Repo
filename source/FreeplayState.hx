@@ -2,9 +2,6 @@ package;
 
 
 import flixel.tweens.FlxTween;
-#if windows
-import Discord.DiscordClient;
-#end
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.input.keyboard.FlxKeyboard;
@@ -61,11 +58,6 @@ class FreeplayState extends MusicBeatState
 
 		//trace(songs);
 		trace(songColors);
-
-		#if desktop
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In Freeplay mode", null);
-		#end
 
 		var isDebug:Bool = false;
 
@@ -146,6 +138,10 @@ class FreeplayState extends MusicBeatState
 			trace(md);
 		 */
 
+		 #if mobileC
+		 addVirtualPad(FULL, A_B);
+		 #end
+
 		super.create();
 	}
 
@@ -191,18 +187,18 @@ class FreeplayState extends MusicBeatState
 		var downP = controls.DOWN_P;
 		var accepted = controls.ACCEPT;
 
-		if (upP)
+		if (controls.UP)
 		{
 			changeSelection(-1);
 		}
-		if (downP)
+		if (controls.DOWN)
 		{
 			changeSelection(1);
 		}
 
-		if (controls.LEFT_P)
+		if (controls.LEFT)
 			changeDiff(-1);
-		if (controls.RIGHT_P)
+		if (controls.RIGHT)
 			changeDiff(1);
 
 		if (controls.BACK)
