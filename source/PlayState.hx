@@ -1019,8 +1019,6 @@ class PlayState extends MusicBeatState
 					schoolIntro(doof);
 				case 'thorns':
 					schoolIntro(doof);
-				case 'ugh':
-					ughIntro();
 				default:
 					startCountdown();
 			}
@@ -1036,70 +1034,6 @@ class PlayState extends MusicBeatState
 		}
 
 		super.create();
-	}
-
-	function ughIntro():Void
-	{
-		inCutscene = true;
-	
-		// D
-		FlxG.camera.zoom = defaultCamZoom * 1.2;
-	
-		FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
-		FlxG.sound.music.fadeIn(5, 0, 0.5);
-	
-		dad.visible = false;
-		var tankCutscene:CutsceneCharacter = new CutsceneCharacter(-20, 320, 'tightBars');
-		tankCutscene.antialiasing = true;
-		tankCutscene.playingAnim = true;
-		gfCutsceneLayer.add(tankCutscene);
-	
-		camHUD.visible = false;
-	
-		FlxG.camera.zoom *= 1.2;
-		camFollow.y += 100;
-
-		tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('week7/wellWellWell')); // eduardo
-	
-		new FlxTimer().start(3, function(tmr:FlxTimer)
-		{
-			camFollow.x += 800;
-			camFollow.y += 100;
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.27, {ease: FlxEase.quadInOut});
-	
-			new FlxTimer().start(1.5, function(bep:FlxTimer)
-			{
-				boyfriend.playAnim('singUP');
-				// Play Sound.
-				FlxG.sound.play(Paths.sound('week7/bfBeep'), function()
-				{
-					boyfriend.playAnim('idle');
-				});
-			});
-	
-			new FlxTimer().start(3, function(swaggy:FlxTimer)
-			{
-				camFollow.x -= 800;
-				camFollow.y -= 100;
-				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.5, {ease: FlxEase.quadInOut});
-				FlxG.sound.play(Paths.sound('week7/killYou'));
-				new FlxTimer().start(6.1, function(swagasdga:FlxTimer)
-				{
-					FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-	
-					FlxG.sound.music.fadeOut((Conductor.crochet / 1000) * 5, 0);
-	
-					new FlxTimer().start((Conductor.crochet / 1000) * 5, function(money:FlxTimer)
-					{
-						dad.visible = true;
-						gfCutsceneLayer.remove(tankCutscene);
-					});
-	
-					startCountdown();
-					camHUD.visible = true;
-				});
-			});
-		});
 	}
 	
 	function schoolIntro(?dialogueBox:DialogueBox):Void
