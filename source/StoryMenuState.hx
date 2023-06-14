@@ -101,15 +101,6 @@ class StoryMenuState extends MusicBeatState
 			swagColors.push(FlxColor.fromString(daColorFile[i]));
 		}
 
-//		if (FlxG.keys.justPressed.SEVEN)
-//		{
-//			FlxG.switchState(new CharacterSelectState());
-//
-//			#if cpp
-//			DiscordClient.changePresence("In Character Selection Screen!", null, null, true);
-//			#end
-//		}
-
 		persistentUpdate = persistentDraw = true;
 
 		scoreText = new FlxText(10, 10, 0, "SCORE: 49324858", 36);

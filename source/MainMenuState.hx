@@ -213,15 +213,6 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 
-		if (FlxG.keys.justPressed.SIX)
-		{
-			FlxG.switchState(new ExtraFreeplayState());
-
-			#if cpp
-			DiscordClient.changePresence("In the secret songs menu", null, null, true);
-			#end
-		}
-
 		if (FlxG.keys.justPressed.SEVEN)
 		{
 			FlxG.switchState(new extrashit.Menu());
