@@ -6,6 +6,8 @@
 
 * Fixed the Player's offsets
 
+* Un-hardcoded stages, noteskins, and gf's.
+
 * Cleaned Up Mods Menu a bit (I think I also broke it)
 
 * Better credits menu (Totally didn't steal it from the chocolate engine devs)
