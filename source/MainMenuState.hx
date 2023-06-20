@@ -217,8 +217,8 @@ class MainMenuState extends MusicBeatState
 		{
 			FlxG.switchState(new extrashit.Menu());
 	
-			#if cpp
-			DiscordClient.changePresence("In the secret songs menu", null, null, true);
+			#if desktop
+			DiscordClient.changePresence("In the config menu", null, null, true);
 			#end
 		}
 
