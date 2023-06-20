@@ -47,10 +47,7 @@
      public static var coolId:String;
      public static var disableButton:FlxButton;
      public static var enableButton:FlxButton;
- 
-     var bgtwo:FlxSprite;
-     var bg:FlxSprite;
- 
+  
      var infoText:FlxText;
      var infoTextcool:FlxText;
  
@@ -63,7 +60,7 @@
              FlxG.mouse.visible = true;
          }
  
-         menuBG = new FlxSprite().loadGraphic(Paths.image('mainmenu/menuDesat'));
+         menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
  
          menuBG.color = FlxColor.GRAY;
          menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
@@ -126,13 +123,7 @@
  
      function buildUI()
      {
-         bg = new FlxSprite(0, 0).loadGraphic(Paths.image("UI/default/modbg"));
-         // bg.screenCenter(Y);
- 
-         bgtwo = new FlxSprite(720, 0).loadGraphic(Paths.image("UI/default/modbg"));
-         bgtwo.screenCenter(Y);
- 
-         ModsMenuState.enableButton = new FlxButton(bg.x + 1120, 309, "Enable Mod", function()
+         ModsMenuState.enableButton = new FlxButton(1120, 309, "Enable Mod", function()
          {
              page.members[curSelected].Mod_Enabled = true;
              if (!enabledMods.contains(page.members[curSelected].Option_Value))
@@ -142,7 +133,7 @@
              ModList.setModEnabled(page.members[curSelected].Option_Value, page.members[curSelected].Mod_Enabled);
          });
  
-         ModsMenuState.disableButton = new FlxButton(bg.x + 1120, 380, "Disable Mod", function()
+         ModsMenuState.disableButton = new FlxButton(1120, 380, "Disable Mod", function()
          {
              page.members[curSelected].Mod_Enabled = false;
              if (enabledMods.contains(page.members[curSelected].Option_Value))
@@ -166,7 +157,6 @@
          disableButton.label.fieldWidth = 135;
          setLabelOffset(disableButton, 5, 22);
  
-         add(bgtwo);
          add(infoTextcool);
          add(disableButton);
          add(enableButton);
@@ -200,6 +190,11 @@
          }
  
          if (controls.BACK)
+         {
+             FlxG.switchState(new MainMenuState());
+         }
+
+         if (controls.ACCEPT)
          {
              FlxG.switchState(new MainMenuState());
          }

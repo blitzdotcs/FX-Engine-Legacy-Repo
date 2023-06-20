@@ -80,9 +80,6 @@ class PlayState extends MusicBeatState
 	public static var instance:PlayState;
 	public static var seenCutscene:Bool = false;
 
-	public static var songPosBG:FlxSprite;
-	public static var songPosBar:FlxBar;
-
 	public static var hasPlayedOnce:Bool = false;
 
 	var halloweenLevel:Bool = false;
@@ -161,7 +158,6 @@ class PlayState extends MusicBeatState
 	var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
 	var fastCar:FlxSprite;
 
-	var songName:FlxText;
 	var upperBoppers:FlxSprite;
 	var bottomBoppers:FlxSprite;
 	var santa:FlxSprite;
@@ -828,7 +824,7 @@ class PlayState extends MusicBeatState
 				dad.y += 180;	
 		}
 
-		boyfriend = new Boyfriend(0, 0, (!isStoryMode && freeplayChar ? selectedBF : SONG.player1));
+		boyfriend = new Boyfriend(770, 450, (!isStoryMode && freeplayChar ? selectedBF : SONG.player1));
 
 		// REPOSITIONING PER STAGE
 		switch (curStage)
@@ -923,31 +919,6 @@ class PlayState extends MusicBeatState
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
 		FlxG.fixedTimestep = false;
-
-		songPosBG = new FlxSprite(0, strumLine.y - 15).loadGraphic(Paths.image('timebar'));
-		if (FlxG.save.data.downscroll)
-			songPosBG.y = FlxG.height * 0.9 + 45; 
-		songPosBG.screenCenter(X);
-		songPosBG.scrollFactor.set();
-		add(songPosBG);
-
-		if (curStage.contains("school") && FlxG.save.data.downscroll)
-			songPosBG.y -= 45;
-
-		songPosBar = new FlxBar(songPosBG.x + 4, songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 8), Std.int(songPosBG.height - 8), this,
-			'songPositionBar', 0, 90000);
-		songPosBar.scrollFactor.set();
-		songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
-		add(songPosBar);
-
-		var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - 20,songPosBG.y,0,SONG.song, 16);
-		if (FlxG.save.data.downscroll)
-			songName.y -= 3;
-		if (!curStage.contains("school"))
-			songName.x -= 15;
-		songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
-		songName.scrollFactor.set();
-		add(songName);
 
 		healthBarBG = new FlxSprite(!FlxG.save.data.quaverbar ? 0 : FlxG.width, !FlxG.save.data.quaverbar ? FlxG.height * 0.88 : 0).loadGraphic(Paths.image('healthBar'));
 		if (FlxG.save.data.downscroll)
@@ -1279,35 +1250,6 @@ class PlayState extends MusicBeatState
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ")", "Score: " + songScore + " | Misses: " + misses  , iconRPC);
 		#end
-
-		remove(songPosBG);
-		remove(songPosBar);
-		remove(songName);
-
-		songPosBG = new FlxSprite(0, strumLine.y - 15).loadGraphic(Paths.image('healthBar'));
-		if (FlxG.save.data.downscroll)
-			songPosBG.y = FlxG.height * 0.9 + 45; 
-		songPosBG.screenCenter(X);
-		songPosBG.scrollFactor.set();
-		add(songPosBG);
-
-		if (curStage.contains("school") && FlxG.save.data.downscroll)
-			songPosBG.y -= 45;
-
-		songPosBar = new FlxBar(songPosBG.x + 4, songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 8), Std.int(songPosBG.height - 8), this,
-			'songPositionBar', 0, 90000);
-		songPosBar.scrollFactor.set();
-		songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
-		add(songPosBar);
-
-		var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - 20,songPosBG.y,0,SONG.song, 16);
-		if (FlxG.save.data.downscroll)
-			songName.y -= 3;
-		if (!curStage.contains("school"))
-			songName.x -= 15;
-		songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
-		songName.scrollFactor.set();
-		add(songName);
 	}
 
 	function updateLoop()
@@ -1568,7 +1510,7 @@ class PlayState extends MusicBeatState
 			babyArrow.x += 50;
 			babyArrow.x += ((FlxG.width / 2) * player);
 
-			if (FlxG.save.data.midscroll) {
+			if (FlxG.save.data.middleScroll) {
 				babyArrow.x -= 275;
 				if (player != 1) {
 					babyArrow.visible = false;

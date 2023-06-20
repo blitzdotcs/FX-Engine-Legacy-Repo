@@ -1,288 +1,170 @@
 package;
 
-import flixel.tweens.FlxTween;
 #if desktop
 import Discord.DiscordClient;
 #end
 import flash.text.TextField;
 import flixel.FlxG;
-import flixel.input.keyboard.FlxKeyboard;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
+import flixel.input.gamepad.FlxGamepad;
+import flixel.addons.text.FlxTypeText;
 import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import lime.utils.Assets;
-import iconshits.CreditsIcon;
+import openfl.Assets;
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
 
 using StringTools;
 
 class Credits extends MusicBeatState
 {
-	var songs:Array<CreditsMetadata> = [];
-	var songColors:Array<FlxColor> = [];
-	var songBPM:Array<Int> = [];
-	var selector:FlxText;
-	var curSelected:Int = 0;
-	var curDifficulty:Int = 1;
+	var credits:Array<CreditsMetadata> = [];
 
-	var scoreText:FlxText;
-	var diffText:FlxText;
-	var lerpScore:Int = 0;
-	var intendedScore:Int = 0;
+	static var curSelected:Int = 0;
 
-	private var grpSongs:FlxTypedGroup<Alphabet>;
-	private var curPlaying:Bool = false;
+	private var grpCredits:FlxTypedGroup<Alphabet>;
 
-	private var iconArray:Array<CreditsIcon> = [];
-
-
-	var colorTween:FlxTween;
-	var daColor:FlxColor;
-
+	var descText:FlxText;
 	var bg:FlxSprite;
+	var colorTween:FlxTween;
 
 	override function create()
 	{
-		var initSonglist = CoolUtil.coolTextFile(Paths.txt('Creditslist'));
+		var initCreditlist = CoolUtil.coolTextFile(Paths.txt('creditsList'));
 
-		for (i in 0...initSonglist.length)
+		if (Assets.exists(Paths.txt('creditsList')))
 		{
-			var parsedFile:Array<String> = initSonglist[i].split(":");
-			songs.push(new CreditsMetadata(parsedFile[0], Std.parseInt(parsedFile[2]), parsedFile[1]));
-			songColors.push(FlxColor.fromString(parsedFile[3]));
-			songBPM.push(Std.parseInt(parsedFile[4]));
+			initCreditlist = Assets.getText(Paths.txt('creditsList')).trim().split('\n');
+
+			for (i in 0...initCreditlist.length)
+			{
+				initCreditlist[i] = initCreditlist[i].trim();
+			}
+		}
+		else
+		{
+			trace("Cannot find 'creditsList' in data directory.");
+			trace("Replacing it with normal credits...");
+			initCreditlist = "TyDev:Main FX Engine Programmer\n
+            Chocolate Engine Team:Modding System + Better Credits\n
+            Funkin' Team:Original Game Devs\n
+            Kade Engine Team:I Stole some code\n
+            Psych Engine Team:I stole some code".trim()
+				.split('\n');
+
+			for (i in 0...initCreditlist.length)
+			{
+				initCreditlist[i] = initCreditlist[i].trim();
+			}
+			// initCreditlist = null;
+			// initCreditlist = 'Credits List not found.';
 		}
 
-		//trace(songs);
-		trace(songColors);
+		for (i in 0...initCreditlist.length)
+		{
+			var data:Array<String> = initCreditlist[i].split(':');
+			credits.push(new CreditsMetadata(data[0], data[1]));
+		}
 
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Checking out the credits!", null);
+		DiscordClient.changePresence("In the Menus", null);
 		#end
-
-		var isDebug:Bool = false;
-
-		#if debug
-		isDebug = true;
-		#end
-
-		// LOAD MUSIC
-
-		// LOAD CHARACTERS
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg.color = FlxColor.PINK;
 		add(bg);
 
-		grpSongs = new FlxTypedGroup<Alphabet>();
-		add(grpSongs);
+		descText = new FlxText(50, 600, 1180, "", 32);
+		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.scrollFactor.set();
+		descText.text = 'what';
+		descText.borderSize = 2.4;
+		add(descText);
 
-		for (i in 0...songs.length)
+		grpCredits = new FlxTypedGroup<Alphabet>();
+		add(grpCredits);
+
+		for (i in 0...credits.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
-			songText.isMenuItem = true;
-			songText.targetY = i;
-			grpSongs.add(songText);
+			var creditText:Alphabet = new Alphabet(0, (70 * i) + 30, credits[i].modderName, true, false);
+			creditText.isMenuItem = true;
+			creditText.targetY = i;
+			grpCredits.add(creditText);
 
-			var icon:CreditsIcon = new CreditsIcon(songs[i].songCharacter);
-			icon.sprTracker = songText;
-
-			// using a FlxGroup is too much fuss!
-			iconArray.push(icon);
-			add(icon);
+			// creditText.x += 40;
+			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
+			// creditText.screenCenter(X);
 		}
-
-		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
-		// scoreText.autoSize = false;
-		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
-		// scoreText.alignment = RIGHT;
-
-		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.35), 70, 0xFF000000);
-		scoreBG.alpha = 0.6;
-		add(scoreBG);
-
-		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
-		diffText.font = scoreText.font;
-		add(diffText);
-
-		add(scoreText);
-
-		bg.color = songColors[curSelected];
-		daColor = bg.color;
 
 		changeSelection();
-		changeDiff();
-
 		// FlxG.sound.playMusic(Paths.music('title'), 0);
 		// FlxG.sound.music.fadeIn(2, 0, 0.8);
-		selector = new FlxText();
 
-		selector.size = 40;
-		selector.text = ">";
-		// add(selector);
-
-		var swag:Alphabet = new Alphabet(1, 0, "swag");
-
-		// JUST DOIN THIS SHIT FOR TESTING!!!
-		/* 
-			var md:String = Markdown.markdownToHtml(Assets.getText('CHANGELOG.md'));
-
-			var texFel:TextField = new TextField();
-			texFel.width = FlxG.width;
-			texFel.height = FlxG.height;
-			// texFel.
-			texFel.htmlText = md;
-
-			FlxG.stage.addChild(texFel);
-
-			// scoreText.textField.htmlText = md;
-
-			trace(md);
-		 */
+		var descText:FlxText = new FlxText(50, 600, 1180, "", 32);
+		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.scrollFactor.set();
+		descText.borderSize = 2.4;
+		add(descText);
 
 		super.create();
-	}
-
-	public function addSong(songName:String, weekNum:Int, songCharacter:String)
-	{
-		songs.push(new CreditsMetadata(songName, weekNum, songCharacter));
-	}
-
-	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
-	{
-		if (songCharacters == null)
-			songCharacters = ['bf'];
-
-		var num:Int = 0;
-		for (song in songs)
-		{
-			addSong(song, weekNum, songCharacters[num]);
-
-			if (songCharacters.length != 1)
-				num++;
-		}
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		if (FlxG.sound.music.volume < 0.7)
-		{
-			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
-		}
-
-		Conductor.songPosition = FlxG.sound.music.time;
-
-		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.4));
-
-		if (Math.abs(lerpScore - intendedScore) <= 10)
-			lerpScore = intendedScore;
-
-		scoreText.text = "Erm Credits Moment!";
-
 		var upP = controls.UP_P;
 		var downP = controls.DOWN_P;
+		var accepted = controls.ACCEPT;
+		var space = FlxG.keys.justPressed.SPACE;
+
+		var shiftMult:Int = 1;
+		if (FlxG.keys.pressed.SHIFT)
+			shiftMult = 3;
 
 		if (upP)
 		{
-			changeSelection(-1);
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			changeSelection(-shiftMult);
 		}
 		if (downP)
 		{
-			changeSelection(1);
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			changeSelection(shiftMult);
+		}
+
+		if (FlxG.mouse.wheel != 0)
+		{
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			changeSelection(-Std.int(FlxG.mouse.wheel));
 		}
 
 		if (controls.BACK)
-		{
-			if (colorTween != null)
-				{
-					colorTween.cancel();
-				}
-	
 			FlxG.switchState(new MainMenuState());
-		}
-	}
-
-	override function beatHit():Void
-		{
-			super.beatHit();
-	
-			if (FlxG.save.data.freeplayBop)
-				FlxG.camera.zoom = 1.05;
-				FlxTween.tween(FlxG.camera, {zoom: 1}, 0.10);
-		}	
-
-	function changeDiff(change:Int = 0)
-	{
-		curDifficulty += change;
-
-		if (curDifficulty < 0)
-			curDifficulty = 2;
-		if (curDifficulty > 2)
-			curDifficulty = 0;
-
-		#if !switch
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		#end
 	}
 
 	function changeSelection(change:Int = 0)
 	{
-		/*
-		#if !switch
-		NGio.logEvent('Fresh');
-		#end
-		*/
-
-		// NGio.logEvent('Fresh');
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
 		curSelected += change;
 
 		if (curSelected < 0)
-			curSelected = songs.length - 1;
-		if (curSelected >= songs.length)
+			curSelected = credits.length - 1;
+		if (curSelected >= credits.length)
 			curSelected = 0;
 
+		descText.text = credits[curSelected].desc;
+
 		// selector.y = (70 * curSelected) + 30;
-
-		Conductor.changeBPM(songBPM[curSelected]);
-		FlxG.log.add("Changing Song to...: "  + songs[curSelected].songName + " and the BPM to...: " + songBPM[curSelected]);
-		var newColor = songColors[curSelected];
-
-		if (newColor != daColor)
-		{
-			if (colorTween != null) 
-			{
-				colorTween.cancel();
-			}
-
-			daColor = newColor;
-			colorTween = FlxTween.color(bg, 0.5, bg.color, daColor);
-		}
-
-		#if !switch
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		// lerpScore = 0;
-		#end
-
-		#if PRELOAD_ALL
-		FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
-		#end
-
 		var bullShit:Int = 0;
 
-		for (i in 0...iconArray.length)
-		{
-			iconArray[i].alpha = 0.6;
-		}
-
-		iconArray[curSelected].alpha = 1;
-
-		for (item in grpSongs.members)
+		for (item in grpCredits.members)
 		{
 			item.targetY = bullShit - curSelected;
 			bullShit++;
@@ -301,14 +183,12 @@ class Credits extends MusicBeatState
 
 class CreditsMetadata
 {
-	public var songName:String = "";
-	public var week:Int = 0;
-	public var songCharacter:String = "";
+	public var modderName:String = "";
+	public var desc:String = "";
 
-	public function new(song:String, week:Int, songCharacter:String)
+	public function new(name:String, desc:String)
 	{
-		this.songName = song;
-		this.week = week;
-		this.songCharacter = songCharacter;
+		this.modderName = name;
+		this.desc = desc;
 	}
 }

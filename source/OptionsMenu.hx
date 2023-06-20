@@ -28,7 +28,7 @@ class OptionsMenu extends MusicBeatState
 	override function create()
 	{
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.zxnm ? 'ZXNM' : 'WASD') + "\n" + (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll') + "\n" + (FlxG.save.data.midscroll ? 'MiddleScroll' : 'RegScroll') + "\n" + (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP') + "\n" + (FlxG.save.data.quaverbar ? 'QuaverBar' : 'RegBar') + "\nCrash Game");
+		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.zxnm ? 'ZXNM' : 'WASD') + "\n" + (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll') + "\n" + (FlxG.save.data.middleScroll ? 'MiddleScroll' : 'RegScroll') + "\n" + (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP') + "\n" + (FlxG.save.data.quaverbar ? 'QuaverBar' : 'RegBar') + "\nCrash Game");
 		
 		trace(controlsStrings);
 
@@ -109,8 +109,8 @@ class OptionsMenu extends MusicBeatState
 						grpControls.add(ctrl);
 
 					case 2:
-						FlxG.save.data.midscroll = !FlxG.save.data.midscroll;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.midscroll ? 'MiddleScroll' : 'RegScroll'), true, false);
+						FlxG.save.data.middleScroll = !FlxG.save.data.middleScroll;
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.middleScroll ? 'MiddleScroll' : 'RegScroll'), true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 2;
 						grpControls.add(ctrl);

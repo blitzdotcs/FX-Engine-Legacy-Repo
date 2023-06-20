@@ -5,6 +5,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import flixel.graphics.FlxGraphic;
+import haxe.Json;
 
 using StringTools;
 
@@ -40,6 +41,31 @@ class Paths
 		}
 
 		return getPreloadPath(file);
+	}
+
+	static public function loadJSON(key:String, ?library:String):Dynamic
+	{
+		var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
+
+		// Perform cleanup on files that have bad data at the end.
+		while (!rawJson.endsWith("}"))
+		{
+			rawJson = rawJson.substr(0, rawJson.length - 1);
+		}
+
+		try
+		{
+			// Attempt to parse and return the JSON data.
+			return Json.parse(rawJson);
+		}
+		catch (e)
+		{
+			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
+			Debug.logError(e.message);
+
+			// Return null.
+			return null;
+		}
 	}
 
 	static public function getLibraryPath(file:String, library = "preload")
@@ -183,3 +209,145 @@ class Paths
 		return songNames;
 	}	
 }
+
+#if MODS_ALLOWED
+class ModPaths extends Paths
+{
+        static final currentLevel:String = Paths.currentLevel;
+
+	static public function file(file:String, mod:String)
+	{
+		var path = "";
+		if (mod != null)
+			path = 'mods/$mod/$file';
+		else
+			path = 'mods/$file';
+		if (OpenFlAssets.exists(path))
+			return path;
+
+		return 'mods';
+	}
+
+	private static final SOUND_EXT = Paths.SOUND_EXT;
+
+	inline static public function modIconImage(key:String, mod:String)
+	{
+		return file('$mod/_polymod_icon.png', mod);
+	}
+
+	inline static public function getModTxt(key:String, mod:String)
+	{
+		return file('data/$key.txt', mod);
+	}
+
+	inline static public function getModXml(key:String, mod:String)
+	{
+		return file('data/$key.xml', mod);
+	}
+
+	inline static public function getModGlobalTxt(key:String, mod:String)
+	{
+		return file('$key.txt', mod);
+	}
+
+	inline static public function getModGlobalXml(key:String, mod:String)
+	{
+		return file('$key.xml', mod);
+	}
+
+	inline static public function getModJson(key:String, mod:String)
+	{
+		return file('data/$key.json', mod);
+	}
+
+	inline static public function getModGlobalJson(key:String, mod:String)
+	{
+		return file('$key.json', mod);
+	}
+
+	static public function getModSound(key:String, mod:String)
+	{
+		return file('sounds/$key.$SOUND_EXT', mod);
+	}
+
+	inline static public function soundRandom(key:String, min:Int, max:Int, mod:String)
+	{
+		return getModSound(key + FlxG.random.int(min, max), mod);
+	}
+
+	inline static public function getModMusic(key:String, mod:String)
+	{
+		return file('music/$key.$SOUND_EXT', mod);
+	}
+
+	inline static public function getModVoices(song:String, mod:String)
+	{
+		return file('mods/$mod/songs/${song.toLowerCase()}/Voices.$SOUND_EXT', mod);
+	}
+
+	inline static public function getModInst(song:String, mod:String)
+	{
+		return file('mods/$mod/songs/${song.toLowerCase()}/Inst.$SOUND_EXT', mod);
+	}
+
+	inline static public function getModImage(key:String, mod:String)
+	{
+		return file('images/$key.png', mod);
+	}
+
+	inline static public function getModFont(key:String, mod:String)
+	{
+		return file('fonts/$key', mod);
+	}
+
+	inline static public function getModLua(key:String, mod:String)
+	{
+		return file('scripts/$key.lua', mod);
+	}
+
+	inline static public function getModGlobalLua(key:String, mod:String)
+	{
+		return file('$key.lua', mod);
+	}
+
+	inline static public function getModChar(key:String, mod:String)
+	{
+		return file('characters/$key.json', mod);
+	}
+
+	inline static public function getModLocales(key:String, mod:String)
+	{
+		return file('locales/$key/languageData.json', mod);
+	}
+
+	inline static public function getModFrag(key:String, mod:String)
+	{
+		return file('shaders/$key.frag', mod);
+	}
+
+	inline static public function getModVert(key:String, mod:String)
+	{
+		return file('shaders/$key.vert', mod);
+	}
+
+	inline static public function checkMod(mod:String)
+	{
+		return openfl.utils.Assets.exists('mods/$mod/_polymod_meta.json'); // THIS IS MANDATORY
+	}
+
+	inline static public function getModSparrowAtlas(key:String, mod:String)
+	{
+		return flixel.graphics.frames.FlxAtlasFrames.fromSparrow(getModImage(key, mod), file('images/$key.xml', mod));
+	}
+
+	inline static public function getModPackerAtlas(key:String, mod:String)
+	{
+		return FlxAtlasFrames.fromSpriteSheetPacker(getModImage(key, mod), file('images/$key.txt', mod));
+	}
+	
+	inline static public function getModAnimateAtlas(key:String, mod:String)
+	{
+		return animate.FlxAnimate.fromAnimate(Paths.loadImage('$key/spritemap1'), file('images/$key/spritemap1.json', mod));
+	}
+}
+#end

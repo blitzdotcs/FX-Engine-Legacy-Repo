@@ -109,7 +109,7 @@ class TitleState extends MusicBeatState
 
 		@:privateAccess
 		{
-			trace("Loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets (DEFAULT)");
+			Debug.logTrace("FX Engine Loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets (DEFAULT)");
 		}
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
@@ -397,6 +397,7 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !skippedIntro)
 		{
+			Debug.logInfo("NOOO INTRO SKIPPED");
 			skipIntro();
 		}
 
