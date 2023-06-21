@@ -14,6 +14,10 @@
 
 * Middlescroll now actually works
 
+# Updates
+
+* 1.1.4 Android Port Jumpscare
+
 # Removals
 
 * Removed the time bar cuz very broken
