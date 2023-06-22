@@ -1,5 +1,6 @@
 package;
 
+import haxe.Http;
 import haxe.Json;
 import openfl.filters.ShaderFilter;
 import flixel.FlxCamera;
@@ -33,6 +34,7 @@ import lime.app.Application;
 import openfl.Assets;
 
 import shaders.ColorSwapShader;
+import MainMenuState;
 
 using StringTools;
 
@@ -54,13 +56,15 @@ class TitleState extends MusicBeatState
 
 	var wackyImage:FlxSprite;
 
+	public static var updateVersion:String = '';
+
 	public static var mod_dirs:Array<String> = [];
 
 	public static function reloadMods()
 	{
 		
 		#if polymod
-mod_dirs = FlxG.save.data.mods;
+        mod_dirs = FlxG.save.data.mods;
 
 		var new_dirs:Array<String> = [];
 
@@ -83,12 +87,14 @@ mod_dirs = FlxG.save.data.mods;
 				assetLibraryPaths: [
 					"songs" => "songs",
 					"shared" => "shared",
+					"preload" => "preload",
 					"week1" => "week1",
 					"week2" => "week2",
 					"week3" => "week3",
 					"week4" => "week4",
 					"week5" => "week5",
-					"week6" => "week6"
+					"week6" => "week6",
+					"week7" => "week7"
 				]
 			}
 		});		
@@ -100,6 +106,11 @@ mod_dirs = FlxG.save.data.mods;
 	override public function create():Void
 	{
 		PlayerSettings.init();
+
+		@:privateAccess
+		{
+			Debug.logTrace("FX Engine Loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets (DEFAULT)");
+		}
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
@@ -117,8 +128,9 @@ mod_dirs = FlxG.save.data.mods;
 		if (FlxG.save.data.zxnm == null)
 			FlxG.save.data.zxnm = false;
 
-		FlxG.save.bind('funkin', 'ninjamuffin99');
+		FlxG.save.bind('fxengine', 'tydev');
 
+		FXEngineData.initSave();
 
 		if(FlxG.save.data.mods == null)
 			FlxG.save.data.mods = [];
@@ -129,7 +141,7 @@ mod_dirs = FlxG.save.data.mods;
 
 		colorShader = new ColorSwapEffect();
 
-		engine.EngineData.initSave();
+		FXEngineData.initSave();
 		controls.setKeyboardScheme(KeyboardScheme.Solo);
 		trace("WASD sucks lmfao.");	
 		
@@ -349,35 +361,43 @@ mod_dirs = FlxG.save.data.mods;
 			transitioning = true;
 			// FlxG.sound.music.stop();
 
-			new FlxTimer().start(0.25, function(tmr:FlxTimer)
+			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				// Check if version is outdated
+				var http = new haxe.Http("https://raw.githubusercontent.com/TyDevX/FX-Engine/master/gitVersion");
+				var returnedData:Array<String> = [];
+				var engineVer:String = "1.1.2";
 
-				/*
-				var version:String = "v" + Application.current.meta.get('version');
-
-				if (version.trim() != NGio.GAME_VER_NUMS.trim() && !OutdatedSubState.leftState)
+				http.onData = function(data:String)
 				{
-					FlxG.switchState(new OutdatedSubState());
-					trace('OLD VERSION!');
-					trace('old ver');
-					trace(version.trim());
-					trace('cur ver');
-					trace(NGio.GAME_VER_NUMS.trim());
+					returnedData[0] = data.substring(0, data.indexOf(';'));
+					returnedData[1] = data.substring(data.indexOf('-'), data.length);
+					if (!engineVer.contains(returnedData[0].trim()) && !OutdatedSubState.leftState)
+					{
+						trace('outdated lmao' + returnedData[0] + ' != ' + engineVer);
+						OutdatedSubState.needVer = returnedData[0];
+						OutdatedSubState.currChanges = returnedData[1];
+						FlxG.switchState(new OutdatedSubState());
+					}
+					else
+					{
+						FlxG.switchState(new MainMenuState());
+					}
 				}
-				else
+	
+				http.onError = function(error)
 				{
-					FlxG.switchState(new MainMenuState());
+					trace('error: $error');
+					FlxG.switchState(new MainMenuState()); // fail but we go anyway
 				}
-				*/
-
-				FlxG.switchState(new MainMenuState());				
+	
+				http.request();
 			});
-			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
+				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
 		if (pressedEnter && !skippedIntro)
 		{
+			Debug.logInfo("NOOO INTRO SKIPPED");
 			skipIntro();
 		}
 

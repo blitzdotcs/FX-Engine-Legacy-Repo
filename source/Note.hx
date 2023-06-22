@@ -8,6 +8,7 @@ import flixel.util.FlxColor;
 #if polymod
 import polymod.format.ParseRules.TargetSignatureElement;
 #end
+import PlayState;
 
 using StringTools;
 
@@ -43,8 +44,7 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
-		x += 50;
-		// MAKE SURE ITS DEFINITELY OFF SCREEN?
+		x += (FlxG.save.data.middleScroll ? -218.8 : 50);
 		y -= 2000;
 		this.strumTime = strumTime;
 
@@ -52,34 +52,41 @@ class Note extends FlxSprite
 
 		var daStage:String = PlayState.curStage;
 
-		switch (daStage)
+		switch (PlayState.SONG.noteStyle)
 		{
-			case 'school' | 'schoolEvil':
-				loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels'), true, 17, 17);
+			case 'pixel':
+				loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels','week6'), true, 17, 17);
 
 				animation.add('greenScroll', [6]);
 				animation.add('redScroll', [7]);
 				animation.add('blueScroll', [5]);
 				animation.add('purpleScroll', [4]);
 
+				animation.add('purplehold', [0]);
+				animation.add('greenhold', [2]);
+				animation.add('redhold', [3]);
+				animation.add('bluehold', [1]);
+
 				if (isSustainNote)
 				{
-					loadGraphic(Paths.image('weeb/pixelUI/arrowEnds'), true, 7, 6);
+					loadGraphic(Paths.image('weeb/pixelUI/arrowEnds','week6'), true, 7, 6);
 
-					animation.add('purpleholdend', [4]);
-					animation.add('greenholdend', [6]);
-					animation.add('redholdend', [7]);
-					animation.add('blueholdend', [5]);
-
-					animation.add('purplehold', [0]);
-					animation.add('greenhold', [2]);
-					animation.add('redhold', [3]);
-					animation.add('bluehold', [1]);
+					if(!FlxG.save.data.downscroll)
+						{
+							animation.add('purpleholdend', [4]);
+							animation.add('greenholdend', [6]);
+							animation.add('redholdend', [7]);
+							animation.add('blueholdend', [5]);
+						}else {
+							animation.add('purpleholdend', [4], 0, false, false, true);
+							animation.add('greenholdend', [6], 0, false, false, true);
+							animation.add('redholdend', [7], 0, false, false, true);
+							animation.add('blueholdend', [5], 0, false, false, true);
+						}
 				}
 
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
-
 			default:
 				frames = Paths.getSparrowAtlas('NOTE_assets');
 
@@ -88,15 +95,23 @@ class Note extends FlxSprite
 				animation.addByPrefix('blueScroll', 'blue0');
 				animation.addByPrefix('purpleScroll', 'purple0');
 
-				animation.addByPrefix('purpleholdend', 'pruple end hold');
-				animation.addByPrefix('greenholdend', 'green hold end');
-				animation.addByPrefix('redholdend', 'red hold end');
-				animation.addByPrefix('blueholdend', 'blue hold end');
-
 				animation.addByPrefix('purplehold', 'purple hold piece');
 				animation.addByPrefix('greenhold', 'green hold piece');
 				animation.addByPrefix('redhold', 'red hold piece');
 				animation.addByPrefix('bluehold', 'blue hold piece');
+
+				if(!FlxG.save.data.downscroll)
+				{
+					animation.addByPrefix('purpleholdend', 'pruple end hold');
+					animation.addByPrefix('greenholdend', 'green hold end');
+					animation.addByPrefix('redholdend', 'red hold end');
+					animation.addByPrefix('blueholdend', 'blue hold end');
+				}else {
+					animation.addByPrefix('purpleholdend', 'pruple end hold', 0, false, false, true);
+					animation.addByPrefix('greenholdend', 'green hold end', 0, false, false, true);
+					animation.addByPrefix('redholdend', 'red hold end', 0, false, false, true);
+					animation.addByPrefix('blueholdend', 'blue hold end', 0, false, false, true);
+				}
 
 				setGraphicSize(Std.int(width * 0.7));
 				updateHitbox();

@@ -31,7 +31,7 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 
-	var engineVer:String = "1.1.0";
+	var engineVer:String = "1.1.4";
 	
 	override function create()
 	{
@@ -215,10 +215,10 @@ class MainMenuState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			FlxG.switchState(new ExtrasState());
-
-			#if cpp
-			DiscordClient.changePresence("In the secret songs menu", null, null, true);
+			FlxG.switchState(new extrashit.Menu());
+	
+			#if desktop
+			DiscordClient.changePresence("In the config menu", null, null, true);
 			#end
 		}
 

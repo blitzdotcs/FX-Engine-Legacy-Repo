@@ -1,10 +1,16 @@
 # FX Engine
 
-This is the repository for FX Engine. A modification of a game originally made for Ludum Dare 47 "Stuck In a Loop".
+This is the repository for FX Engine. A modification of a game that was originally made for Ludum Dare 47 "Stuck In a Loop".
 
 # NOTE
 
 * I AM NOT IN THE FNF COMMUNITY I'M JUST CONTINUING THIS TO LEARN MORE ABOUT HAXE.
+
+# Links
+
+* [Gamebanana Page](https://gamebanana.com/mods/447020)
+
+* [Gamejolt Page](https://gamejolt.com/games/fnffxenginelmao/812241)
 
 # Features of FX Engine
 
@@ -12,64 +18,38 @@ This is the repository for FX Engine. A modification of a game originally made f
 - Choose between WASD and ZXNM!
 - Working settings menu
 - W.i.p. Modding support without source
-- W.i.p. Character Selection! Press 6 while in-game. (Doesn't fully work yet sadly but it's progress!)
+- Character Selection!
 - Icon bopping!
 - Custom Credits Menu
-- Psych Engine Icon Support (for credits and freeplay only, when I tried it for the in-game stuff the game kept crashing)
+- Downscroll
+- Somewhat working Cutscene support!
+- Psych Engine Icon Support (for credits and freeplay only, when I tried it for the in-game stuff, the game kept crashing)
 - Ingame Options Menu (Check the pause menu)
 - A game crasher (In the options menu)
 
-# Bugs
+# FX Engine Main Credits
 
-- Going into charting menu and selecting any different character crashes the game.
+- LOOK IN THE CREDITS MENU DORK!1
 
-# FX Engine Credits
+### Build instructions
 
-- [TyDev](https://twitter.com/TyDev_) - The whole engine
-
-## Build instructions
-
-THESE INSTRUCTIONS ARE FOR COMPILING THE GAME'S SOURCE CODE!!!
-
-IF YOU WANT TO JUST DOWNLOAD AND INSTALL AND PLAY THE GAME NORMALLY, GO TO ITCH.IO TO DOWNLOAD THE GAME FOR PC, MAC, AND LINUX!!
-
-https://ninja-muffin24.itch.io/funkin
-
-IF YOU WANT TO COMPILE THE GAME YOURSELF, CONTINUE READING!!!
-
-### Installing the Required Programs
+## Installing the Required Programs
 
 First, you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep updated with that setup (which is pretty simple). 
-1. [Install Haxe 4.1.5](https://haxe.org/download/version/4.1.5/) (Download 4.1.5 instead of 4.2.0 because 4.2.0 is broken and is not working with gits properly...)
+1. [Install Haxe 4.2.0](https://haxe.org/download/version/4.2.0/) (Any ver should work but I use 4.2.0)
 2. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) after downloading Haxe
+3. Open up a Command Prompt/PowerShell or Terminal, type `haxelib install hmm`
+4. After it finishes, simply type `haxelib run hmm install` in order to install all the needed libraries for *Psych Engine!*
 
-Other installations you'd need are the additional libraries, a fully updated list will be in `Project.xml` in the project root. Currently, these are all of the things you need to install:
-```
-flixel 4.11.0
-flixel-addons 2.11.0
-openfl
-flixel-ui
-hscript
-actuate
-hxCodec
-lime 7.9.0
-```
-So for each of those type `haxelib install [library]` so shit like `haxelib install newgrounds`
-
-You'll also need to install a couple things that involve Gits. To do this, you need to do a few things first.
-1. Download [git-scm](https://git-scm.com/downloads). Works for Windows, Mac, and Linux, just select your build.
-2. Follow instructions to install the application properly.
-3. Run `haxelib git polymod https://github.com/larsiusprime/polymod.git` to install Polymod.
-4. Run `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc` to install Discord RPC.
-5. Run `haxelib git extension-webm https://github.com/KadeDev/extension-webm` to install extension-webm
-6. After that run `lime rebuild extension-webm <ie. windows, macos, linux>`
+# Thingy for extension-webm video support
+1. After that run `lime rebuild extension-webm <ie. windows, macos, linux>`
 
 You should have everything ready for compiling the game! Follow the guide below to continue!
 
 At the moment, you can optionally fix the transition bug in songs with zoomed-out cameras.
 - Run `haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons` in the terminal/command-prompt.
 
-### Compiling game
+## Compiling game
 NOTE: If you see any messages relating to deprecated packages, ignore them. They're just warnings that don't affect compiling
 
 Once you have all those installed, it's pretty easy to compile the game. You just need to run `lime test html5 -debug` in the root of the project to build and run the HTML5 version. (command prompt navigation guide can be found here: [https://ninjamuffin99.newgrounds.com/news/post/1090480](https://ninjamuffin99.newgrounds.com/news/post/1090480))
@@ -80,6 +60,6 @@ To run it from your desktop (Windows, Mac, Linux) it can be a bit more involved.
 Once that is done you can open up a command line in the project's directory and run `lime test windows -debug`. Once that command finishes (it takes forever even on a higher end PC), you can run FNF from the .exe file under export\release\windows\bin
 As for Mac, 'lime test mac -debug' should work, if not the internet surely has a guide on how to compile Haxe stuff for Mac.
 
-### Additional guides
+## Additional guides
 
 - [Command line basics](https://ninjamuffin99.newgrounds.com/news/post/1090480)
