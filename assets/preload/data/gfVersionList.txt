@@ -2,4 +2,5 @@ gf
 gf-car
 gf-christmas
 gf-pixel
-gf-held-hostage
+gf-tankmen
+pico-speaker

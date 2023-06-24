@@ -291,22 +291,35 @@ class PlayState extends MusicBeatState
 		switch (SONG.song.toLowerCase())
 		{
 			case 'tutorial':
-				dialogue = ["Hey you're pretty cute.", 'Use the arrow keys to keep up \nwith me singing.'];
+				dialogue = CoolUtil.coolTextFile(Paths.txt('tutorial/tutorial-dialogue'));
 			case 'bopeebo':
-				dialogue = [
-					'HEY!',
-					"You think you can just sing\nwith my daughter like that?",
-					"If you want to date her...",
-					"You're going to have to go \nthrough ME first!"
-				];
+				dialogue = CoolUtil.coolTextFile(Paths.txt('bopeebo/bopeebo-dialogue'));	
 			case 'fresh':
-				dialogue = ["Not too shabby boy.", ""];
+				dialogue = CoolUtil.coolTextFile(Paths.txt('fresh/fresh-dialogue'));		
 			case 'dadbattle':
-				dialogue = [
-					"gah you think you're hot stuff?",
-					"If you can beat me here...",
-					"Only then I will even CONSIDER letting you\ndate my daughter!"
-				];
+				dialogue = CoolUtil.coolTextFile(Paths.txt('dadbattle/dadbattle-dialogue'));
+			case 'spookeez':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('spookeez/spookeez-dialogue'));
+			case 'south':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('south/south-dialogue'));	
+			case 'pico':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('pico/pico-dialogue'));
+			case 'philly':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('philly/philly-dialogue'));
+			case 'blammed':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('blammed/blammed-dialogue'));		
+			case 'satin-panties':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('satin-panties/satin-panties-dialogue'));
+			case 'high':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('high/high-dialogue'));
+			case 'milf':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('milf/milf-dialogue'));	
+			case 'cocoa':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('cocoa/cocoa-dialogue'));	
+			case 'eggnog':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('eggnog/eggnog-dialogue'));	
+			case 'winter-horrorland':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('winter-horrorland/winter-horrorland-dialogue'));																																																									
 			case 'senpai':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('senpai/senpaiDialogue'));
 			case 'roses':
@@ -773,6 +786,10 @@ class PlayState extends MusicBeatState
 				gfVersion = 'gf-christmas';
 			case 'gf-pixel':
 				gfVersion = 'gf-pixel';
+			case 'gf-tankmen':
+			    gfVersion = 'gf-tankmen';	
+			case 'pico-speaker':
+				gfVersion = 'pico-speaker';				
 			default:
 				gfVersion = 'gf';				
 		}
@@ -1012,15 +1029,13 @@ class PlayState extends MusicBeatState
 							});
 						});
 					});
-				case 'senpai':
-					schoolIntro(doof);
+				case 'monster':
+					startCountdown();
 				case 'roses':
 					FlxG.sound.play(Paths.sound('ANGRY'));
 					schoolIntro(doof);
-				case 'thorns':
-					schoolIntro(doof);
 				default:
-					startCountdown();
+					schoolIntro(doof);
 			}
 			seenCutscene = true;
 		}
@@ -1029,7 +1044,7 @@ class PlayState extends MusicBeatState
 			switch (curSong.toLowerCase())
 			{
 				default:
-					startCountdown();
+					schoolIntro(doof);
 			}
 		}
 
@@ -2135,15 +2150,6 @@ class PlayState extends MusicBeatState
 				transOut = FlxTransitionableState.defaultTransOut;
 
 				FlxG.switchState(new StoryMenuState());
-
-				// if ()
-				StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
-
-				if (SONG.validScore)
-				{
-					//NGio.unlockMedal(60961);
-					//Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
-				}
 
 				FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
 				FlxG.save.flush();
