@@ -1,4 +1,6 @@
-### Version 1.2.0
+### Version 1.2.0 - Part 1
+
+* Only releasing in 2 parts becuz of me wiping my laptop again
 
 # What's new
 
@@ -17,6 +19,12 @@
 * Finally updated Discord.hx :skull:
 
 * Cleaned OptionsMenu.hx
+
+# What's coming soon
+
+* 1.2.0 Part 2
+
+* Reworked mobile port
 
 # Removals
 
