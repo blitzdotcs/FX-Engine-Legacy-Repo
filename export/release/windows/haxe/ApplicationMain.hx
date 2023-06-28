@@ -35,7 +35,7 @@ class ApplicationMain
 		ManifestResources.init(config);
 		#end
 
-		app.meta["build"] = "755";
+		app.meta["build"] = "756";
 		app.meta["company"] = "TyDev";
 		app.meta["file"] = "FX Engine";
 		app.meta["name"] = "FX Engine";
