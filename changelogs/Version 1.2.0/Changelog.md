@@ -1,4 +1,4 @@
-### Version 1.2.0 - Part 1
+### Version 1.2.0
 
 * Only releasing in 2 parts becuz of me wiping my laptop again
 
@@ -21,8 +21,6 @@
 * Cleaned OptionsMenu.hx
 
 # What's coming soon
-
-* 1.2.0 Part 2
 
 * Reworked mobile port
 
