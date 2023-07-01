@@ -1,7 +1,5 @@
 ### Version 1.2.0
 
-* Only releasing in 2 parts becuz of me wiping my laptop again
-
 # What's new
 
 * FNF Restored Dialogue
