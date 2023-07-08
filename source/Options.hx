@@ -74,20 +74,13 @@ class ZXNMOption extends Option
 
 	public override function press():Bool
 	{
-		FlxG.save.data.zxnm = !FlxG.save.data.zxnm;
-		
-		if (FlxG.save.data.zxnm)
-			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
-		else
-			controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
-
-		display = updateDisplay();
+        FlxG.state.openSubState(new KeyBindMenu());
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return  FlxG.save.data.zxnm ? "ZXNM" : "WASD";
+		return  FlxG.save.data.zxnm ? "Controls" : "Controls";
 	}
 }
 
