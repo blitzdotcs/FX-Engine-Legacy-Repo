@@ -2184,6 +2184,7 @@ class PlayState extends MusicBeatState
 
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 				FlxG.sound.music.stop();
+				LoadingState.loadAndSwitchState(new PlayState());
 			}
 		}
 		else

@@ -4,11 +4,11 @@
 
 * FNF Restored Dialogue
 
-* You can uhh use your input to like type in the chart editor to place notes
-
 * Option Catagoriez
 
 * Fixed uhh crash handlerr
+
+* Custom Controls
 
 * Added some week 7 crap that I didn't add in before.
 
@@ -18,10 +18,10 @@
 
 * Cleaned OptionsMenu.hx
 
+# Bug Fixes
+
+* Fixed Storymode not transitioning to the next song
+
 # What's coming soon
 
 * Reworked mobile port
-
-# Removals
-
-* Story Mode (Stupid bug when transitioning through songs, will fix whenever probably)
