@@ -10,6 +10,8 @@
 
 * Better AnimationDebug menu
 
+* Added back cutscenes/video support (I turned it off for week 7 cuz silly crash when transitioning songs on it for sum reason, but the code is there so turn it on at your own risk.)
+
 * Added back the song position bar
 
 * BOTPLAY

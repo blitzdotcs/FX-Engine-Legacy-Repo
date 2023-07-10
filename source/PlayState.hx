@@ -1056,10 +1056,19 @@ class PlayState extends MusicBeatState
 				case 'roses':
 					FlxG.sound.play(Paths.sound('ANGRY'));
 					schoolIntro(doof);
+				/*	
 				#if VIDEOS_ALLOWED	
 		        case 'ugh':
 			        playCutscene('ughCutscene.mp4');
-				#end										
+				#end
+				*/	
+				// Since week 7 cutscenes are disabled I'ma just do this lol.
+				case 'ugh':
+					startCountdown();	
+				case 'guns':
+					startCountdown();	
+				case 'stress':
+					startCountdown();																									
 				default:
 					schoolIntro(doof);
 			}
@@ -2263,14 +2272,18 @@ class PlayState extends MusicBeatState
 
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 				FlxG.sound.music.stop();
+				LoadingState.loadAndSwitchState(new PlayState());	// Delete this and remove "/*" and "*/" to add back the other cutscenes
+				/*
 				switch (curSong.toLowerCase())
 				{
   					case 'ugh':
     					playCutscene('gunsCutscene.mp4', true);
   					case 'guns':
     					playCutscene('stressCutscene.mp4', true);
+					default: 
+						LoadingState.loadAndSwitchState(new PlayState());
 				}
-				LoadingState.loadAndSwitchState(new PlayState());
+				*/
 			}
 		}
 		else
