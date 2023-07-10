@@ -48,15 +48,11 @@ import lime.utils.Assets;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
-#if (hxCodec >= "2.6.1") import hxcodec.VideoHandler as MP4Handler;
-#elseif (hxCodec == "2.6.0") import VideoHandler as MP4Handler;
-#else import vlc.MP4Handler; #end
 import scripting.Script;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
-import video.*;
 import CutsceneCharacter;
 #if MODS_ALLOWED
 //import modding.PolymodHandler;
@@ -65,6 +61,10 @@ import polymod.fs.SysFileSystem;
 import hscript.Expr;
 import hscript.Parser;
 import hscript.Interp;
+
+#if VIDEOS_ALLOWED
+import hxcodec.VideoHandler;
+#end
 
 using StringTools;
 
@@ -1056,6 +1056,10 @@ class PlayState extends MusicBeatState
 				case 'roses':
 					FlxG.sound.play(Paths.sound('ANGRY'));
 					schoolIntro(doof);
+				#if VIDEOS_ALLOWED	
+		        case 'ugh':
+			        playCutscene('ughCutscene.mp4');
+				#end										
 				default:
 					schoolIntro(doof);
 			}
@@ -1066,13 +1070,39 @@ class PlayState extends MusicBeatState
 			switch (curSong.toLowerCase())
 			{
 				default:
-					schoolIntro(doof);
+					startCountdown();
 			}
 		}
 
 		super.create();
 	}
 	
+	function playCutscene(name:String, atEndOfSong:Bool = false)
+	{
+		#if VIDEOS_ALLOWED
+		inCutscene = true;
+		FlxG.sound.music.stop();
+	
+		var video:VideoHandler = new VideoHandler();
+		video.finishCallback = function()
+		{
+			if (atEndOfSong)
+			{
+			  if (storyPlaylist.length <= 0)
+				FlxG.switchState(new StoryMenuState());
+			  else
+			  {
+				SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
+				FlxG.switchState(new PlayState());
+			  }
+			}
+			else
+			  startCountdown();
+		}
+		video.playVideo(Paths.video(name));
+		#end
+	}
+
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
@@ -2233,6 +2263,13 @@ class PlayState extends MusicBeatState
 
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 				FlxG.sound.music.stop();
+				switch (curSong.toLowerCase())
+				{
+  					case 'ugh':
+    					playCutscene('gunsCutscene.mp4', true);
+  					case 'guns':
+    					playCutscene('stressCutscene.mp4', true);
+				}
 				LoadingState.loadAndSwitchState(new PlayState());
 			}
 		}
