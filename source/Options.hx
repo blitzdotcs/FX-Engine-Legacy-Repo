@@ -84,6 +84,47 @@ class ZXNMOption extends Option
 	}
 }
 
+class BotPlayOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.botplay = !FlxG.save.data.botplay;
+		trace('BotPlay : ' + FlxG.save.data.botplay);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+		return "BotPlay " + (FlxG.save.data.botplay ? "on" : "off");
+}
+
+class PosBarOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.songPosition = !FlxG.save.data.songPosition;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return FlxG.save.data.songPosition ? "SongPositionBar ON" : "SongPositionBar OFF";
+	}
+}
+
 class DownscrollOption extends Option
 {
 	public function new(desc:String)

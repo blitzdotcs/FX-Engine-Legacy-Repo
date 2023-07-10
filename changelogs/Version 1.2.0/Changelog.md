@@ -8,9 +8,13 @@
 
 * Fixed uhh crash handlerr
 
-* Custom Controls
+* Better AnimationDebug menu
 
-* Added some week 7 crap that I didn't add in before.
+* Added back the song position bar
+
+* BOTPLAY
+
+* Custom Controls
 
 # Updates
 

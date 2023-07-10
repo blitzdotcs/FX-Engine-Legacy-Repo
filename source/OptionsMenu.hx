@@ -21,7 +21,9 @@ class OptionsMenu extends MusicBeatState
 
 	var options:Array<OptionCatagory> = [
 		new OptionCatagory("Gameplay", [
-			new ZXNMOption(controls)
+			new ZXNMOption(controls),
+			new PosBarOption("Song position barr"),
+			new BotPlayOption("Omg ur bad lel")
 		]),
 		new OptionCatagory("Appearence", [
 			new DownscrollOption("Change the layout of the strumline."),

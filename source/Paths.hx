@@ -43,6 +43,11 @@ class Paths
 		return getPreloadPath(file);
 	}
 
+	static public function getHaxeScript(string:String)
+	{
+		return OpenFlAssets.getText('assets/data/$string/haxeModchart.hx');
+	}
+
 	static public function loadJSON(key:String, ?library:String):Dynamic
 	{
 		var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
