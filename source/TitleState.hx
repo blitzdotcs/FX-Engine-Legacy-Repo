@@ -35,12 +35,16 @@ import openfl.Assets;
 
 import shaders.ColorSwapShader;
 import MainMenuState;
+#if sys
+import sys.io.File;
+#end
 
 using StringTools;
 
 class TitleState extends MusicBeatState
 {
 	static var initialized:Bool = false;
+	static public var soundExt:String = ".ogg";
 
 	var introData = "";
 

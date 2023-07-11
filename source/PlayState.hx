@@ -75,6 +75,8 @@ class PlayState extends MusicBeatState
 	public static var isStoryMode:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
+	public static var isCustomWeek:Bool = false;
+	public static var sourceFolder:String = '';
 	public static var storyDifficulty:Int = 1;
 	public static var deathCounter:Int = 0;
 	public static var changedDifficulty:Bool = false;
@@ -212,6 +214,8 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		#if sys isCustomWeek = true; #end
+
 		instance = this;
 
 		Script.onCreate();
@@ -1101,7 +1105,6 @@ class PlayState extends MusicBeatState
 				FlxG.switchState(new StoryMenuState());
 			  else
 			  {
-				SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
 				FlxG.switchState(new PlayState());
 			  }
 			}
@@ -1315,7 +1318,8 @@ class PlayState extends MusicBeatState
 		lastReportedPlayheadPosition = 0;
 
 		if (!paused)
-			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
+		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
+		FlxG.sound.playMusic(ModPaths.inst(PlayState.SONG.song), 1, false);
 		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
 
@@ -1395,9 +1399,14 @@ class PlayState extends MusicBeatState
 		curSong = songData.song;
 
 		if (SONG.needsVoices)
+		{
 			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
+			vocals = new FlxSound().loadEmbedded(ModPaths.voices(PlayState.SONG.song));
+		}			
 		else
+		{ 
 			vocals = new FlxSound();
+		}	
 
 		FlxG.sound.list.add(vocals);
 
@@ -2270,7 +2279,7 @@ class PlayState extends MusicBeatState
 				FlxTransitionableState.skipNextTransOut = true;
 				prevCamFollow = camFollow;
 
-				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
+				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0], isCustomWeek, sourceFolder);
 				FlxG.sound.music.stop();
 				LoadingState.loadAndSwitchState(new PlayState());	// Delete this and remove "/*" and "*/" to add back the other cutscenes
 				/*

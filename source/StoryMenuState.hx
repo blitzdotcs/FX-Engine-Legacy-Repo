@@ -49,6 +49,8 @@ class StoryMenuState extends MusicBeatState
 
 	var weekNames:Array<String> = ";Daddy Dearest;Spooky Month;PICO;MOMMY MUST MURDER;RED SNOW;hating simulator ft. moawling;TANKMAN".split(";");
 
+	var customWeekDirectories:Array<String> = [];
+
 	var txtWeekTitle:FlxText;
 
 	var curWeek:Int = 0;
@@ -65,8 +67,35 @@ class StoryMenuState extends MusicBeatState
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
 
+	function loadCustomWeeks():Void
+	{
+		while(customWeekDirectories.length < weekData.length)
+		{
+			customWeekDirectories.push(''); //This is a really scuffed way to offset it, but what do I care, it works!
+		}
+		#if sys
+		var customWeeks = ModLoader.customWeekList();
+		for(i in customWeeks)
+		{
+			customWeekDirectories.push(customWeeks[i]);
+			var customWeekData = ModLoader.getWeekConfigs(i);
+
+			var title = customWeekData[0];
+			var songs = customWeekData[1];
+			var locked = customWeekData[2];
+			var characters = customWeekData[3];
+
+			weekData.push(songs);
+			weekNames.push(title);
+			weekCharacters.push(characters);
+			weekUnlocked.push(!locked);
+		}
+		#end
+	}
+
 	override function create()
 	{
+		loadCustomWeeks();
 		#if cpp
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In StoryMenuState.hx", null);
@@ -114,7 +143,7 @@ class StoryMenuState extends MusicBeatState
 
 		for (i in 0...weekData.length)
 		{
-			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
+			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i, customWeekDirectories[i]);
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
 			grpWeekText.add(weekThing);
@@ -288,6 +317,11 @@ class StoryMenuState extends MusicBeatState
 	{
 		if (weekUnlocked[curWeek])
 		{
+			PlayState.isCustomWeek = (customWeekDirectories[curWeek] != '');
+			if(PlayState.isCustomWeek)
+			{
+				PlayState.sourceFolder = customWeekDirectories[curWeek];
+			}			
 			if (stopspamming == false)
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -313,7 +347,7 @@ class StoryMenuState extends MusicBeatState
 
 			PlayState.storyDifficulty = curDifficulty;
 
-			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
+			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase(), PlayState.isCustomWeek, PlayState.sourceFolder);
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)

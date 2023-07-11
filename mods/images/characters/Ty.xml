@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Ty.png">
+	<!-- Created using the Spritesheet and XML generator -->
+	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
+	<SubTexture name="TyDOWN_00010000" x="857" y="0" width="414" height="607" frameX="-133" frameY="-373" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyDOWN_00020000" x="381" y="657" width="396" height="617" frameX="-141" frameY="-364" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00010000" x="1497" y="1302" width="379" height="591" frameX="-155" frameY="-388" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00020000" x="1156" y="657" width="379" height="605" frameX="-155" frameY="-375" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00030000" x="777" y="657" width="379" height="615" frameX="-154" frameY="-364" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00040000" x="1119" y="1302" width="378" height="623" frameX="-155" frameY="-357" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00050000" x="740" y="1302" width="379" height="628" frameX="-155" frameY="-352" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00060000" x="362" y="1302" width="378" height="636" frameX="-155" frameY="-344" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00070000" x="1497" y="1302" width="379" height="591" frameX="-155" frameY="-388" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00080000" x="1156" y="657" width="379" height="605" frameX="-155" frameY="-375" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00090000" x="777" y="657" width="379" height="615" frameX="-154" frameY="-364" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00100000" x="1119" y="1302" width="378" height="623" frameX="-155" frameY="-357" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00110000" x="740" y="1302" width="379" height="628" frameX="-155" frameY="-352" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyIDLE_00120000" x="362" y="1302" width="378" height="636" frameX="-155" frameY="-344" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyLEFT_00010000" x="0" y="0" width="434" height="657" frameX="-93" frameY="-324" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyLEFT_00020000" x="434" y="0" width="423" height="654" frameX="-106" frameY="-330" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyRIGHT_00010000" x="0" y="657" width="381" height="645" frameX="-170" frameY="-336" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyRIGHT_00020000" x="1271" y="0" width="383" height="644" frameX="-158" frameY="-336" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyUP_00010000" x="1654" y="0" width="362" height="676" frameX="-156" frameY="-306" frameWidth="720" frameHeight="1280"/>
+	<SubTexture name="TyUP_00020000" x="0" y="1302" width="362" height="669" frameX="-160" frameY="-313" frameWidth="720" frameHeight="1280"/>
+</TextureAtlas>
