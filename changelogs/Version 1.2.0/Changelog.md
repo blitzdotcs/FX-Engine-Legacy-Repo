@@ -24,6 +24,8 @@
 
 * Cleaned OptionsMenu.hx
 
+* Made it harder to get the Gitaroo Man easter egg
+
 # Bug Fixes
 
 * Fixed Storymode not transitioning to the next song

@@ -328,7 +328,8 @@ class FreeplayState extends MusicBeatState
 
 		#if PRELOAD_ALL
 		songWait.cancel();
-		songWait.start(1, function(tmr:FlxTimer) {
+		songWait.start(1, function(tmr:FlxTimer) 
+		{
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
 		});
 		#end

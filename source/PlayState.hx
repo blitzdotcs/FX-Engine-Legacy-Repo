@@ -1105,6 +1105,7 @@ class PlayState extends MusicBeatState
 				FlxG.switchState(new StoryMenuState());
 			  else
 			  {
+				SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase(), storyPlaylist[0].toLowerCase(), isCustomWeek, sourceFolder);
 				FlxG.switchState(new PlayState());
 			  }
 			}
@@ -1318,8 +1319,14 @@ class PlayState extends MusicBeatState
 		lastReportedPlayheadPosition = 0;
 
 		if (!paused)
-		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
-		FlxG.sound.playMusic(ModPaths.inst(PlayState.SONG.song), 1, false);
+			if(!isCustomWeek) 
+			{
+			    FlxG.sound.playMusic("assets/songs/" + curSong.toLowerCase() + "/Inst" + Paths.SOUND_EXT, 1, false);
+			} 
+			else 
+			{		
+		        FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
+			}	
 		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
 
@@ -1400,8 +1407,11 @@ class PlayState extends MusicBeatState
 
 		if (SONG.needsVoices)
 		{
-			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
-			vocals = new FlxSound().loadEmbedded(ModPaths.voices(PlayState.SONG.song));
+			if(!isCustomWeek) {
+				vocals = new FlxSound().loadEmbedded("assets/songs/" + curSong.toLowerCase() + "/Voices" + Paths.SOUND_EXT);
+			} else {			
+			    vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
+			}	
 		}			
 		else
 		{ 

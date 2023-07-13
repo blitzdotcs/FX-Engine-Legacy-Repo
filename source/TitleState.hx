@@ -44,7 +44,9 @@ using StringTools;
 class TitleState extends MusicBeatState
 {
 	static var initialized:Bool = false;
-	static public var soundExt:String = ".ogg";
+	public static var closedState:Bool = false;
+	var mustUpdate:Bool = true;
+	var engineVer:String = "1.2.0";
 
 	var introData = "";
 
@@ -63,6 +65,9 @@ class TitleState extends MusicBeatState
 	public static var updateVersion:String = '';
 
 	public static var mod_dirs:Array<String> = [];
+
+	public static var soundExt:String = ".ogg";
+
 
 	public static function reloadMods()
 	{
@@ -141,6 +146,28 @@ class TitleState extends MusicBeatState
 
 		reloadMods();		
 		
+		if(FXEngineData.checkForUpdates && !closedState) {
+			trace('checking for update');
+			var http = new haxe.Http("https://raw.githubusercontent.com/TyDevX/FX-Engine/main/gitVersion.txt");
+
+			http.onData = function (data:String)
+			{
+				updateVersion = data.split('\n')[0].trim();
+				var curVersion:String = engineVer.trim();
+				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
+				if(updateVersion != curVersion) {
+					trace('versions arent matching!');
+					mustUpdate = true;
+				}
+			}
+
+			http.onError = function (error) {
+				trace('error: $error');
+			}
+
+			http.request();
+		}
+
 		Highscore.load();
 
 		colorShader = new ColorSwapEffect();
@@ -163,16 +190,10 @@ class TitleState extends MusicBeatState
 				StoryMenuState.weekUnlocked[0] = true;
 		}
 
-		#if FREEPLAY
-		FlxG.switchState(new FreeplayState());
-		#elseif CHARTING
-		FlxG.switchState(new ChartingState());
-		#else
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
 			startIntro();
 		});
-		#end
 
 		#if windows
 		DiscordClient.initialize();
@@ -347,16 +368,6 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			/*
-			#if !switch
-			NGio.unlockMedal(60960);
-
-			// If it's Friday according to da clock
-			if (Date.now().getDay() == 5)
-				NGio.unlockMedal(61034);
-			#end
-			*/
-
 			titleText.animation.play('press');
 
 			FlxG.camera.flash(FlxColor.WHITE, 1);
@@ -365,38 +376,15 @@ class TitleState extends MusicBeatState
 			transitioning = true;
 			// FlxG.sound.music.stop();
 
-			new FlxTimer().start(2, function(tmr:FlxTimer)
+			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
-				var http = new haxe.Http("https://raw.githubusercontent.com/TyDevX/FX-Engine/master/gitVersion");
-				var returnedData:Array<String> = [];
-				var engineVer:String = "1.1.2";
-
-				http.onData = function(data:String)
-				{
-					returnedData[0] = data.substring(0, data.indexOf(';'));
-					returnedData[1] = data.substring(data.indexOf('-'), data.length);
-					if (!engineVer.contains(returnedData[0].trim()) && !OutdatedSubState.leftState)
-					{
-						trace('outdated lmao' + returnedData[0] + ' != ' + engineVer);
-						OutdatedSubState.needVer = returnedData[0];
-						OutdatedSubState.currChanges = returnedData[1];
-						FlxG.switchState(new OutdatedSubState());
-					}
-					else
-					{
-						FlxG.switchState(new MainMenuState());
-					}
+				if (mustUpdate) {
+					FlxG.switchState(new OutdatedSubState());
+				} else {
+					FlxG.switchState(new MainMenuState());
 				}
-	
-				http.onError = function(error)
-				{
-					trace('error: $error');
-					FlxG.switchState(new MainMenuState()); // fail but we go anyway
-				}
-	
-				http.request();
-			});
-				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
+				closedState = true;
+			});			
 		}
 
 		if (pressedEnter && !skippedIntro)

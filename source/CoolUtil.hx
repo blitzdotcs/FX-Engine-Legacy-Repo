@@ -4,6 +4,7 @@ import lime.utils.Assets;
 #if sys
 import sys.io.File;
 #end
+import flixel.FlxG;
 
 using StringTools;
 
@@ -19,6 +20,18 @@ class CoolUtil
 	public static function difficultyFromInt(difficulty:Int):String
 	{
 		return difficultyArray[difficulty];
+	}
+
+	inline public static function boundTo(value:Float, min:Float, max:Float):Float {
+		return Math.max(min, Math.min(max, value));
+	}
+
+	public static function browserLoad(site:String) {
+		#if linux
+		Sys.command('/usr/bin/xdg-open', [site]);
+		#else
+		FlxG.openURL(site);
+		#end
 	}
 
 	public static function coolTextFile(path:String):Array<String>
