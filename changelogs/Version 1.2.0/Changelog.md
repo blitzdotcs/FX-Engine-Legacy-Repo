@@ -22,6 +22,8 @@
 
 * Finally updated Discord.hx :skull:
 
+* Finally got OutdatedSubState working
+
 * Cleaned OptionsMenu.hx
 
 * Made it harder to get the Gitaroo Man easter egg
