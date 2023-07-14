@@ -47,9 +47,31 @@ class FreeplayState extends MusicBeatState
 
 	var bg:FlxSprite;
 
+	var songFolders:Array<String> = [];
+
 	override function create()
 	{
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+
+		var baseStrings = initSonglist;
+
+		#if sys
+		var fullDirs:Array<String> = ModLoader.getFreeplayFolders();
+		for(i in 0...baseStrings.length)
+		{
+			songFolders.push('');
+		}
+		for(i in 0...fullDirs.length)
+		{
+			songFolders.push(fullDirs[i]);
+		}
+
+		var customTracks:Array<String> = ModLoader.getFreeplaySongs();
+		for(i in 0...customTracks.length)
+		{
+			initSonglist.push(customTracks[i]);
+		}
+		#end
 
 		for (i in 0...initSonglist.length)
 		{
@@ -221,7 +243,7 @@ class FreeplayState extends MusicBeatState
 
 			trace(poop);
 
-			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+			PlayState.SONG = Song.loadFromJson(songs[curSelected].songName.toLowerCase(), songs[curSelected].songName.toLowerCase(), (songFolders[curSelected] != ''), songFolders[curSelected]);
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 
@@ -306,7 +328,8 @@ class FreeplayState extends MusicBeatState
 
 		#if PRELOAD_ALL
 		songWait.cancel();
-		songWait.start(1, function(tmr:FlxTimer) {
+		songWait.start(1, function(tmr:FlxTimer) 
+		{
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
 		});
 		#end

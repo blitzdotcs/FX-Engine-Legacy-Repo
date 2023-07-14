@@ -26,6 +26,7 @@ This is the repository for FX Engine. A modification of a game that was original
 - Psych Engine Icon Support (for credits and freeplay only, when I tried it for the in-game stuff, the game kept crashing)
 - Ingame Options Menu (Check the pause menu)
 - A game crasher (In the options menu)
+- Restored Dialogue!
 
 # FX Engine Main Credits
 

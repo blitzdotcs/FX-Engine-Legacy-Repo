@@ -4,6 +4,8 @@ import flixel.input.gamepad.FlxGamepad;
 
 class FXEngineData
 {   
+	public static var checkForUpdates:Bool = true;
+
     public static function initSave()
     {	
 		if (FlxG.save.data.zxnm == null)
@@ -11,6 +13,12 @@ class FXEngineData
 
 	    if (FlxG.save.data.downscroll == null)
 		   FlxG.save.data.downscroll = false;
+
+        if (FlxG.save.data.botplay == null)
+           FlxG.save.data.botplay = false;
+
+        if (FlxG.save.data.checkForUpdates == null)
+           FlxG.save.data.checkForUpdates = false;
 
         if (FlxG.save.data.iconbops == null)
             FlxG.save.data.iconbops = false;     

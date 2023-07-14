@@ -1,7 +1,7 @@
 package;
 
-
-import Controls.KeyboardScheme;
+import openfl.Lib;
+import Options;
 import Controls.Control;
 import flash.text.TextField;
 import flixel.FlxG;
@@ -19,18 +19,31 @@ class OptionsMenu extends MusicBeatState
 	var selector:FlxText;
 	var curSelected:Int = 0;
 
-	var controlsStrings:Array<String> = [];
+	var options:Array<OptionCatagory> = [
+		new OptionCatagory("Gameplay", [
+			new ZXNMOption(controls),
+			new PosBarOption("Song position barr"),
+			new BotPlayOption("Omg ur bad lel")
+		]),
+		new OptionCatagory("Appearence", [
+			new DownscrollOption("Change the layout of the strumline."),
+			new MiddleScrollOption("Change the position of the strumline.")
+		]),
+		new OptionCatagory("Misc", [
+			new QuaverBarOption("Cooler healthBar thing"),
+			new IconBopOption("Make the icons bop with the bpm")
+		])
+	];
 
-	public static var iconbops:String = 'BOP';
-
+	private var currentDescription:String = "";
 	private var grpControls:FlxTypedGroup<Alphabet>;
 	var versionShit:FlxText;
+
+	var currentSelectedCat:OptionCatagory;
+
 	override function create()
 	{
-		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.zxnm ? 'ZXNM' : 'WASD') + "\n" + (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll') + "\n" + (FlxG.save.data.middleScroll ? 'MiddleScroll' : 'RegScroll') + "\n" + (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP') + "\n" + (FlxG.save.data.quaverbar ? 'QuaverBar' : 'RegBar') + "\nCrash Game");
-		
-		trace(controlsStrings);
+		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat"));
 
 		menuBG.color = 0xFFea71fd;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
@@ -42,17 +55,18 @@ class OptionsMenu extends MusicBeatState
 		grpControls = new FlxTypedGroup<Alphabet>();
 		add(grpControls);
 
-		for (i in 0...controlsStrings.length)
+		for (i in 0...options.length)
 		{
-				var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, controlsStrings[i], true, false);
-				controlLabel.isMenuItem = true;
-				controlLabel.targetY = i;
-				grpControls.add(controlLabel);
+			var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, options[i].getName(), true, false);
+			controlLabel.isMenuItem = true;
+			controlLabel.targetY = i;
+			grpControls.add(controlLabel);
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 		}
 
+		currentDescription = "none";
 
-		versionShit = new FlxText(5, FlxG.height - 18, 0, "Offset (Left, Right): " + FlxG.save.data.offset, 12);
+		versionShit = new FlxText(5, FlxG.height - 18, 0, "Offset (Left, Right): " + FlxG.save.data.offset + " - Description - " + currentDescription, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -60,78 +74,61 @@ class OptionsMenu extends MusicBeatState
 		super.create();
 	}
 
+	var isCat:Bool = false;
+	
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-			if (controls.BACK)
+			if (controls.BACK && !isCat)
 				FlxG.switchState(new MainMenuState());
+			else if (controls.BACK)
+			{
+				isCat = false;
+				grpControls.clear();
+				for (i in 0...options.length)
+					{
+						var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, options[i].getName(), true, false);
+						controlLabel.isMenuItem = true;
+						controlLabel.targetY = i;
+						grpControls.add(controlLabel);
+						// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
+					}
+				curSelected = 0;
+			}
 			if (controls.UP_P)
 				changeSelection(-1);
 			if (controls.DOWN_P)
 				changeSelection(1);
-			
-			if (controls.RIGHT_R)
-			{
-				FlxG.save.data.offset++;
-				versionShit.text = "Offset (Left, Right): " + FlxG.save.data.offset;
-			}
-
-			if (controls.LEFT_R)
-				{
-					FlxG.save.data.offset--;
-					versionShit.text = "Offset (Left, Right): " + FlxG.save.data.offset;
-				}
-	
-
+		
 			if (controls.ACCEPT)
 			{
-				if (curSelected != 4)
-					grpControls.remove(grpControls.members[curSelected]);
-				switch(curSelected)
+				if (isCat)
 				{
-					case 0:
-						FlxG.save.data.zxnm = !FlxG.save.data.zxnm;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.zxnm ? 'ZXNM' : 'WASD'), true, false);
+					if (currentSelectedCat.getOptions()[curSelected].press()) {
+						grpControls.remove(grpControls.members[curSelected]);
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, currentSelectedCat.getOptions()[curSelected].getDisplay(), true, false);
 						ctrl.isMenuItem = true;
-						ctrl.targetY = curSelected;
 						grpControls.add(ctrl);
-						if (FlxG.save.data.zxnm)
-							controls.setKeyboardScheme(KeyboardScheme.Solo, true);
-						else
-							controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
-
-					case 1:
-						FlxG.save.data.downscroll = !FlxG.save.data.downscroll;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll'), true, false);
-						ctrl.isMenuItem = true;
-						ctrl.targetY = curSelected - 2;
-						grpControls.add(ctrl);
-
-					case 2:
-						FlxG.save.data.middleScroll = !FlxG.save.data.middleScroll;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.middleScroll ? 'MiddleScroll' : 'RegScroll'), true, false);
-						ctrl.isMenuItem = true;
-						ctrl.targetY = curSelected - 2;
-						grpControls.add(ctrl);
-
-					case 3:
-                        FlxG.save.data.iconbops = !FlxG.save.data.iconbops;
-                        var iconbopsCtrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.iconbops ? 'BOP' : 'NO-BOP'), true, false);
-                        iconbopsCtrl.isMenuItem = true;
-                        iconbopsCtrl.targetY = curSelected - 2;
-                       grpControls.add(iconbopsCtrl);
-                        if (FlxG.save.data.iconbops)
-                            OptionsMenu.iconbops = FlxG.save.data.iconbops;	
-
-					case 4:
-						FlxG.save.data.quaverbar = !FlxG.save.data.quaverbar;
-						var Ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.quaverbar ? 'QuaverBar' : 'RegBar'), true, false);
-						Ctrl.isMenuItem = true;
-						Ctrl.targetY = curSelected - 2;
-						grpControls.add(Ctrl);									
+					}
+				}
+				else
+				{
+					currentSelectedCat = options[curSelected];
+					isCat = true;
+					grpControls.clear();
+					for (i in 0...currentSelectedCat.getOptions().length)
+						{
+							var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, currentSelectedCat.getOptions()[i].getDisplay(), true, false);
+							controlLabel.isMenuItem = true;
+							controlLabel.targetY = i;
+							grpControls.add(controlLabel);
+							// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
+						}
+					curSelected = 0;
 				}
 			}
+		FlxG.save.flush();
 	}
 
 	var isSettingControl:Bool = false;
@@ -139,10 +136,10 @@ class OptionsMenu extends MusicBeatState
 	function changeSelection(change:Int = 0)
 	{
 		#if !switch
-		// NGio.logEvent('Fresh');
+		// NGio.logEvent("Fresh");
 		#end
 		
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
 
 		curSelected += change;
 
@@ -150,6 +147,12 @@ class OptionsMenu extends MusicBeatState
 			curSelected = grpControls.length - 1;
 		if (curSelected >= grpControls.length)
 			curSelected = 0;
+
+		if (isCat)
+			currentDescription = currentSelectedCat.getOptions()[curSelected].getDescription();
+		else
+			currentDescription = "Please select a catagory";
+		versionShit.text = "Offset (Left, Right): " + FlxG.save.data.offset + " - Description - " + currentDescription;
 
 		// selector.y = (70 * curSelected) + 30;
 
