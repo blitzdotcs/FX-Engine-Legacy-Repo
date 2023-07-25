@@ -15,7 +15,7 @@ This is the repository for FX Engine. A modification of a game that was original
 # Features of FX Engine
 
 - Ghost Tapping
-- Choose between WASD and ZXNM!
+- Custom Controls!
 - Working settings menu
 - W.i.p. Modding support without source
 - Character Selection!
@@ -23,10 +23,8 @@ This is the repository for FX Engine. A modification of a game that was original
 - Custom Credits Menu
 - Downscroll
 - Somewhat working Cutscene support!
-- Psych Engine Icon Support (for credits and freeplay only, when I tried it for the in-game stuff, the game kept crashing)
-- Ingame Options Menu (Check the pause menu)
-- A game crasher (In the options menu)
 - Restored Dialogue!
+- And more!
 
 # FX Engine Main Credits
 
@@ -41,9 +39,6 @@ First, you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep u
 2. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) after downloading Haxe
 3. Open up a Command Prompt/PowerShell or Terminal, type `haxelib install hmm`
 4. After it finishes, simply type `haxelib run hmm install` in order to install all the needed libraries for *Psych Engine!*
-
-# Thingy for extension-webm video support
-1. After that run `lime rebuild extension-webm <ie. windows, macos, linux>`
 
 You should have everything ready for compiling the game! Follow the guide below to continue!
 
