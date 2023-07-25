@@ -10,7 +10,7 @@ This is the repository for FX Engine. A modification of a game that was original
 
 * [Gamebanana Page](https://gamebanana.com/mods/447020)
 
-* [Gamejolt Page](https://gamejolt.com/games/fnffxenginelmao/812241)
+* [Gamejolt Page](https://gamejolt.com/games/fnffxenginelmao/812241)  (not getting updated anymore on here)
 
 # Features of FX Engine
 
