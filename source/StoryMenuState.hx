@@ -335,15 +335,17 @@ class StoryMenuState extends MusicBeatState
 			PlayState.isStoryMode = true;
 			selectedWeek = true;
 
-			var diffic = "";
+			var diffic = "-hard";
 
+            /*
 			switch (curDifficulty)
 			{
 				case 0:
-					diffic = '-easy';
+					diffic = '-hard';
 				case 2:
 					diffic = '-hard';
 			}
+			*/
 
 			PlayState.storyDifficulty = curDifficulty;
 
@@ -371,11 +373,11 @@ class StoryMenuState extends MusicBeatState
 		switch (curDifficulty)
 		{
 			case 0:
-				sprDifficulty.animation.play('easy');
+				sprDifficulty.animation.play('hard');
 				sprDifficulty.offset.x = 20;
 			case 1:
-				sprDifficulty.animation.play('normal');
-				sprDifficulty.offset.x = 70;
+				sprDifficulty.animation.play('hard');
+				sprDifficulty.offset.x = 20;
 			case 2:
 				sprDifficulty.animation.play('hard');
 				sprDifficulty.offset.x = 20;

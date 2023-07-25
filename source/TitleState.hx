@@ -38,6 +38,7 @@ import MainMenuState;
 #if sys
 import sys.io.File;
 #end
+import MainMenuState;
 
 using StringTools;
 
@@ -46,8 +47,6 @@ class TitleState extends MusicBeatState
 	static var initialized:Bool = false;
 	public static var closedState:Bool = false;
 	var mustUpdate:Bool = true;
-	var engineVer:String = "1.2.0";
-
 	var introData = "";
 
 	var blackScreen:FlxSprite;
@@ -62,7 +61,7 @@ class TitleState extends MusicBeatState
 
 	var wackyImage:FlxSprite;
 
-	public static var updateVersion:String = '';
+	public static var updateVersion:String = '1.2.1';
 
 	public static var mod_dirs:Array<String> = [];
 
@@ -144,8 +143,9 @@ class TitleState extends MusicBeatState
 		if(FlxG.save.data.mods == null)
 			FlxG.save.data.mods = [];
 
-		reloadMods();		
-		
+		reloadMods();
+
+		#if CHECK_FOR_UPDATES		
 		if(FXEngineData.checkForUpdates && !closedState) {
 			trace('checking for update');
 			var http = new haxe.Http("https://raw.githubusercontent.com/TyDevX/FX-Engine/main/gitVersion.txt");
@@ -153,7 +153,7 @@ class TitleState extends MusicBeatState
 			http.onData = function (data:String)
 			{
 				updateVersion = data.split('\n')[0].trim();
-				var curVersion:String = engineVer.trim();
+				var curVersion:String = MainMenuState.engineVer.trim();
 				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
 				if(updateVersion != curVersion) {
 					trace('versions arent matching!');
@@ -167,6 +167,7 @@ class TitleState extends MusicBeatState
 
 			http.request();
 		}
+		#end
 
 		Highscore.load();
 
