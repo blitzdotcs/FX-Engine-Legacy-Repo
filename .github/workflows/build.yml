@@ -19,7 +19,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.2.4
+          haxe-version: 4.2.2
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
@@ -27,16 +27,16 @@ jobs:
           haxelib install hxcpp > nul
           haxelib install lime
           haxelib install openfl
-          haxelib --never install flixel
+          haxelib --never install flixel 4.11.0
           haxelib run lime setup flixel
           haxelib run lime setup
-          haxelib install flixel-tools
+          haxelib install flixel-tools 1.5.1
           haxelib install hscript
           haxelib install hxCodec
-          haxelib install flixel-ui
-          haxelib install flixel-addons
+          haxelib install flixel-ui 2.5.0
+          haxelib install flixel-addons 2.11.0
           haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
-          haxelib install hscript
+          haxelib install hscript 2.5.0
           haxelib git polymod-enigma https://github.com/EnigmaEngine/polymod
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
