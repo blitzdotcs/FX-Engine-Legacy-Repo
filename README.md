@@ -2,10 +2,6 @@
 
 This is the repository for FX Engine. A modification of a game that was originally made for Ludum Dare 47 "Stuck In a Loop".
 
-# NOTE
-
-* I AM NOT IN THE FNF COMMUNITY I'M JUST CONTINUING THIS TO LEARN MORE ABOUT HAXE.
-
 # Links
 
 * [Gamebanana Page](https://gamebanana.com/mods/447020)
@@ -37,8 +33,7 @@ This is the repository for FX Engine. A modification of a game that was original
 First, you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep updated with that setup (which is pretty simple). 
 1. [Install Haxe 4.2.0](https://haxe.org/download/version/4.2.0/) (Any ver should work but I use 4.2.0)
 2. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) after downloading Haxe
-3. Open up a Command Prompt/PowerShell or Terminal, type `haxelib install hmm`
-4. After it finishes, simply type `haxelib run hmm install` in order to install all the needed libraries for *Psych Engine!*
+3. Look at the shit that's in the workflow lmao
 
 You should have everything ready for compiling the game! Follow the guide below to continue!
 
