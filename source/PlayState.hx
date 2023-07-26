@@ -84,12 +84,6 @@ class PlayState extends MusicBeatState
 	public static var freeplayChar:Bool = false;
 	public static var instance:PlayState;
 	public static var seenCutscene:Bool = false;
- 
-    // NOTECOMBO
-	var notecomboSpritelol:FlxSprite;
-	var focusfornotecombo:String = 'dad';
-	var focusshit:String = '';
-	var coolcombo:Int = 0;
 
 	public static var hasPlayedOnce:Bool = false;
 
@@ -993,15 +987,6 @@ class PlayState extends MusicBeatState
 		// healthBar
 		add(healthBar);
 
-		notecomboSpritelol = new FlxSprite().loadGraphic(Paths.image('noteCombo'));
-		notecomboSpritelol.frames = Paths.getSparrowAtlas('noteCombo');
-		notecomboSpritelol.scale.set(0.6, 0.6);
-		notecomboSpritelol.x = boyfriend.x + boyfriend.width - notecomboSpritelol.width;
-		notecomboSpritelol.y = (boyfriend.y + boyfriend.height) / 4;
-		notecomboSpritelol.alpha = 0.00001;
-		notecomboSpritelol.animation.addByPrefix('appear', 'NoteCombofix', 24, false);
-		add(notecomboSpritelol);
-
 		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 250, healthBarBG.y + 30, 0, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT);
 		scoreTxt.scrollFactor.set();
@@ -1765,52 +1750,8 @@ class PlayState extends MusicBeatState
 
 	public var stopUpdate = false;
 
-    // NOTECOMBO
-	var numbernotecomboSpritelol:FlxSprite;
-	var spritenoob:Array<FlxSprite> = [];
-
 	override public function update(elapsed:Float)
 	{
-
-		if(focusfornotecombo != focusshit && focusshit != 'none' && coolcombo > 0)
-		{
-			//sikenumcombo(coolcombo); //haha bug
-			var loop:Int = 1;
-			var seperatedNoteCombo:Array<String> = Std.string(coolcombo).split("");
-			for (i in seperatedNoteCombo){
-				numbernotecomboSpritelol = new FlxSprite().loadGraphic(Paths.image('noteComboNumbers'));
-				numbernotecomboSpritelol.frames = Paths.getSparrowAtlas('noteComboNumbers');
-				numbernotecomboSpritelol.scale.set(0.6, 0.6);
-				numbernotecomboSpritelol.x = boyfriend.x + boyfriend.width - notecomboSpritelol.width + (loop * 100) + 200; 
-				numbernotecomboSpritelol.x -= 90 * (seperatedNoteCombo.length - 1);
-				numbernotecomboSpritelol.y = (boyfriend.y + boyfriend.height) / 4 + 112.5 - (loop * 25);
-				numbernotecomboSpritelol.visible = true;
-				numbernotecomboSpritelol.updateHitbox();
-				numbernotecomboSpritelol.animation.addByPrefix('appear', i + '_appear', 24, false);
-				numbernotecomboSpritelol.animation.addByPrefix('disappear', i + '_disappear', 24, false);
-				add(numbernotecomboSpritelol);
-				spritenoob.push(numbernotecomboSpritelol);
-				numbernotecomboSpritelol.animation.play('appear');
-				loop++;
-			}
-			for (i in 0...spritenoob.length){
-				new FlxTimer().start(0.7, function(tmr:FlxTimer) {
-					spritenoob[i].animation.play('disappear');
-					new FlxTimer().start(0.15, function(tmr:FlxTimer) {
-						spritenoob[i].visible = false;
-						spritenoob[i].active = false;
-					});
-				});
-			}
-			coolcombo = 0;
-			notecomboSpritelol.alpha = 1;
-			FlxG.sound.play(Paths.sound('noteComboSound'));
-			notecomboSpritelol.animation.play('appear');
-			focusfornotecombo = focusshit;
-		}
-
-		if(notecomboSpritelol.animation.finished) notecomboSpritelol.alpha = 0.00001;
-
 		Script.onUpdate();
 
 		//		trace(health);
@@ -2293,11 +2234,6 @@ class PlayState extends MusicBeatState
 	
 			});
 		}
-	}
-
-	function sikenumcombo(notecombo:Int)
-	{
-		// Swagger
 	}
 
 	function endSong():Void

@@ -145,6 +145,10 @@ class PauseSubState extends MusicBeatSubstate
 				case 'Toggle Practice Mode':
 					PlayState.practiceMode = !PlayState.practiceMode;
 					practiceText.visible = PlayState.practiceMode;
+
+				case 'Change Difficulty':
+					menuItems = difficultyChoices;
+					regenMenu();
 				case 'BACK':
 					menuItems = pauseOG;
 					regenMenu();
