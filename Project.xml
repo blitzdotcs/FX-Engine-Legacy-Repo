@@ -52,9 +52,7 @@
 	<define name="MODS_ALLOWED" if="desktop" />
 	<define name="VIDEOS_ALLOWED" if="desktop" />
 	<define name="WEBM_ENABLED" if="android" /> <!-- Set to android for now bc idek if this works -->
-	<!-- DONT ENABLE THIS -->
-	<define name="CHECK_FOR_UPDATES" if="desktop officialBuild"/>
-	
+
 	<assets path="mods" embed="false" exclude="*.ogg" if="web" />
 	<assets path="mods" embed="false" exclude="*.mp3" unless="web" />
 

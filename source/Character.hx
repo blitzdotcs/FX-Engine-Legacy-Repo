@@ -4,8 +4,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
-import openfl.utils.Assets as OpenFlAssets;
-import haxe.Json;
 
 using StringTools;
 
@@ -32,6 +30,38 @@ class Character extends FlxSprite
 
 		switch (curCharacter)
 		{
+			case 'gf':
+				// GIRLFRIEND CODE
+				tex = Paths.getSparrowAtlas('characters/GF_assets');
+				frames = tex;
+				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
+				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
+				animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
+				animation.addByPrefix('singUP', 'GF Up Note', 24, false);
+				animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
+				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
+				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+				animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
+				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
+				animation.addByPrefix('scared', 'GF FEAR', 24);
+
+				addOffset('cheer');
+				addOffset('sad', -2, -2);
+				addOffset('danceLeft', 0, -9);
+				addOffset('danceRight', 0, -9);
+
+				addOffset("singUP", 0, 4);
+				addOffset("singRIGHT", 0, -20);
+				addOffset("singLEFT", 0, -19);
+				addOffset("singDOWN", 0, -20);
+				addOffset('hairBlow', 45, -8);
+				addOffset('hairFall', 0, -9);
+
+				addOffset('scared', -2, -17);
+
+				playAnim('danceRight');
+
 			case 'gf-christmas':
 				tex = Paths.getSparrowAtlas('characters/gfChristmas');
 				frames = tex;
@@ -606,9 +636,7 @@ class Character extends FlxSprite
 	
 				playAnim('idle');
 	
-				flipX = true;	
-			default:
-				parseDataFile();							
+				flipX = true;				
 		}
 
 		dance();
@@ -634,45 +662,6 @@ class Character extends FlxSprite
 				}
 			}
 		}
-	}
-
-	function parseDataFile()
-	{
-		Debug.logInfo('Generating character (${curCharacter}) from JSON data...');
-
-		// Load the data from JSON and cast it to a struct we can easily read.
-		var jsonData = Paths.loadJSON('characters/${curCharacter}');
-		if (jsonData == null)
-		{
-			Debug.logError('Failed to parse JSON data for character ${curCharacter}');
-			return;
-		}
-
-		var data:CharacterData = cast jsonData;
-
-		var tex:FlxAtlasFrames = Paths.getSparrowAtlas(data.asset, 'shared');
-		frames = tex;
-
-		for (anim in data.animations)
-		{
-			var frameRate = anim.frameRate == null ? 24 : anim.frameRate;
-			var looped = anim.looped == null ? false : anim.looped;
-			var flipX = anim.flipX == null ? false : anim.looped;
-			var flipY = anim.flipY == null ? false : anim.looped;
-
-			if (anim.frameIndices != null)
-			{
-				animation.addByIndices(anim.name, anim.prefix, anim.frameIndices, "", frameRate, looped, flipX, flipY);
-			}
-			else
-			{
-				animation.addByPrefix(anim.name, anim.prefix, frameRate, looped, flipX, flipY);
-			}
-
-			animOffsets[anim.name] = anim.offsets == null ? [0, 0] : anim.offsets;
-		}
-
-		playAnim(data.startingAnim);
 	}
 
 	override function update(elapsed:Float)
@@ -806,36 +795,4 @@ class Character extends FlxSprite
 	{
 		animOffsets[name] = [x, y];
 	}
-}
-
-typedef CharacterData =
-{
-	var name:String;
-	var asset:String;
-	var startingAnim:String;
-	var animations:Array<AnimationData>;
-}
-
-typedef AnimationData =
-{
-	var name:String;
-	var prefix:String;
-	var ?offsets:Array<Int>;
-
-	/**
-	 * Whether this animation is looped.
-	 * @default false
-	 */
-	var ?looped:Bool;
-
-	var ?flipX:Bool;
-	var ?flipY:Bool;
-
-	/**
-	 * The frame rate of this animation.
-	 		* @default 24
-	 */
-	var ?frameRate:Int;
-
-	var ?frameIndices:Array<Int>;
 }
