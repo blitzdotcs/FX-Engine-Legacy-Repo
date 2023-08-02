@@ -2,20 +2,16 @@
 
 This is the repository for FX Engine. A modification of a game that was originally made for Ludum Dare 47 "Stuck In a Loop".
 
-# NOTE
-
-* I AM NOT IN THE FNF COMMUNITY I'M JUST CONTINUING THIS TO LEARN MORE ABOUT HAXE.
-
 # Links
 
 * [Gamebanana Page](https://gamebanana.com/mods/447020)
 
-* [Gamejolt Page](https://gamejolt.com/games/fnffxenginelmao/812241)
+* [Gamejolt Page](https://gamejolt.com/games/fnffxenginelmao/812241)  (not getting updated anymore on here)
 
 # Features of FX Engine
 
 - Ghost Tapping
-- Choose between WASD and ZXNM!
+- Custom Controls!
 - Working settings menu
 - W.i.p. Modding support without source
 - Character Selection!
@@ -23,14 +19,17 @@ This is the repository for FX Engine. A modification of a game that was original
 - Custom Credits Menu
 - Downscroll
 - Somewhat working Cutscene support!
-- Psych Engine Icon Support (for credits and freeplay only, when I tried it for the in-game stuff, the game kept crashing)
-- Ingame Options Menu (Check the pause menu)
-- A game crasher (In the options menu)
 - Restored Dialogue!
+- And more!
 
 # FX Engine Main Credits
 
-- LOOK IN THE CREDITS MENU DORK!1
+- [TyDev](https://twitter.com/TyDev_) - Main FX Engine Programmer
+- [Chocolate Engine Team](https://github.com/Joalor64GH/Chocolate-Engine) - Better Credits
+- [Funkin' Crew](https://github.com/FunkinCrew/) - Original Game Devs
+- [Kade Engine Team](https://github.com/KadeDev/Kade-Engine) - I Stole some code
+- [Psych Engine Team](https://github.com/ShadowMario/FNF-PsychEngine/) - I stole some code
+- FNF Restored Team - Dialogue code and assets
 
 ### Build instructions
 
@@ -39,11 +38,7 @@ This is the repository for FX Engine. A modification of a game that was original
 First, you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep updated with that setup (which is pretty simple). 
 1. [Install Haxe 4.2.0](https://haxe.org/download/version/4.2.0/) (Any ver should work but I use 4.2.0)
 2. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) after downloading Haxe
-3. Open up a Command Prompt/PowerShell or Terminal, type `haxelib install hmm`
-4. After it finishes, simply type `haxelib run hmm install` in order to install all the needed libraries for *Psych Engine!*
-
-# Thingy for extension-webm video support
-1. After that run `lime rebuild extension-webm <ie. windows, macos, linux>`
+3. Look at the shit that's in the workflow lmao
 
 You should have everything ready for compiling the game! Follow the guide below to continue!
 

@@ -31,7 +31,3 @@
 # Bug Fixes
 
 * Fixed Storymode not transitioning to the next song
-
-# What's coming soon
-
-* Reworked mobile port
