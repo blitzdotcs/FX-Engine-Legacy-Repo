@@ -84,6 +84,27 @@ class ZXNMOption extends Option
 	}
 }
 
+class DialOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.restored = !FlxG.save.data.restored;
+		trace('Restored Dialogue : ' + FlxG.save.data.restored);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return  FlxG.save.data.restored ? "Dialogue On" : "Dialogue Off";
+	}
+}
+
 class BotPlayOption extends Option
 {
 	public function new(desc:String)

@@ -55,7 +55,7 @@ class Note extends FlxSprite
 		switch (PlayState.SONG.noteStyle)
 		{
 			case 'pixel':
-				loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels','week6'), true, 17, 17);
+				loadGraphic(Paths.loadImage('weeb/pixelUI/arrows-pixels','week6'), true, 17, 17);
 
 				animation.add('greenScroll', [6]);
 				animation.add('redScroll', [7]);
@@ -69,7 +69,7 @@ class Note extends FlxSprite
 
 				if (isSustainNote)
 				{
-					loadGraphic(Paths.image('weeb/pixelUI/arrowEnds','week6'), true, 7, 6);
+					loadGraphic(Paths.loadImage('weeb/pixelUI/arrowEnds','week6'), true, 7, 6);
 
 					if(!FlxG.save.data.downscroll)
 						{
