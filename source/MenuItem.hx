@@ -16,11 +16,7 @@ class MenuItem extends FlxSpriteGroup
 	public function new(x:Float, y:Float, weekNum:Int = 0, weekDir:String = '')
 	{
 		super(x, y);
-		if(weekDir != '') {
-			#if sys week = new FlxSprite().loadGraphic(ModLoader.loadImage('week', 'weeks/${weekDir}')); #end
-		} else {
-			week = new FlxSprite().loadGraphic(Paths.image('storymenu/week' + weekNum));
-		}		
+		week = new FlxSprite().loadGraphic(Paths.image('storymenu/week' + weekNum));		
 		add(week);
 	}
 

@@ -128,7 +128,6 @@
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name= "polymod-enigma" rename="polymod" if="desktop" /> <!-- USE https://github.com/EnigmaEngine/polymod -->
 	<haxelib name="discord_rpc" if="windows"/>
-	<haxelib name="hxCodec" if="desktop || android" />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
 	<!-- <haxelib name="markdown" /> -->
