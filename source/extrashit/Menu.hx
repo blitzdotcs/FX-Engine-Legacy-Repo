@@ -58,8 +58,6 @@ class Menu extends MusicBeatState
 
 			switch (daSelected)
 			{
-				case "Mods":
-				    FlxG.switchState(new ModsMenuState());
 				case "exit":
 					FlxG.switchState(new MainMenuState());
 			}
