@@ -332,11 +332,7 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
-				if (mustUpdate) {
-					FlxG.switchState(new OutdatedSubState());
-				} else {
-					FlxG.switchState(new MainMenuState());
-				}
+				FlxG.switchState(new MainMenuState());
 				closedState = true;
 			});			
 		}

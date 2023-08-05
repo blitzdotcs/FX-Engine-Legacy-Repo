@@ -15,7 +15,7 @@ class Menu extends MusicBeatState
 
 	private var grpControls:FlxTypedGroup<Alphabet>;
 
-	var menuItems:Array<String> = ['Mods', #if debug 'Save Editor', #end 'exit'];
+	var menuItems:Array<String> = ['Mods', 'Modifiers', #if debug 'Save Editor', #end 'exit'];
 
 	var notice:FlxText;
 
@@ -58,6 +58,8 @@ class Menu extends MusicBeatState
 
 			switch (daSelected)
 			{
+				case "Mods":
+                     FlxG.switchState(new modding.ModsMenuState());
 				case "exit":
 					FlxG.switchState(new MainMenuState());
 			}
