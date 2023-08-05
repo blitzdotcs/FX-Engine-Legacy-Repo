@@ -36,7 +36,7 @@ class Credits extends MusicBeatState
 
 	override function create()
 	{
-		var initCreditlist = CoolUtil.coolTextFile(Paths.txt('creditsList'));
+		var initCreditlist = CoolUtil.coolTextFile(Paths.txt('data/creditsList'));
 
 		if (Assets.exists(Paths.txt('creditsList')))
 		{
