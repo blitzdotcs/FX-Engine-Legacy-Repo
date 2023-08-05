@@ -1,6 +1,6 @@
 package;
 
-import lime.utils.Assets;
+import openfl.utils.Assets as OpenFlAssets;
 #if sys
 import sys.io.File;
 #end
@@ -39,7 +39,7 @@ class CoolUtil
 		#if sys
 		var daList:Array<String> = File.getContent(path).trim().split('\n');
 		#else
-		var daList:Array<String> = Assets.getText(path).trim().split('\n');
+		var daList:Array<String> = OpenFlAssets.getText(path).trim().split('\n');
 		#end
 
 		for (i in 0...daList.length)
