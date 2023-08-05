@@ -288,7 +288,7 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(SONG.bpm);
 
 		foregroundSprites = new FlxTypedGroup<BGSprite>();
-		if (FlxG.save.data.restored)
+		if (FlxG.save.data.dialogue)
 			switch (SONG.song.toLowerCase())
             {
 				case 'tutorial':
@@ -1069,7 +1069,7 @@ class PlayState extends MusicBeatState
 				case 'stress':
 					startCountdown();																									
 				default:
-				if (FlxG.save.data.restored)
+				if (FlxG.save.data.dialogue)
 					schoolIntro(doof);
 				startCountdown();	
 			}

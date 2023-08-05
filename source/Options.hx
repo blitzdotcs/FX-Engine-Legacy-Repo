@@ -93,15 +93,15 @@ class DialOption extends Option
 
 	public override function press():Bool
 	{
-		FlxG.save.data.restored = !FlxG.save.data.restored;
-		trace('Restored Dialogue : ' + FlxG.save.data.restored);
+		FlxG.save.data.restored = !FlxG.save.data.dialogue;
+		trace('Restored Dialogue : ' + FlxG.save.data.dialogue);
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return  FlxG.save.data.restored ? "Dialogue On" : "Dialogue Off";
+		return  FlxG.save.data.dialogue ? "Dialogue On" : "Dialogue Off";
 	}
 }
 
