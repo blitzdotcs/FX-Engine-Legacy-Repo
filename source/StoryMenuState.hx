@@ -47,7 +47,7 @@ class StoryMenuState extends MusicBeatState
 		['tankman', 'bf', 'gf']
 	];
 
-	var weekNames:Array<String> = ";Daddy Dearest;Spooky Month;PICO;MOMMY MUST MURDER;RED SNOW;hating simulator ft. moawling;TANKMAN".split(";");
+	var weekNames:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekNames'));
 
 	var txtWeekTitle:FlxText;
 

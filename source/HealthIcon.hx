@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxSprite;
+import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
@@ -47,9 +48,9 @@ class HealthIcon extends FlxSprite
 			if (animation.getByName(newChar) == null)
 			{
 				#if sys
-				loadGraphic(Paths.image('icons/icon-' + newChar), true, 150, 150);
+				loadGraphic(Paths.loadImage('icons/icon-' + newChar), true, 150, 150);
 				#else
-				loadGraphic(Paths.image('icons/icon-' + newChar), true, 150, 150);
+				loadGraphic(Paths.loadImage('icons/icon-' + newChar), true, 150, 150);
 				#end
 				animation.add(newChar, [0, 1], 0, false, isPlayer);
 			}

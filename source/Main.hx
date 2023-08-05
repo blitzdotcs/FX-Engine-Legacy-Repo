@@ -78,9 +78,18 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
+		// Run this first so we can see logs.
+		Debug.onInitProgram();
+
+		// Gotta run this before any assets get loaded.
+		ModCore.initialize();
+
 		initialState = TitleState;
 
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen));
+
+		// Finish up loading debug tools.
+		Debug.onGameStart();
 
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);

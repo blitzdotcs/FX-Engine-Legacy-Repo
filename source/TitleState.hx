@@ -68,49 +68,8 @@ class TitleState extends MusicBeatState
 
 	public static var soundExt:String = ".ogg";
 
-
-	public static function reloadMods()
-	{
-		
-		#if polymod
-        mod_dirs = FlxG.save.data.mods;
-
-		var new_dirs:Array<String> = [];
-
-		for(dir in mod_dirs)
-		{
-			new_dirs.push(dir);
-		}
-
-		polymod.Polymod.init({
-			modRoot: "mods",
-			dirs: new_dirs,
-			framework: OPENFL,
-			errorCallback: function(error:polymod.Polymod.PolymodError)
-			{
-				#if debug
-				trace(error.message);
-				#end
-			},
-			frameworkParams: {
-				assetLibraryPaths: [
-					"songs" => "songs",
-					"shared" => "shared",
-					"preload" => "preload",
-					"week1" => "week1",
-					"week2" => "week2",
-					"week3" => "week3",
-					"week4" => "week4",
-					"week5" => "week5",
-					"week6" => "week6",
-					"week7" => "week7"
-				]
-			}
-		});		
-		#end	
-	}
-		//var cool = Json.parse("assets/preload/data/introData.json"); //hardcoded for now, i think
-		//trace(cool);		
+	//var cool = Json.parse("assets/preload/data/introData.json"); //hardcoded for now, i think
+	//trace(cool);		
 
 	override public function create():Void
 	{
@@ -140,11 +99,6 @@ class TitleState extends MusicBeatState
 		FlxG.save.bind('fxengine', 'tydev');
 
 		FXEngineData.initSave();
-
-		if(FlxG.save.data.mods == null)
-			FlxG.save.data.mods = [];
-
-		reloadMods();		
 		
 		if(FXEngineData.checkForUpdates && !closedState) {
 			trace('checking for update');
@@ -269,7 +223,7 @@ class TitleState extends MusicBeatState
 		// titleText.screenCenter(X);
 		add(titleText);
 
-		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
+		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('logo'));
 		logo.screenCenter();
 		logo.antialiasing = true;
 		// add(logo);
@@ -291,7 +245,7 @@ class TitleState extends MusicBeatState
 
 		credTextShit.visible = false;
 
-		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('newgrounds_logo'));
+		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('newgrounds_logo'));
 		add(ngSpr);
 		ngSpr.visible = false;
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
@@ -315,7 +269,7 @@ class TitleState extends MusicBeatState
 
 	function getIntroTextShit():Array<Array<String>>
 	{
-		var fullText:String = Assets.getText(Paths.txt('introText'));
+		var fullText:String = Assets.getText(Paths.txt('data/introText'));
 
 		var firstArray:Array<String> = fullText.split('\n');
 		var swagGoodArray:Array<Array<String>> = [];

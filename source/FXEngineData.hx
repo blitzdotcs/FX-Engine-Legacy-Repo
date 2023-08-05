@@ -11,6 +11,9 @@ class FXEngineData
 		if (FlxG.save.data.zxnm == null)
 			FlxG.save.data.zxnm = false;
 
+		if (FlxG.save.data.dialogue == null)
+			FlxG.save.data.dialogue = false;
+
 	    if (FlxG.save.data.downscroll == null)
 		   FlxG.save.data.downscroll = false;
 

@@ -1,17 +1,14 @@
 package;
 
+import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
-import flixel.graphics.FlxGraphic;
-import haxe.Json;
-
-using StringTools;
 
 class Paths
 {
-	inline public static var SOUND_EXT = "ogg";
+	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 
 	static var currentLevel:String;
 
@@ -20,7 +17,7 @@ class Paths
 		currentLevel = name.toLowerCase();
 	}
 
-	public static function getPath(file:String, type:AssetType, ?library:Null<String> = null)
+	static function getPath(file:String, type:AssetType, library:Null<String>)
 	{
 		if (library != null)
 			return getLibraryPath(file, library);
@@ -28,10 +25,6 @@ class Paths
 		if (currentLevel != null)
 		{
 			var levelPath = getLibraryPathForce(file, currentLevel);
-			if (OpenFlAssets.exists(levelPath, type))
-				return levelPath;
-
-			levelPath = getLibraryPathForce(file, currentLevel + '_high');
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
 
@@ -43,32 +36,42 @@ class Paths
 		return getPreloadPath(file);
 	}
 
-	static public function getHaxeScript(string:String)
+	inline static public function getHaxeScript(key:String)
 	{
-		return OpenFlAssets.getText('assets/data/$string/haxeModchart.hx');
+		return OpenFlAssets.getText('assets/data/songs/$key.hx');
 	}
 
-	static public function loadJSON(key:String, ?library:String):Dynamic
+	/**
+	 * For a given key and library for an image, returns the corresponding BitmapData.
+	 		* We can probably move the cache handling here.
+	 * @param key 
+	 * @param library 
+	 * @return BitmapData
+	 */
+	static public function loadImage(key:String, ?library:String):FlxGraphic
 	{
-		var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
+		var path = image(key, library);
 
-		// Perform cleanup on files that have bad data at the end.
-		while (!rawJson.endsWith("}"))
+		#if FEATURE_FILESYSTEM
+		if (Caching.bitmapData != null)
 		{
-			rawJson = rawJson.substr(0, rawJson.length - 1);
+			if (Caching.bitmapData.exists(key))
+			{
+				Debug.logTrace('Loading image from bitmap cache: $key');
+				// Get data from cache.
+				return Caching.bitmapData.get(key);
+			}
 		}
+		#end
 
-		try
+		if (OpenFlAssets.exists(path, IMAGE))
 		{
-			// Attempt to parse and return the JSON data.
-			return Json.parse(rawJson);
+			var bitmap = OpenFlAssets.getBitmapData(path);
+			return FlxGraphic.fromBitmapData(bitmap);
 		}
-		catch (e)
+		else
 		{
-			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-			Debug.logError(e.message);
-
-			// Return null.
+			Debug.logWarn('Could not find image at path $path');
 			return null;
 		}
 	}
@@ -88,14 +91,24 @@ class Paths
 		return 'assets/$file';
 	}
 
-	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
+	inline static public function file(file:String, ?library:String, type:AssetType = TEXT)
 	{
 		return getPath(file, type, library);
 	}
 
+	inline static public function lua(key:String, ?library:String)
+	{
+		return getPath('data/$key.lua', TEXT, library);
+	}
+
+	inline static public function luaImage(key:String, ?library:String)
+	{
+		return getPath('data/$key.png', IMAGE, library);
+	}
+
 	inline static public function txt(key:String, ?library:String)
 	{
-		return getPath('data/$key.txt', TEXT, library);
+		return getPath('$key.txt', TEXT, library);
 	}
 
 	inline static public function xml(key:String, ?library:String)
@@ -103,14 +116,9 @@ class Paths
 		return getPath('data/$key.xml', TEXT, library);
 	}
 
-	inline static public function hx(key:String, ?library:String)
-	{
-		return getPath('data/$key.hx', TEXT, library);
-	}
-
 	inline static public function json(key:String, ?library:String)
 	{
-		return getPath('data/$key.json', TEXT, library);
+		return getPath('data/songs/$key.json', TEXT, library);
 	}
 
 	static public function sound(key:String, ?library:String)
@@ -130,17 +138,34 @@ class Paths
 
 	inline static public function voices(song:String)
 	{
-		return 'songs:assets/songs/${song.toLowerCase()}/Voices.$SOUND_EXT';
+		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		switch (songLowercase)
+		{
+			case 'dad-battle':
+				songLowercase = 'dadbattle';
+			case 'philly-nice':
+				songLowercase = 'philly';
+			case 'm.i.l.f':
+				songLowercase = 'milf';
+		}
+		var result = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
+		// Return null if the file does not exist.
+		return doesSoundAssetExist(result) ? result : null;
 	}
 
 	inline static public function inst(song:String)
 	{
-		return 'songs:assets/songs/${song.toLowerCase()}/Inst.$SOUND_EXT';
-	}
-
-	inline static public function image(key:String, ?library:String)
-	{
-		return getPath('images/$key.png', IMAGE, library);
+		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		switch (songLowercase)
+		{
+			case 'dad-battle':
+				songLowercase = 'dadbattle';
+			case 'philly-nice':
+				songLowercase = 'philly';
+			case 'm.i.l.f':
+				songLowercase = 'milf';
+		}
+		return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
 	}
 
 	inline static public function video(key:String)
@@ -153,64 +178,76 @@ class Paths
 		return 'assets/fonts/$key';
 	}
 
-	inline static public function getSparrowAtlas(key:String, ?library:String)
-	{
-		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
-	}
-
-	inline static public function getPackerAtlas(key:String, ?library:String)
-	{
-		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
-	}
-
 	inline static public function getAnimateAtlas(key:String)
 	{
 		return animate.FlxAnimate.fromAnimate(loadImage('$key/spritemap1'), file('images/$key/spritemap1.json'));
-	}
-	
-	static public function loadImage(key:String):FlxGraphic
-	{
-		var path = image(key);
-	
-		if (OpenFlAssets.exists(path))
-		{
-			var bitmap = OpenFlAssets.getBitmapData(path);
-			return FlxGraphic.fromBitmapData(bitmap);
-		}
-		else
-		{
-			trace('Could not find image at path $path');
-			return null;
-		}
 	}
 
 	static public function listSongsToCache()
 	{
 		// We need to query OpenFlAssets, not the file system, because of Polymod.
 		var soundAssets = OpenFlAssets.list(AssetType.MUSIC).concat(OpenFlAssets.list(AssetType.SOUND));
-	
+
 		// TODO: Maybe rework this to pull from a text file rather than scan the list of assets.
 		var songNames = [];
-	
+
 		for (sound in soundAssets)
 		{
-			// Parse end-to-beginning to support mods.
 			var path = sound.split('/');
-			path.reverse();
-	
-			var fileName = path[0];
-			var songName = path[1];
-	
-			if (path[2] != 'songs')
+			// assets/songs/name/file.ext
+			if (path.length < 4)
 				continue;
-	
+
+			if (path[1] != 'songs')
+				continue;
+
+			var songName = path[2];
+
 			// Remove duplicates.
 			if (songNames.indexOf(songName) != -1)
 				continue;
-	
+
 			songNames.push(songName);
 		}
-	
+
 		return songNames;
-	}	
+	}
+
+	static public function doesSoundAssetExist(path:String)
+	{
+		if (path == null || path == "")
+			return false;
+		return OpenFlAssets.exists(path, AssetType.SOUND) || OpenFlAssets.exists(path, AssetType.MUSIC);
+	}
+
+	inline static public function doesTextAssetExist(path:String)
+	{
+		return OpenFlAssets.exists(path, AssetType.TEXT);
+	}
+
+	inline static public function image(key:String, ?library:String)
+	{
+		return getPath('images/$key.png', IMAGE, library);
+	}
+
+	static public function getSparrowAtlas(key:String, ?library:String, ?isCharacter:Bool = false)
+	{
+		if (isCharacter)
+		{
+			return FlxAtlasFrames.fromSparrow(loadImage('characters/$key', library), file('images/characters/$key.xml', library));
+		}
+		return FlxAtlasFrames.fromSparrow(loadImage(key, library), file('images/$key.xml', library));
+	}
+
+	/**
+	 * Senpai in Thorns uses this instead of Sparrow and IDK why.
+	 */
+	inline static public function getPackerAtlas(key:String, ?library:String, ?isCharacter:Bool = false)
+	{
+		if (isCharacter)
+		{
+			return FlxAtlasFrames.fromSpriteSheetPacker(loadImage('characters/$key', library), file('images/characters/$key.txt', library));
+		}
+		return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), file('images/$key.txt', library));
+	}
 }
