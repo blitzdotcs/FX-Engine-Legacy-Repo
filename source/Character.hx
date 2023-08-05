@@ -796,3 +796,41 @@ class Character extends FlxSprite
 		animOffsets[name] = [x, y];
 	}
 }
+
+typedef CharacterData =
+{
+	var name:String;
+	var asset:String;
+	var startingAnim:String;
+
+	/**
+	 * The color of this character's health bar.
+	 */
+	var barColor:String;
+
+	var animations:Array<AnimationData>;
+}
+
+typedef AnimationData =
+{
+	var name:String;
+	var prefix:String;
+	var ?offsets:Array<Int>;
+
+	/**
+	 * Whether this animation is looped.
+	 * @default false
+	 */
+	var ?looped:Bool;
+
+	var ?flipX:Bool;
+	var ?flipY:Bool;
+
+	/**
+	 * The frame rate of this animation.
+	 		* @default 24
+	 */
+	var ?frameRate:Int;
+
+	var ?frameIndices:Array<Int>;
+}
