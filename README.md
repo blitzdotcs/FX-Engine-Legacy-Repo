@@ -29,6 +29,7 @@ This is the repository for FX Engine. A modification of a game that was original
 - [Funkin' Crew](https://github.com/FunkinCrew/) - Original Game Devs
 - [Kade Engine Team](https://github.com/KadeDev/Kade-Engine) - I Stole some code
 - [Psych Engine Team](https://github.com/ShadowMario/FNF-PsychEngine/) - I stole some code
+- [EliteMasterEric](https://github.com/EliteMasterEric) - Modding System and Modcore
 - FNF Restored Team - Dialogue code and assets
 
 ### Build instructions

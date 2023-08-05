@@ -1,4 +1,5 @@
 TyDev:Main FX Engine Programmer
+EliteMasterEric:Modding System and Modcore
 Chocolate Engine Team:Modding System + Better Credits
 Funkin' Team:Original Game Devs
 Kade Engine Team:I Stole some code
