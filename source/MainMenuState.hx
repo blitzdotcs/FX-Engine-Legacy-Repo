@@ -25,6 +25,7 @@ class MainMenuState extends MusicBeatState
 	var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
+	var logoBl:FlxSprite;
 
 	var optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'options'];
 
@@ -89,6 +90,15 @@ class MainMenuState extends MusicBeatState
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
+		logoBl = new FlxSprite(600, 0);
+		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
+		logoBl.setGraphicSize(Std.int(logoBl.width * 0.8));
+		logoBl.screenCenter(Y);
+		logoBl.animation.addByPrefix('bump', 'logoBumpin', 24);
+		logoBl.updateHitbox();
+		logoBl.scrollFactor.set();
+		add(logoBl);
+
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 
 		for (i in 0...optionShit.length)
@@ -99,7 +109,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
 			menuItem.ID = i;
-			menuItem.screenCenter(X);
+			menuItem.x = 20;
 			menuItems.add(menuItem);
 			menuItem.scrollFactor.set();
 			menuItem.antialiasing = true;
@@ -226,7 +236,7 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
-			spr.screenCenter(X);
+			spr.x = 20;
 		});
 	}
 

@@ -51,10 +51,11 @@ class Credits extends MusicBeatState
 		{
 			trace("Cannot find 'creditsList' in data directory.");
 			trace("Replacing it with normal credits...");
-			initCreditlist = "TyDev:Main FX Engine Programmer\n
-            Chocolate Engine Team:Modding System + Better Credits\n
-            Funkin' Team:Original Game Devs\n
-            Kade Engine Team:I Stole some code\n
+			initCreditlist = "TyDev:Main FX Engine Programmer
+			Elite Master Eric:Modding System + ModCore
+            Chocolate Engine Team:Modding System + Better Credits
+            Funkin' Team:Original Game Devs
+            Kade Engine Team:I Stole some code
             Psych Engine Team:I stole some code".trim()
 				.split('\n');
 

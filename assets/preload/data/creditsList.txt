@@ -1,7 +1,7 @@
 TyDev:Main FX Engine Programmer
-EliteMasterEric:Modding System and Modcore
+Elite Master Eric:Modcore
 Chocolate Engine Team:Modding System + Better Credits
-Funkin' Team:Original Game Devs
+Funkin' Team:OG Game Devs
 Kade Engine Team:I Stole some code
 Psych Engine Team:I stole some code
-FNF Restored Team:Dialogue code
+FNF Restored Team:Dialogue code and Assets

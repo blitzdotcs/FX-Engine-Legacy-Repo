@@ -1055,19 +1055,9 @@ class PlayState extends MusicBeatState
 				case 'roses':
 					FlxG.sound.play(Paths.sound('ANGRY'));
 					schoolIntro(doof);
-				/*	
-				#if VIDEOS_ALLOWED	
-		        case 'ugh':
-			        playCutscene('ughCutscene.mp4');
-				#end
-				*/	
 				// Since week 7 cutscenes are disabled I'ma just do this lol.
-				case 'ugh':
-					startCountdown();	
-				case 'guns':
-					startCountdown();	
-				case 'stress':
-					startCountdown();																									
+				case 'ugh' | 'guns' | 'stress':
+					startCountdown();																										
 				default:
 				if (FlxG.save.data.dialogue)
 					schoolIntro(doof);
@@ -1795,6 +1785,12 @@ class PlayState extends MusicBeatState
 				FlxG.switchState(new GitarooPause());
 			}
 			else
+			if (FlxG.random.bool(1.0))
+			{
+				// gitaroo man easter egg
+				FlxG.switchState(new FumoGameOver());
+			}
+			else			
 			{
 				var boyfriendPos = boyfriend.getScreenPosition();
 				var pauseSubState = new PauseSubState(boyfriendPos.x, boyfriendPos.y);

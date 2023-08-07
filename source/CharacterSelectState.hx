@@ -26,7 +26,7 @@ typedef CharacterMenu = {
 
 class CharacterSelectState extends MusicBeatState
 {
-    var menuItems:Array<String> = ['bf', 'pico'];
+    var menuItems:Array<String> = ['bf', 'pico', 'zack'];
     var curSelected:Int = 0;
     var txtDescription:FlxText;
     var shitCharacter:FlxSprite;
@@ -46,7 +46,7 @@ class CharacterSelectState extends MusicBeatState
     var names:Array<String> = [
         "Boyfriend",
         "Pico's school fnf",
-		"Newgrounds fnf tankguy"
+		"The guy that's cool and might get a fnf mod also he isn't bf."
     ];
 
     var txtOptionTitle:FlxText;
