@@ -54,16 +54,12 @@ import sys.io.File;
 #end
 import CutsceneCharacter;
 #if MODS_ALLOWED
-//import modding.PolymodHandler;
+import modding.PolymodHandler;
 import polymod.fs.SysFileSystem;
 #end
 import hscript.Expr;
 import hscript.Parser;
 import hscript.Interp;
-
-#if VIDEOS_ALLOWED
-import hxcodec.VideoHandler;
-#end
 
 using StringTools;
 
@@ -1076,32 +1072,7 @@ class PlayState extends MusicBeatState
 
 		super.create();
 	}
-	
-	function playCutscene(name:String, atEndOfSong:Bool = false)
-	{
-		#if VIDEOS_ALLOWED
-		inCutscene = true;
-		FlxG.sound.music.stop();
-	
-		var video:VideoHandler = new VideoHandler();
-		video.finishCallback = function()
-		{
-			if (atEndOfSong)
-			{
-			  if (storyPlaylist.length <= 0)
-				FlxG.switchState(new StoryMenuState());
-			  else
-			  {
-				SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
-				FlxG.switchState(new PlayState());
-			  }
-			}
-			else
-			  startCountdown();
-		}
-		video.playVideo(Paths.video(name));
-		#end
-	}
+
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{

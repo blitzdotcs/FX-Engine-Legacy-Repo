@@ -4,6 +4,8 @@
 
 * Changed the Main Menu a bit!
 
+* Removed Gf from the title state
+
 * New logo!
 
 * Added back polymod/modcore!

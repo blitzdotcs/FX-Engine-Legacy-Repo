@@ -55,6 +55,7 @@ class Credits extends MusicBeatState
 			Elite Master Eric:Modding System + ModCore
             Chocolate Engine Team:Modding System + Better Credits
             Funkin' Team:Original Game Devs
+			Waltuhr_99:Evil Sk8ter BF Sprites
             Kade Engine Team:I Stole some code
             Psych Engine Team:I stole some code".trim()
 				.split('\n');
