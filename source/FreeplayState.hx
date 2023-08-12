@@ -77,6 +77,7 @@ class FreeplayState extends MusicBeatState
 		// LOAD CHARACTERS
 
 		bg = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
+		bg.screenCenter();
 		add(bg);
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
@@ -86,8 +87,8 @@ class FreeplayState extends MusicBeatState
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
 			songText.isMenuItem = true;
-		//	songText.targetY = i;
-			songText.screenCenter(X);
+			songText.targetY = i;
+			songText.screenCenter(X); 
 			grpSongs.add(songText);
 
 			var icon:FreePlayIcon = new FreePlayIcon(songs[i].songCharacter);
@@ -96,6 +97,10 @@ class FreeplayState extends MusicBeatState
 			// using a FlxGroup is too much fuss!
 			iconArray.push(icon);
 			add(icon);
+
+			// songText.x += 40;
+			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
+			// songText.screenCenter(X);
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
@@ -125,7 +130,7 @@ class FreeplayState extends MusicBeatState
 
 		selector.size = 40;
 		selector.text = ">";
-		// add(selector);
+		add(selector);
 
 		var swag:Alphabet = new Alphabet(1, 0, "swag");
 

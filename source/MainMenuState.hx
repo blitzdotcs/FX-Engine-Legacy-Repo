@@ -44,7 +44,7 @@ class MainMenuState extends MusicBeatState
 		transOut = FlxTransitionableState.defaultTransOut;
 		
 		if (!FlxG.sound.music.playing)
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music('klaskiiLoop'));
 
 		//}
 
@@ -52,11 +52,12 @@ class MainMenuState extends MusicBeatState
 		if (FlxG.sound.music.playing)
 		{
 			FlxG.sound.music.stop();
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music('klaskiiLoop'));
 		}
 		else
 		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music('klaskiiLoop'));
+			// klaskiiLoop pog
 		}
 		*/
 

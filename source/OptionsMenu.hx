@@ -31,6 +31,7 @@ class OptionsMenu extends MusicBeatState
 		]),
 		new OptionCatagory("Misc", [
 			new QuaverBarOption("Cooler healthBar thing"),
+			new PTOption("Pizza Tower Taunt Sound Effect Toggle"),
 			new IconBopOption("Make the icons bop with the bpm")
 		])
 	];

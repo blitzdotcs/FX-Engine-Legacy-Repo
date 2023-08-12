@@ -37,6 +37,9 @@ class FXEngineData
 
         if (FlxG.save.data.middleScroll == null) 
             FlxG.save.data.middleScroll = false;   
+
+        if (FlxG.save.data.pttauntsound == null) 
+            FlxG.save.data.pttauntsound = false;              
     }
 
 	@:keep public static inline function framerateAdjust(input:Float):Float 

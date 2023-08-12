@@ -54,6 +54,8 @@
 	<define name="WEBM_ENABLED" if="android" /> <!-- Set to android for now bc idek if this works -->
 
 	<assets path='example_mods' rename='mods' embed='false'/>
+	<assets path="plugins/" rename='' if="windows"/>
+	<assets path="dlls/" rename='' if="windows"/>
 
 	<section if="PRELOAD_ALL">
 		<library name="videos"        preload="true" />
@@ -129,6 +131,7 @@
 	<haxelib name= "polymod-enigma" rename="polymod" if="desktop" /> <!-- USE https://github.com/EnigmaEngine/polymod -->
 	<haxelib name="discord_rpc" if="windows"/>
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
+	<--haxelib name="extension-webm" if="desktop"/>
 
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->

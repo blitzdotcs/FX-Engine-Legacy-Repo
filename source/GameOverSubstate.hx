@@ -115,26 +115,6 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.camera.follow(camFollow, LOCKON, 0.01);
 		}
 
-		switch (PlayState.storyWeek)
-		{
-		    case 7:
-			        if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
-			        {
-				        FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + randomGameover));
-						started = true;
-						awesomeShaderTime = true;
-						danceTime = true;
-			        }
-		    default:
-			    if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
-			    {
-				    FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix));
-				    started = true;
-				    awesomeShaderTime = true;
-				    danceTime = true;
-			    }
-		}	
-
 		if (FlxG.sound.music.playing)
 		{
 			Conductor.songPosition = FlxG.sound.music.time;
@@ -143,7 +123,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	private function coolStartDeath():Void
 	{
-		FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix));
+		FlxG.sound.playMusic(Paths.music('gameOver'));
 	}
 
 	override function beatHit()

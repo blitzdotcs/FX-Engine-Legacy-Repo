@@ -322,7 +322,9 @@ class PlayState extends MusicBeatState
 				case 'roses':
 					dialogue = CoolUtil.coolTextFile(Paths.txt('data/songs/roses/rosesDialogue'));
 				case 'thorns':
-					dialogue = CoolUtil.coolTextFile(Paths.txt('data/songs/thorns/thornsDialogue'));					
+					dialogue = CoolUtil.coolTextFile(Paths.txt('data/songs/thorns/thornsDialogue'));
+				case 'run':
+					dialogue = CoolUtil.coolTextFile(Paths.txt('data/songs/run/DumbDialogPhloxMade'));										
 			}
 
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
@@ -1709,6 +1711,24 @@ class PlayState extends MusicBeatState
 
 		songPositionBar = Conductor.songPosition;
 
+		// TAUNT
+		if (FlxG.keys.justPressed.SPACE)
+		{		
+        	if (SONG.player1 == 'tauntbf')
+        	{
+           		var animationList:Array<String> = ['hey', 'dab', 'bruh', 'gunaway'];
+            	var randomIndex:Int = Math.floor(Math.random() * animationList.length);
+            	var randomAnimation:String = animationList[randomIndex];
+            	boyfriend.playAnim(randomAnimation);
+				if (FlxG.save.data.pttauntsound)
+            		FlxG.sound.play(Paths.sound('taunt/pizzatower/bam'));
+				else
+					FlxG.sound.play(Paths.sound('taunt/bf/yeah'));
+        	}
+    	}
+		
+
+
 		if (FlxG.keys.justPressed.NINE)
 		{
 			if (iconP1.animation.curAnim.name == 'bf-old')
@@ -1806,8 +1826,15 @@ class PlayState extends MusicBeatState
 
 		var iconOffset:Int = 26;
 
-		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
-		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+		if (FlxG.save.data.quaverbar) {
+			iconP1.x = healthBar.x;
+			iconP1.y = healthBar.y + (healthBar.height * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
+			iconP2.x = healthBar.x;
+			iconP2.y = healthBar.y + (healthBar.height * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+		} else {
+			iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
+			iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+		}
 
 		if (health > 2)
 			health = 2;
@@ -1886,11 +1913,6 @@ class PlayState extends MusicBeatState
 
 				if (dad.curCharacter == 'mom')
 					vocals.volume = 1;
-
-				if (SONG.song.toLowerCase() == 'tutorial')
-				{
-					tweenCamIn();
-				}
 			}
 
 			if (PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection && camFollow.x != boyfriend.getMidpoint().x - 100)
@@ -1909,11 +1931,6 @@ class PlayState extends MusicBeatState
 					case 'schoolEvil':
 						camFollow.x = boyfriend.getMidpoint().x - 200;
 						camFollow.y = boyfriend.getMidpoint().y - 200;
-				}
-
-				if (SONG.song.toLowerCase() == 'tutorial')
-				{
-					FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
 				}
 			}
 		}
@@ -2041,9 +2058,6 @@ class PlayState extends MusicBeatState
 
 				if (!daNote.mustPress && daNote.wasGoodHit)
 				{
-					if (SONG.song != 'Tutorial')
-						camZooming = true;
-
 					var altAnim:String = "";
 
 					if (SONG.notes[Math.floor(curStep / 16)] != null)
@@ -2244,18 +2258,7 @@ class PlayState extends MusicBeatState
 
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 				FlxG.sound.music.stop();
-				LoadingState.loadAndSwitchState(new PlayState());	// Delete this and remove "/*" and "*/" to add back the other cutscenes
-				/*
-				switch (curSong.toLowerCase())
-				{
-  					case 'ugh':
-    					playCutscene('gunsCutscene.mp4', true);
-  					case 'guns':
-    					playCutscene('stressCutscene.mp4', true);
-					default: 
-						LoadingState.loadAndSwitchState(new PlayState());
-				}
-				*/
+				LoadingState.loadAndSwitchState(new PlayState());
 			}
 		}
 		else
@@ -2902,11 +2905,6 @@ class PlayState extends MusicBeatState
 	override function beatHit()
 	{
 		super.beatHit();
-		if (curSong.toLowerCase() == 'ugh' && curStep == 70)
-		{
-			dad.playAnim('ughAnim', true);
-		}
-
 		if (generatedMusic)
 		{
 			notes.sort(FlxSort.byY, FlxSort.DESCENDING);
@@ -2965,10 +2963,12 @@ class PlayState extends MusicBeatState
 			gf.dance();
 		}
 
+        /*
 		if (!boyfriend.animation.curAnim.name.startsWith("sing"))
 		{
 			boyfriend.playAnim('idle');
 		}
+		*/
 
 		if (curBeat % 8 == 7 && curSong == 'Bopeebo')
 		{

@@ -18,7 +18,6 @@ This is the repository for FX Engine. A modification of a game that was original
 - Icon bopping!
 - Custom Credits Menu
 - Downscroll
-- Somewhat working Cutscene support!
 - Restored Dialogue!
 - And more!
 
@@ -31,6 +30,8 @@ This is the repository for FX Engine. A modification of a game that was original
 - [Psych Engine Team](https://github.com/ShadowMario/FNF-PsychEngine/) - I stole some code
 - [EliteMasterEric](https://github.com/EliteMasterEric) - Modding System and Modcore
 - FNF Restored Team - Dialogue code and assets
+- OS Engine Devs - Icon bops and TitleState bg thing
+- Bob Mod Team - Run (Used as the KE chart test)
 
 ### Build instructions
 

@@ -20,7 +20,7 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 #end
-
+import title.*;
 using StringTools;
 
 class Main extends Sprite
@@ -88,6 +88,11 @@ class Main extends Sprite
 
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen));
 
+		#if !mobile
+		addChild(new FPS(10, 3, 0xFFFFFF));
+		addChild(new Mem(10, 3, 0xFFFFFF));
+		#end
+
 		// Finish up loading debug tools.
 		Debug.onGameStart();
 
@@ -137,4 +142,9 @@ class Main extends Sprite
 		Sys.exit(1);
 	}
 	#end
+
+	public function getFPS():Float
+	{
+		return Lib.current.stage.frameRate;
+	}
 }

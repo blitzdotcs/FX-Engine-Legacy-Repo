@@ -17,3 +17,4 @@ Winter-Horrorland:monster:5:0xFFB8E9FF:159
 Senpai:senpai:6:0xFFFFC49C:144
 Roses:senpai:6:0xFFFFC49C:120
 Thorns:spirit:6:0xFFFFC49C:190
+Run:bf:7:0xFFCB87E8:120
