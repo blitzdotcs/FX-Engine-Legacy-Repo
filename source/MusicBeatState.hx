@@ -25,10 +25,6 @@ class MusicBeatState extends FlxUIState
 		if (transIn != null)
 			trace('reg ' + transIn.region);
 
-		#if MODS_ALLOWED
-		Paths.customImagesLoaded.clear();
-		#end
-
 		super.create();
 	}
 

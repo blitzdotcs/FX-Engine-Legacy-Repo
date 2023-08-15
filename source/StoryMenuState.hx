@@ -46,8 +46,6 @@ class StoryMenuState extends MusicBeatState
 
 	var difficultySelectors:FlxGroup;
 	var sprDifficultyGroup:FlxTypedGroup<FlxSprite>;
-	var leftArrow:FlxSprite;
-	var rightArrow:FlxSprite;
 
 	override function create()
 	{
@@ -90,6 +88,7 @@ class StoryMenuState extends MusicBeatState
 
 		for (i in 0...WeekData.weeksList.length)
 		{
+			WeekData.setDirectoryFromWeek(WeekData.weeksLoaded.get(WeekData.weeksList[i]));
 			var weekThing:MenuItem = new MenuItem(0, bgSprite.y + 396, WeekData.weeksList[i]);
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
@@ -110,6 +109,7 @@ class StoryMenuState extends MusicBeatState
 			}
 		}
 
+		WeekData.setDirectoryFromWeek(WeekData.weeksLoaded.get(WeekData.weeksList[0]));
 		var charArray:Array<String> = WeekData.weeksLoaded.get(WeekData.weeksList[0]).weekCharacters;
 		for (char in 0...3)
 		{
@@ -121,39 +121,18 @@ class StoryMenuState extends MusicBeatState
 		difficultySelectors = new FlxGroup();
 		add(difficultySelectors);
 
-		leftArrow = new FlxSprite(grpWeekText.members[0].x + grpWeekText.members[0].width + 10, grpWeekText.members[0].y + 10);
-		leftArrow.frames = ui_tex;
-		leftArrow.animation.addByPrefix('idle', "arrow left");
-		leftArrow.animation.addByPrefix('press', "arrow push left");
-		leftArrow.animation.play('idle');
-		difficultySelectors.add(leftArrow);
-
 		sprDifficultyGroup = new FlxTypedGroup<FlxSprite>();
 		add(sprDifficultyGroup);
 
-		
-		for (i in 0...CoolUtil.difficultyStuff.length) {
-			var sprDifficulty:FlxSprite = new FlxSprite(leftArrow.x + 60, leftArrow.y).loadGraphic(Paths.image('menudifficulties/' + CoolUtil.difficultyStuff[i][0].toLowerCase()));
-			sprDifficulty.x += (308 - sprDifficulty.width) / 2;
-			sprDifficulty.ID = i;
-			sprDifficultyGroup.add(sprDifficulty);
-		}
 		changeDifficulty();
 
 		difficultySelectors.add(sprDifficultyGroup);
-
-		rightArrow = new FlxSprite(leftArrow.x + 376, leftArrow.y);
-		rightArrow.frames = ui_tex;
-		rightArrow.animation.addByPrefix('idle', 'arrow right');
-		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
-		rightArrow.animation.play('idle');
-		difficultySelectors.add(rightArrow);
 
 		add(bgYellow);
 		add(bgSprite);
 		add(grpWeekCharacters);
 
-		var tracksSprite:FlxSprite = new FlxSprite(FlxG.width * 0.07, bgSprite.y + 435).loadGraphic(Paths.image('Menu_Tracks'));
+		var tracksSprite:FlxSprite = new FlxSprite(FlxG.width * 0.07, bgSprite.y + 425).loadGraphic(Paths.image('Menu_Tracks'));
 		add(tracksSprite);
 
 		txtTracklist = new FlxText(FlxG.width * 0.05, tracksSprite.y + 60, 0, "", 32);
@@ -203,16 +182,6 @@ class StoryMenuState extends MusicBeatState
 			}
 
 			if (controls.RIGHT_P)
-				rightArrow.animation.play('press')
-			else
-				rightArrow.animation.play('idle');
-
-			if (controls.LEFT_P)
-				leftArrow.animation.play('press');
-			else
-				leftArrow.animation.play('idle');
-
-			if (controls.RIGHT_P)
 				changeDifficulty(1);
 			if (controls.LEFT_P)
 				changeDifficulty(-1);
@@ -251,7 +220,7 @@ class StoryMenuState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 
 				grpWeekText.members[curWeek].startFlashing();
-				grpWeekCharacters.members[1].animation.play('confirm');
+				if(grpWeekCharacters.members[1].character != '') grpWeekCharacters.members[1].animation.play('confirm');
 				stopspamming = true;
 			}
 
@@ -299,8 +268,6 @@ class StoryMenuState extends MusicBeatState
 			if(curDifficulty == spr.ID) {
 				spr.visible = true;
 				spr.alpha = 0;
-				spr.y = leftArrow.y - 15;
-				FlxTween.tween(spr, {y: leftArrow.y + 15, alpha: 1}, 0.07);
 			}
 		});
 
@@ -321,7 +288,8 @@ class StoryMenuState extends MusicBeatState
 		if (curWeek < 0)
 			curWeek = WeekData.weeksList.length - 1;
 
-		var leWeek:WeekFile = WeekData.weeksLoaded.get(WeekData.weeksList[curWeek]);
+		var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[curWeek]);
+		WeekData.setDirectoryFromWeek(leWeek);
 
 		var leName:String = leWeek.storyName;
 		txtWeekTitle.text = leName.toUpperCase();
@@ -350,7 +318,7 @@ class StoryMenuState extends MusicBeatState
 	}
 
 	function weekIsLocked(weekNum:Int) {
-		var leWeek:WeekFile = WeekData.weeksLoaded.get(WeekData.weeksList[weekNum]);
+		var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[weekNum]);
 		return (!leWeek.startUnlocked && leWeek.weekBefore.length > 0 && (!weekCompleted.exists(leWeek.weekBefore) || !weekCompleted.get(leWeek.weekBefore)));
 	}
 
@@ -361,7 +329,7 @@ class StoryMenuState extends MusicBeatState
 			grpWeekCharacters.members[i].changeCharacter(weekArray[i]);
 		}
 
-		var leWeek:WeekFile = WeekData.weeksLoaded.get(WeekData.weeksList[curWeek]);
+		var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[curWeek]);
 		var stringThing:Array<String> = [];
 		for (i in 0...leWeek.songs.length) {
 			stringThing.push(leWeek.songs[i][0]);

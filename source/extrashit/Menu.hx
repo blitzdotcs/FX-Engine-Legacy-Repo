@@ -16,7 +16,7 @@ class Menu extends MusicBeatState
 
 	private var grpControls:FlxTypedGroup<Alphabet>;
 
-	var menuItems:Array<String> = ['Mod Selection', 'Mods', 'Character Editor', 'exit'];
+	var menuItems:Array<String> = ['Mod Selection', 'Mod Configuration', 'exit'];
 
 	var notice:FlxText;
 
@@ -59,7 +59,9 @@ class Menu extends MusicBeatState
 
 			switch (daSelected)
 			{
-				case "Mods":
+				case "Mod Selection":
+                    FlxG.switchState(new ModsMenuState());					
+				case "Mod Configuration":
                     FlxG.switchState(new psych.MasterEditorMenu());			 
 				case "exit":
 					FlxG.switchState(new MainMenuState());

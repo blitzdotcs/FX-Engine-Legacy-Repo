@@ -31,6 +31,7 @@ class MenuCharacter extends FlxSprite
 	}
 
 	public function changeCharacter(?character:String = 'bf') {
+		if(character == null) character = '';
 		if(character == this.character) return;
 	
 		this.character = character;
@@ -49,7 +50,7 @@ class MenuCharacter extends FlxSprite
 				var rawJson = null;
 
 				#if MODS_ALLOWED
-				var path:String = Paths.mods(characterPath);
+				var path:String = Paths.modFolders(characterPath);
 				if (!FileSystem.exists(path)) {
 					path = Paths.getPreloadPath(characterPath);
 				}

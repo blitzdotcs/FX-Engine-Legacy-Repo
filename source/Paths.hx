@@ -24,16 +24,46 @@ class Paths
 
 	#if MODS_ALLOWED
 	#if (haxe >= "4.0.0")
-	public static var customImagesLoaded:Map<String, FlxGraphic> = new Map();
+	public static var customImagesLoaded:Map<String, Bool> = new Map();
 	public static var customSoundsLoaded:Map<String, Sound> = new Map();
 	#else
-	public static var customImagesLoaded:Map<String, FlxGraphic> = new Map<String, FlxGraphic>();
+	public static var customImagesLoaded:Map<String, Bool> = new Map<String, Bool>();
 	public static var customSoundsLoaded:Map<String, Sound> = new Map<String, Sound>();
 	#end
+	
+	public static var ignoreModFolders:Array<String> = [
+		'characters',
+		'custom_events',
+		'custom_notetypes',
+		'data',
+		'songs',
+		'music',
+		'sounds',
+		'videos',
+		'images',
+		'stages',
+		'weeks'
+	];
 	#end
 
-	static var currentLevel:String;
+	public static function destroyLoadedImages(ignoreCheck:Bool = false) {
+		#if MODS_ALLOWED
+		if(!ignoreCheck) return; //If there's 20+ images loaded, do a cleanup just for preventing a crash
 
+		for (key in customImagesLoaded.keys()) {
+			var graphic:FlxGraphic = FlxG.bitmap.get(key);
+			if(graphic != null) {
+				graphic.bitmap.dispose();
+				graphic.destroy();
+				FlxG.bitmap.removeByKey(key);
+			}
+		}
+		Paths.customImagesLoaded.clear();
+		#end
+	}
+
+	static public var currentModDirectory:String = '';
+	static var currentLevel:String;
 	static public function setCurrentLevel(name:String)
 	{
 		currentLevel = name.toLowerCase();
@@ -71,7 +101,7 @@ class Paths
 		return '$library:assets/$library/$file';
 	}
 
-	inline public static function getPreloadPath(file:String)
+	inline public static function getPreloadPath(file:String = '')
 	{
 		return 'assets/$file';
 	}
@@ -180,7 +210,7 @@ class Paths
 	}
 	#end
 
-	inline static public function image(key:String, ?library:String):Dynamic
+	inline static public function loadImage(key:String, ?library:String):Dynamic
 	{
 		#if MODS_ALLOWED
 		var imageToReturn:FlxGraphic = addCustomGraphic(key);
@@ -189,7 +219,7 @@ class Paths
 		return getPath('images/$key.png', IMAGE, library);
 	}
 
-	inline static public function loadImage(key:String, ?library:String):Dynamic
+	inline static public function image(key:String, ?library:String):Dynamic
 	{
 		#if MODS_ALLOWED
 		var imageToReturn:FlxGraphic = addCustomGraphic(key);
@@ -201,8 +231,10 @@ class Paths
 	static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String
 	{
 		#if sys
+		#if MODS_ALLOWED
 		if (!ignoreMods && FileSystem.exists(mods(key)))
 			return File.getContent(mods(key));
+		#end
 
 		if (FileSystem.exists(getPreloadPath(key)))
 			return File.getContent(getPreloadPath(key));
@@ -232,7 +264,7 @@ class Paths
 	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
 	{
 		#if MODS_ALLOWED
-		if(FileSystem.exists(mods(key))) {
+		if(FileSystem.exists(mods(currentModDirectory + '/' + key)) || FileSystem.exists(mods(key))) {
 			return true;
 		}
 		#end
@@ -252,7 +284,7 @@ class Paths
 			xmlExists = true;
 		}
 
-		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : loadImage(key, library)), (xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
+		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)), (xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
 		#else
 		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
 		#end
@@ -267,7 +299,7 @@ class Paths
 			txtExists = true;
 		}
 
-		return FlxAtlasFrames.fromSpriteSheetPacker((imageLoaded != null ? imageLoaded : loadImage(key, library)), (txtExists ? File.getContent(modsTxt(key)) : file('images/$key.txt', library)));
+		return FlxAtlasFrames.fromSpriteSheetPacker((imageLoaded != null ? imageLoaded : image(key, library)), (txtExists ? File.getContent(modsTxt(key)) : file('images/$key.txt', library)));
 		#else
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 		#end
@@ -278,52 +310,78 @@ class Paths
 	}
 	
 	#if MODS_ALLOWED
-	static private function addCustomGraphic(key:String):FlxGraphic {
+	static public function addCustomGraphic(key:String):FlxGraphic {
 		if(FileSystem.exists(modsImages(key))) {
 			if(!customImagesLoaded.exists(key)) {
-				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(BitmapData.fromFile(modsImages(key)));
+				var newBitmap:BitmapData = BitmapData.fromFile(modsImages(key));
+				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(newBitmap, false, key);
 				newGraphic.persist = true;
-				customImagesLoaded.set(key, newGraphic);
+				FlxG.bitmap.addGraphic(newGraphic);
+				customImagesLoaded.set(key, true);
 			}
-			return customImagesLoaded.get(key);
+			return FlxG.bitmap.get(key);
 		}
 		return null;
 	}
 
-	inline static public function mods(key:String) {
+	inline static public function mods(key:String = '') {
 		return 'mods/' + key;
 	}
 
 	inline static public function modsJson(key:String) {
-		return mods('data/' + key + '.json');
+		return modFolders('data/' + key + '.json');
 	}
 
 	inline static public function modsVideo(key:String) {
-		return mods('videos/' + key + '.' + VIDEO_EXT);
+		return modFolders('videos/' + key + '.' + VIDEO_EXT);
 	}
 
 	inline static public function modsMusic(key:String) {
-		return mods('music/' + key + '.' + SOUND_EXT);
+		return modFolders('music/' + key + '.' + SOUND_EXT);
 	}
 
 	inline static public function modsSounds(key:String) {
-		return mods('sounds/' + key + '.' + SOUND_EXT);
+		return modFolders('sounds/' + key + '.' + SOUND_EXT);
 	}
 
 	inline static public function modsSongs(key:String) {
-		return mods('songs/' + key + '.' + SOUND_EXT);
+		return modFolders('songs/' + key + '.' + SOUND_EXT);
 	}
 
 	inline static public function modsImages(key:String) {
-		return mods('images/' + key + '.png');
+		return modFolders('images/' + key + '.png');
 	}
 
 	inline static public function modsXml(key:String) {
-		return mods('images/' + key + '.xml');
+		return modFolders('images/' + key + '.xml');
 	}
 
 	inline static public function modsTxt(key:String) {
-		return mods('images/' + key + '.txt');
+		return modFolders('images/' + key + '.txt');
+	}
+
+	static public function modFolders(key:String) {
+		if(currentModDirectory != null && currentModDirectory.length > 0) {
+			var fileToCheck:String = mods(currentModDirectory + '/' + key);
+			if(FileSystem.exists(fileToCheck)) {
+				return fileToCheck;
+			}
+		}
+		return 'mods/' + key;
+	}
+
+	static public function getModDirectories():Array<String> {
+		var list:Array<String> = [];
+		var modsFolder:String = Paths.mods();
+		if(FileSystem.exists(modsFolder)) {
+			for (folder in FileSystem.readDirectory(modsFolder)) {
+				var path = haxe.io.Path.join([modsFolder, folder]);
+				if (sys.FileSystem.isDirectory(path) && !Paths.ignoreModFolders.contains(folder) && !list.contains(folder)) {
+					list.push(folder);
+				}
+			}
+		}
+		return list;
 	}
 	#end
 }
