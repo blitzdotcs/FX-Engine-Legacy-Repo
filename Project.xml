@@ -49,11 +49,11 @@
 
 	<!-- FX ENGINE CUSTOMIZATION -->
 	<define name="CRASH_HANDLER" if="desktop" />
-	<define name="MODS_ALLOWED" if="desktop" />
-	<define name="VIDEOS_ALLOWED" if="desktop" />
-	<define name="WEBM_ENABLED" if="android" /> <!-- Set to android for now bc idek if this works -->
+	<define name="MODS_ALLOWED" unless="web" />
+	<define name="LUA_ALLOWED" if="windows" />
 
-	<assets path='example_mods' rename='mods' embed='false'/>
+
+	<assets path='example_mods' rename='mods' embed='false' if="MODS_ALLOWED"/>
 	<assets path="plugins/" rename='' if="windows"/>
 	<assets path="dlls/" rename='' if="windows"/>
 
@@ -127,8 +127,9 @@
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
+	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
 	<haxelib name="faxe" if='switch'/>
-	<haxelib name= "polymod-enigma" rename="polymod" if="desktop" /> <!-- USE https://github.com/EnigmaEngine/polymod -->
+	<!-- haxelib name= "polymod-enigma" rename="polymod" if="desktop" /--> <!-- USE https://github.com/EnigmaEngine/polymod -->
 	<haxelib name="discord_rpc" if="windows"/>
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 	<--haxelib name="extension-webm" if="desktop"/>

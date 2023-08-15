@@ -52,11 +52,6 @@ import scripting.Script;
 import sys.FileSystem;
 import sys.io.File;
 #end
-import CutsceneCharacter;
-#if MODS_ALLOWED
-import modding.PolymodHandler;
-import polymod.fs.SysFileSystem;
-#end
 import hscript.Expr;
 import hscript.Parser;
 import hscript.Interp;

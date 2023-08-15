@@ -16,6 +16,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import iconshits.FreePlayIcon;
 import flixel.util.FlxTimer;
+import WeekData;
 
 using StringTools;
 
@@ -48,15 +49,7 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		var initSonglist = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
-
-		for (i in 0...initSonglist.length)
-		{
-			var parsedFile:Array<String> = initSonglist[i].split(":");
-			songs.push(new SongMetadata(parsedFile[0], Std.parseInt(parsedFile[2]), parsedFile[1]));
-			songColors.push(FlxColor.fromString(parsedFile[3]));
-			songBPM.push(Std.parseInt(parsedFile[4]));
-		}
+		WeekData.reloadWeekFiles(false);
 
 		//trace(songs);
 		trace(songColors);
@@ -83,24 +76,28 @@ class FreeplayState extends MusicBeatState
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
-		for (i in 0...songs.length)
+		for (i in 0...WeekData.weeksList.length) {
+			var leWeek:WeekFile = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
+			var leSongs:Array<String> = [];
+			var leChars:Array<String> = [];
+			for (j in 0...leWeek.songs.length) {
+				leSongs.push(leWeek.songs[j][0]);
+				leChars.push(leWeek.songs[j][1]);
+			}
+
+			for (song in leWeek.songs) 
+			{
+				addSong(song[0], i, song[1]);
+			}
+		}
+
+		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+		for (i in 0...initSonglist.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
-			songText.isMenuItem = true;
-			songText.targetY = i;
-			songText.screenCenter(X); 
-			grpSongs.add(songText);
-
-			var icon:FreePlayIcon = new FreePlayIcon(songs[i].songCharacter);
-			icon.sprTracker = songText;
-
-			// using a FlxGroup is too much fuss!
-			iconArray.push(icon);
-			add(icon);
-
-			// songText.x += 40;
-			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-			// songText.screenCenter(X);
+			if(initSonglist[i] != null && initSonglist[i].length > 0) {
+				var songArray:Array<String> = initSonglist[i].split(":");
+				addSong(songArray[0], 0, songArray[1]);
+			}
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
@@ -222,7 +219,13 @@ class FreeplayState extends MusicBeatState
 
 		if (accepted)
 		{
+			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
 			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
+			#if MODS_ALLOWED
+			if(!sys.FileSystem.exists(Paths.modsJson(songLowercase + '/' + poop)) && !sys.FileSystem.exists(Paths.json(songLowercase + '/' + poop))) {
+			#else
+			if(!OpenFlAssets.exists(Paths.json(songLowercase + '/' + poop))) {
+			#end
 
 			trace(poop);
 
@@ -236,6 +239,7 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
+    }
 	override function beatHit():Void
 		{
 			super.beatHit();

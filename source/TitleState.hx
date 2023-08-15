@@ -210,7 +210,7 @@ class TitleState extends MusicBeatState
 		logoBl.shader = colorShader.shader;
 		add(logoBl);
 
-		titlestatebg = new FlxBackdrop(Paths.image('loading'), 0.2, 0, true, true);
+		titlestatebg = new FlxBackdrop(Paths.loadImage('loading'), 0.2, 0, true, true);
 		titlestatebg.velocity.set(200, 110);
 		titlestatebg.updateHitbox();
 		titlestatebg.alpha = 0.5;

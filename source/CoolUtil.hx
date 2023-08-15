@@ -3,6 +3,7 @@ package;
 import openfl.utils.Assets as OpenFlAssets;
 #if sys
 import sys.io.File;
+import sys.FileSystem;
 #end
 import flixel.FlxG;
 
@@ -11,6 +12,12 @@ using StringTools;
 class CoolUtil
 {
 	public static var difficultyArray:Array<String> = ['EASY', "NORMAL", "HARD"];
+
+	public static var difficultyStuff:Array<Dynamic> = [
+		['EASY', '-easy'],
+		['NORMAL', ''],
+		['HARD', '-hard']
+	];
 
 	public static function difficultyString():String
 	{
@@ -36,8 +43,9 @@ class CoolUtil
 
 	public static function coolTextFile(path:String):Array<String>
 	{
+		var daList:Array<String> = [];
 		#if sys
-		var daList:Array<String> = File.getContent(path).trim().split('\n');
+		if(FileSystem.exists(path)) daList = File.getContent(path).trim().split('\n');
 		#else
 		var daList:Array<String> = OpenFlAssets.getText(path).trim().split('\n');
 		#end

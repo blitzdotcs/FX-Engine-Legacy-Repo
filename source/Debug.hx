@@ -1,6 +1,5 @@
 import lime.app.Application;
 #if MODS_ALLOWED
-import polymod.Polymod.PolymodError;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
