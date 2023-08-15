@@ -173,6 +173,7 @@ class PlayState extends MusicBeatState
 	public static var practiceMode:Bool = false;
 
 	public static var campaignScore:Int = 0;
+	public static var campaignMisses:Int = 0;
 
 	var defaultCamZoom:Float = 1.05;
 
@@ -237,7 +238,7 @@ class PlayState extends MusicBeatState
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
 		if (isStoryMode)
 		{
-			detailsText = "Story Mode: Week " + storyWeek;
+			detailsText = "Story Mode: " + WeekData.getCurrentWeek().weekName;
 		}
 		else
 		{
@@ -2220,7 +2221,15 @@ class PlayState extends MusicBeatState
 
 				FlxG.switchState(new StoryMenuState());
 
-				FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
+				// if ()
+				StoryMenuState.weekCompleted.set(WeekData.weeksList[storyWeek], true);
+
+				if (SONG.validScore)
+				{
+					Highscore.saveWeekScore(WeekData.getWeekFileName(), campaignScore, storyDifficulty);
+				}
+
+				FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
 				FlxG.save.flush();
 			}
 			else

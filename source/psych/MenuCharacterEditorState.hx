@@ -273,7 +273,6 @@ class MenuCharacterEditorState extends MusicBeatState
 			}
 		}
 
-		if(!blockInput) {
 			if(FlxG.keys.justPressed.ESCAPE) {
 				FlxG.mouse.visible = false;
 				MusicBeatState.switchState(new psych.MasterEditorMenu());
@@ -303,7 +302,6 @@ class MenuCharacterEditorState extends MusicBeatState
 			if(FlxG.keys.justPressed.SPACE && curTypeSelected == 1) {
 				grpWeekCharacters.members[curTypeSelected].animation.play('confirm', true);
 			}
-		}
 
 		var char:MenuCharacter = grpWeekCharacters.members[1];
 		if(char.animation.curAnim != null && char.animation.curAnim.name == 'confirm' && char.animation.curAnim.finished) {

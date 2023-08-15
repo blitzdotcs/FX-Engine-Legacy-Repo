@@ -20,6 +20,7 @@ class MasterEditorMenu extends MusicBeatState
 	var options:Array<String> = [
 		'Week Editor',
 		'Menu Character Editor',
+		'Charting State',
 		'Character Editor'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
@@ -70,6 +71,8 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new CharacterEditorState(Character.DEFAULT_CHARACTER));
 				case 'Week Editor':
 					MusicBeatState.switchState(new WeekEditorState());
+				case 'Charting State':
+					MusicBeatState.switchState(new ChartingState());
 				case 'Menu Character Editor':
 					MusicBeatState.switchState(new MenuCharacterEditorState());
 			}

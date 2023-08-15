@@ -785,6 +785,8 @@ class WeekEditorFreeplayState extends MusicBeatState
 			changeSelection(-1);
 		if (controls.DOWN_P)
 			changeSelection(1);
+        if (controls.BACK)
+            FlxG.switchState(new MasterEditorMenu());	
 		}
 		super.update(elapsed);
 	}
