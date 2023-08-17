@@ -1,11 +1,11 @@
-package;
+package iconshits;
 
 import flixel.FlxSprite;
 import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
-class HealthIcon extends FlxSprite
+class FreePlayIcon extends FlxSprite
 {
 	/**
 	 * Used for FreeplayState! If you use it elsewhere, prob gonna annoying

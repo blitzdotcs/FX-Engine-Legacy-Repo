@@ -47,10 +47,19 @@ import haxe.Json;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
+import scripting.Script;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
+import CutsceneCharacter;
+#if MODS_ALLOWED
+import modding.PolymodHandler;
+import polymod.fs.SysFileSystem;
+#end
+import hscript.Expr;
+import hscript.Parser;
+import hscript.Interp;
 
 using StringTools;
 
@@ -169,7 +178,6 @@ class PlayState extends MusicBeatState
 	public static var practiceMode:Bool = false;
 
 	public static var campaignScore:Int = 0;
-	public static var campaignMisses:Int = 0;
 
 	var defaultCamZoom:Float = 1.05;
 
@@ -199,6 +207,10 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		instance = this;
+
+		Script.onCreate();
+
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
@@ -230,7 +242,7 @@ class PlayState extends MusicBeatState
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
 		if (isStoryMode)
 		{
-			detailsText = "Story Mode: " + WeekData.getCurrentWeek().weekName;
+			detailsText = "Story Mode: Week " + storyWeek;
 		}
 		else
 		{
@@ -1689,6 +1701,8 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		Script.onUpdate();
+
 		//		trace(health);
 
 		#if !debug
@@ -1977,6 +1991,8 @@ class PlayState extends MusicBeatState
 
 		if (health <= 0 && !practiceMode && canDie)
 		{
+			Script.onPlayerDeath();
+
 			boyfriend.stunned = true;
 
 			persistentUpdate = false;
@@ -2209,15 +2225,7 @@ class PlayState extends MusicBeatState
 
 				FlxG.switchState(new StoryMenuState());
 
-				// if ()
-				StoryMenuState.weekCompleted.set(WeekData.weeksList[storyWeek], true);
-
-				if (SONG.validScore)
-				{
-					Highscore.saveWeekScore(WeekData.getWeekFileName(), campaignScore, storyDifficulty);
-				}
-
-				FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
+				FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
 				FlxG.save.flush();
 			}
 			else
@@ -2649,6 +2657,7 @@ class PlayState extends MusicBeatState
 
 	function noteMiss(direction:Int = 1, daNote:Note):Void
 	{		
+		Script.onNoteMiss();
 		if (!boyfriend.stunned)
 		{
 			misses++;
@@ -2726,6 +2735,8 @@ class PlayState extends MusicBeatState
 
 	function goodNoteHit(note:Note):Void
 	{
+		Script.onNoteHit();
+
 		if (!note.wasGoodHit)
 		{
 			if (!note.isSustainNote)

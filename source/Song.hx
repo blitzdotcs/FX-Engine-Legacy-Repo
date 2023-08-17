@@ -6,7 +6,6 @@ import haxe.format.JsonParser;
 import openfl.utils.Assets as OpenFlAssets;
 #if sys
 import sys.io.File;
-import sys.FileSystem;
 #end
 
 using StringTools;
@@ -50,35 +49,31 @@ class Song
 
 	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
 	{
-		var rawJson = null;
-
-		var formattedFolder:String = Paths.formatToSongPath(folder);
-		var formattedSong:String = Paths.formatToSongPath(jsonInput);
-		#if MODS_ALLOWED
-		var moddyFile:String = Paths.modsJson(formattedFolder + '/' + formattedSong);
-		if(FileSystem.exists(moddyFile)) {
-			rawJson = File.getContent(moddyFile).trim();
-		}
-		#end
-		
-		if(rawJson == null) 
-		{
-			#if sys
-			rawJson = File.getContent(Paths.json(formattedFolder + '/' + formattedSong)).trim();
-            #else
-			rawJson = Assets.getText(Paths.json(formattedFolder + '/' + formattedSong)).trim();
-			#end
-		}
+		var rawJson = OpenFlAssets.getText(Paths.json(folder.toLowerCase() + '/' + jsonInput.toLowerCase())).trim();
 
 		while (!rawJson.endsWith("}"))
 		{
 			rawJson = rawJson.substr(0, rawJson.length - 1);
 			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		}
-		
-		var songJson:SwagSong = parseJSONshit(rawJson);
-		if(jsonInput != 'events') StageData.loadDirectory(songJson);
-		return songJson;
+
+		// FIX THE CASTING ON WINDOWS/NATIVE
+		// Windows???
+		// trace(songData);
+
+		// trace('LOADED FROM JSON: ' + songData.notes);
+		/* 
+			for (i in 0...songData.notes.length)
+			{
+				trace('LOADED FROM JSON: ' + songData.notes[i].sectionNotes);
+				// songData.notes[i].sectionNotes = songData.notes[i].sectionNotes
+			}
+
+				daNotes = songData.notes;
+				daSong = songData.song;
+				daBpm = songData.bpm; */
+
+		return parseJSONshit(rawJson);
 	}
 
 	public static function parseJSONshit(rawJson:String):SwagSong

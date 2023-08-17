@@ -52,13 +52,12 @@ class Credits extends MusicBeatState
 			trace("Cannot find 'creditsList' in data directory.");
 			trace("Replacing it with normal credits...");
 			initCreditlist = "TyDev:Main FX Engine Programmer
-			Elite Master Eric:Modcore that was used in older versions of FX Engine
-            Chocolate Engine Team:Better Credits
+			Elite Master Eric:Modding System + ModCore
+            Chocolate Engine Team:Modding System + Better Credits
             Funkin' Team:Original Game Devs
-			OS Engine Devs:Icon Bops and TitleState bg
 			Waltuhr_99:Evil Sk8ter BF Sprites
             Kade Engine Team:I Stole some code
-            Psych Engine Team:Modding System lmao".trim()
+            Psych Engine Team:I stole some code".trim()
 				.split('\n');
 
 			for (i in 0...initCreditlist.length)
@@ -80,7 +79,7 @@ class Credits extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		bg = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
+		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = FlxColor.PINK;
 		add(bg);
 

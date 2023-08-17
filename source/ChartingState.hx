@@ -32,11 +32,6 @@ import openfl.events.IOErrorEvent;
 import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
-import flixel.input.keyboard.FlxKey;
-#if MODS_ALLOWED
-import sys.io.File;
-import sys.FileSystem;
-#end
 
 using StringTools;
 
