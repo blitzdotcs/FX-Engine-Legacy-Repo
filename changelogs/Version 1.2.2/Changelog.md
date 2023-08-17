@@ -1,15 +1,13 @@
-### Version 1.2.2
+### Version 1.2.2 - The Psych Engine Update
 
 # What's new
 
-* Psych Character Support!
-
-* Al
+* Full ass Psych Modding Support (THIS DOES NOT INCLUDE EVENTS AND FUNKIN' LUA)
 
 # Updates
 
 * Updated Discord.hx (obv)
 
-* Updated Character Select State and removed the chars and icons and tankman and herobrine
-
 # Removals
+
+* Character Select State cuz buggy lol
