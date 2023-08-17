@@ -51,7 +51,8 @@
 	<define name="CRASH_HANDLER" if="desktop" />
 	<define name="MODS_ALLOWED" unless="web" />
 	<define name="LUA_ALLOWED" if="windows" />
-
+	<!-- DONT ENABLE THIS IF UR MAKING A CUSTOM BUILD -->
+	<define name="CHECK_FOR_UPDATES" if="fxrelease"/>
 
 	<assets path='example_mods' rename='mods' embed='false' if="MODS_ALLOWED"/>
 	<assets path="plugins/" rename='' if="windows"/>

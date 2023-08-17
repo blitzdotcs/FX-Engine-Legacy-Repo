@@ -103,7 +103,8 @@ class TitleState extends MusicBeatState
 		FlxG.save.bind('fxengine', 'tydev');
 
 		FXEngineData.initSave();
-		
+
+		#if CHECK_FOR_UPDATES
 		if(FXEngineData.checkForUpdates && !closedState) {
 			trace('checking for update');
 			var http = new haxe.Http("https://raw.githubusercontent.com/TyDevX/FX-Engine/main/gitVersion.txt");
@@ -125,6 +126,7 @@ class TitleState extends MusicBeatState
 
 			http.request();
 		}
+		#end
 
 		Highscore.load();
 
@@ -323,7 +325,11 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
-				FlxG.switchState(new MainMenuState());
+				if (mustUpdate) {
+					MusicBeatState.switchState(new OutdatedSubState());
+				} else {
+					MusicBeatState.switchState(new MainMenuState());
+				}				
 				closedState = true;
 			});			
 		}
