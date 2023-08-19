@@ -171,7 +171,7 @@ class FreeplayState extends MusicBeatState
 		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
 		textBG.alpha = 0.6;
 		add(textBG);
-		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, "Press SPACE to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.", 18);
+		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, "Psych Mod Support on FX Engine Pog", 18);
 		text.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
 		add(text);
@@ -230,7 +230,7 @@ class FreeplayState extends MusicBeatState
 			ratingSplit[1] += '0';
 		}
 
-		scoreText.text = 'PERSONAL BEST: ' + lerpScore';
+		scoreText.text = 'PERSONAL BEST: ' + lerpScore;
 		positionHighscore();
 
 		var upP = controls.UP_P;

@@ -56,6 +56,13 @@ using StringTools;
 
 class PlayState extends MusicBeatState
 {
+
+	// NOTECOMBO SHIT LOL
+	var focusshit:String = '';
+	var notecomboSpritelol:FlxSprite;
+	var focusfornotecombo:String = 'dad';
+	var coolcombo:Int = 0;
+
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
 	public static var isStoryMode:Bool = false;
@@ -115,7 +122,9 @@ class PlayState extends MusicBeatState
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
 
-	private var songPositionBar:Float = 0;
+	var timeTxt:FlxText;
+	private var updateTime:Bool = false;
+	var songPercent:Float = 0;
 
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
@@ -918,34 +927,6 @@ class PlayState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 
-		if (FlxG.save.data.songPosition) // I dont wanna talk about this code :(
-			{
-				songPosBG = new FlxSprite(0, strumLine.y - 15).loadGraphic(Paths.loadImage('healthBar'));
-				if (FlxG.save.data.downscroll)
-					songPosBG.y = FlxG.height * 0.9 + 45; 
-				songPosBG.screenCenter(X);
-				songPosBG.scrollFactor.set();
-				add(songPosBG);
-
-				if (curStage.contains("school") && FlxG.save.data.downscroll)
-					songPosBG.y -= 45;
-
-				songPosBar = new FlxBar(songPosBG.x + 4, songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 8), Std.int(songPosBG.height - 8), this,
-					'songPositionBar', 0, 90000);
-				songPosBar.scrollFactor.set();
-				songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
-				add(songPosBar);
-
-				var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - 20,songPosBG.y,0,SONG.song, 16);
-				if (FlxG.save.data.downscroll)
-					songName.y -= 3;
-				if (!curStage.contains("school"))
-					songName.x -= 15;
-				songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
-				songName.scrollFactor.set();
-				add(songName);
-			}
-
 		healthBarBG = new FlxSprite(!FlxG.save.data.quaverbar ? 0 : FlxG.width, !FlxG.save.data.quaverbar ? FlxG.height * 0.88 : 0).loadGraphic(Paths.loadImage('healthBar'));
 		if (FlxG.save.data.downscroll)
 			healthBarBG.y = 50;		
@@ -967,6 +948,24 @@ class PlayState extends MusicBeatState
 		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		// healthBar
 		add(healthBar);
+
+		timeTxt = new FlxText(strumLine.x + (strumLine.width / 2) - 248, strumLine.y - 30, 400, "", 32);
+		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeTxt.scrollFactor.set();
+		timeTxt.alpha = 0;
+		timeTxt.borderSize = 2;
+		if(FlxG.save.data.downscroll) timeTxt.y = FlxG.height - 45;
+		add(timeTxt);
+
+		notecomboSpritelol = new FlxSprite().loadGraphic(Paths.image('noteCombo'));
+		notecomboSpritelol.frames = Paths.getSparrowAtlas('noteCombo');
+		notecomboSpritelol.scale.set(0.6, 0.6);
+		notecomboSpritelol.x = boyfriend.x + boyfriend.width - notecomboSpritelol.width;
+		notecomboSpritelol.y = (boyfriend.y + boyfriend.height) / 4;
+		notecomboSpritelol.visible = !ClientPrefs.hideHud;
+		notecomboSpritelol.alpha = 0.00001;
+		notecomboSpritelol.animation.addByPrefix('appear', 'NoteCombofix', 24, false);
+		add(notecomboSpritelol);
 
 		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 250, healthBarBG.y + 30, 0, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT);
@@ -995,6 +994,7 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+		timeTxt.cameras = [camHUD];		
 		doof.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
@@ -1003,6 +1003,7 @@ class PlayState extends MusicBeatState
 
 		// cameras = [FlxG.cameras.list[1]];
 		startingSong = true;
+		updateTime = true;
 
 		if (isStoryMode)
 		{
@@ -1271,41 +1272,8 @@ class PlayState extends MusicBeatState
 		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
 
-
-		if (FlxG.save.data.songPosition)
-			{
-				remove(songPosBG);
-				remove(songPosBar);
-				remove(songName);
-
-				songPosBG = new FlxSprite(0, strumLine.y - 15).loadGraphic(Paths.loadImage('healthBar'));
-				if (FlxG.save.data.downscroll)
-					songPosBG.y = FlxG.height * 0.9 + 45; 
-				songPosBG.screenCenter(X);
-				songPosBG.scrollFactor.set();
-				add(songPosBG);
-
-				if (curStage.contains("school") && FlxG.save.data.downscroll)
-					songPosBG.y -= 45;
-
-				songPosBar = new FlxBar(songPosBG.x + 4, songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 8), Std.int(songPosBG.height - 8), this,
-					'songPositionBar', 0, 90000);
-				songPosBar.scrollFactor.set();
-				songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
-				add(songPosBar);
-
-				var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - 20,songPosBG.y,0,SONG.song, 16);
-				if (FlxG.save.data.downscroll)
-					songName.y -= 3;
-				if (!curStage.contains("school"))
-					songName.x -= 15;
-				songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
-				songName.scrollFactor.set();
-				add(songName);
-			}
-
-		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
+		FlxTween.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 
 		#if desktop
 		// Updating Discord Rich Presence (with Time Left)
@@ -1586,6 +1554,10 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	function sikenumcombo(notecombo:Int)
+	{
+	}
+
 	function tweenCamIn():Void
 	{
 		FlxTween.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
@@ -1687,6 +1659,9 @@ class PlayState extends MusicBeatState
 
 	public var stopUpdate = false;
 
+	var numbernotecomboSpritelol:FlxSprite;
+	var spritenoob:Array<FlxSprite> = [];
+
 	override public function update(elapsed:Float)
 	{
 		//		trace(health);
@@ -1694,8 +1669,6 @@ class PlayState extends MusicBeatState
 		#if !debug
 		perfectMode = false;
 		#end
-
-		songPositionBar = Conductor.songPosition;
 
 		// TAUNT
 		if (FlxG.keys.justPressed.SPACE)
@@ -1712,8 +1685,6 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('taunt/bf/yeah'));
         	}
     	}
-		
-
 
 		if (FlxG.keys.justPressed.NINE)
 		{
@@ -1722,6 +1693,44 @@ class PlayState extends MusicBeatState
 			else
 				iconP1.animation.play('bf-old');
 		}
+
+		if(focusfornotecombo != focusshit && focusshit != 'none' && coolcombo > 0){
+			//sikenumcombo(coolcombo); //haha bug
+			var loop:Int = 1;
+			var seperatedNoteCombo:Array<String> = Std.string(coolcombo).split("");
+			for (i in seperatedNoteCombo){
+				numbernotecomboSpritelol = new FlxSprite().loadGraphic(Paths.image('noteComboNumbers'));
+				numbernotecomboSpritelol.frames = Paths.getSparrowAtlas('noteComboNumbers');
+				numbernotecomboSpritelol.scale.set(0.6, 0.6);
+				numbernotecomboSpritelol.x = boyfriend.x + boyfriend.width - notecomboSpritelol.width + (loop * 100) + 200; 
+				numbernotecomboSpritelol.x -= 90 * (seperatedNoteCombo.length - 1);
+				numbernotecomboSpritelol.y = (boyfriend.y + boyfriend.height) / 4 + 112.5 - (loop * 25);
+				numbernotecomboSpritelol.visible = !ClientPrefs.hideHud;
+				numbernotecomboSpritelol.updateHitbox();
+				numbernotecomboSpritelol.animation.addByPrefix('appear', i + '_appear', 24, false);
+				numbernotecomboSpritelol.animation.addByPrefix('disappear', i + '_disappear', 24, false);
+				add(numbernotecomboSpritelol);
+				spritenoob.push(numbernotecomboSpritelol);
+				numbernotecomboSpritelol.animation.play('appear');
+				loop++;
+			}
+			for (i in 0...spritenoob.length){
+				new FlxTimer().start(0.7, function(tmr:FlxTimer) {
+					spritenoob[i].animation.play('disappear');
+					new FlxTimer().start(0.15, function(tmr:FlxTimer) {
+						spritenoob[i].visible = false;
+						spritenoob[i].active = false;
+					});
+				});
+			}
+			coolcombo = 0;
+			notecomboSpritelol.alpha = 1;
+			FlxG.sound.play(Paths.sound('noteComboSound'));
+			notecomboSpritelol.animation.play('appear');
+			focusfornotecombo = focusshit;
+		}
+
+		if(notecomboSpritelol.animation.finished) notecomboSpritelol.alpha = 0.00001;
 
 		switch (curStage)
 		{
@@ -1868,6 +1877,20 @@ class PlayState extends MusicBeatState
 					// Conductor.songPosition += FlxG.elapsed * 1000;
 					// trace('MISSED FRAME');
 				}
+
+				if(updateTime) {
+					var curTime:Float = FlxG.sound.music.time;
+					if(curTime < 0) curTime = 0;
+					songPercent = (curTime / songLength);
+
+					var secondsTotal:Int = Math.floor((songLength - curTime) / 1000);
+					if(secondsTotal < 0) secondsTotal = 0;
+
+					var minutesRemaining:Int = Math.floor(secondsTotal / 60);
+					var secondsRemaining:String = '' + secondsTotal % 60;
+					if(secondsRemaining.length < 2) secondsRemaining = '0' + secondsRemaining; //Dunno how to make it display a zero first in Haxe lol
+					timeTxt.text = minutesRemaining + ':' + secondsRemaining;
+				}				
 			}
 
 			// Conductor.lastSongPos = FlxG.sound.music.time;
@@ -2182,6 +2205,9 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
+		timeTxt.visible = false;
+		updateTime = false;
+
 		deathCounter = 0;
 
 		canPause = false;

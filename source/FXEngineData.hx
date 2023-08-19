@@ -5,6 +5,7 @@ import flixel.input.gamepad.FlxGamepad;
 class FXEngineData
 {   
 	public static var checkForUpdates:Bool = true;
+	public static var hideHud:Bool = false;
 
     public static function initSave()
     {	
@@ -13,6 +14,10 @@ class FXEngineData
 
 		if (FlxG.save.data.dialogue == null)
 			FlxG.save.data.dialogue = false;
+
+		if(FlxG.save.data.hideHud != null) {
+			hideHud = FlxG.save.data.hideHud;
+		}
 
 	    if (FlxG.save.data.downscroll == null)
 		   FlxG.save.data.downscroll = false;
