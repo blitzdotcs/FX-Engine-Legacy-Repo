@@ -46,7 +46,7 @@ class TitleState extends MusicBeatState
 {
 	public static var initialized:Bool = false;
 	public static var closedState:Bool = false;
-	var mustUpdate:Bool = true;
+	var mustUpdate:Bool = false;
 	var engineVer:String = "1.2.1";
 	public static var titleMusic:String = "klaskiiLoop"; 
 

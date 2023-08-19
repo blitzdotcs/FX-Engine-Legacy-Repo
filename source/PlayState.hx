@@ -1702,7 +1702,7 @@ class PlayState extends MusicBeatState
 		{		
         	if (SONG.player1 == 'tauntbf')
         	{
-           		var animationList:Array<String> = ['hey', 'dab', 'bruh', 'gunaway'];
+           		var animationList:Array<String> = ['singDAB', 'singBRUH', 'singGUNAWAY'];
             	var randomIndex:Int = Math.floor(Math.random() * animationList.length);
             	var randomAnimation:String = animationList[randomIndex];
             	boyfriend.playAnim(randomAnimation);
@@ -2952,12 +2952,10 @@ class PlayState extends MusicBeatState
 			gf.dance();
 		}
 
-        /*
 		if (!boyfriend.animation.curAnim.name.startsWith("sing"))
 		{
 			boyfriend.playAnim('idle');
 		}
-		*/
 
 		if (curBeat % 8 == 7 && curSong == 'Bopeebo')
 		{
