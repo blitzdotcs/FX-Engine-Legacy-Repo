@@ -1801,15 +1801,6 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-		if (FlxG.keys.justPressed.SEVEN)
-		{
-			FlxG.switchState(new ChartingState());
-			canDie = false;
-			#if cpp
-			DiscordClient.changePresence("Chart Editor", null, null, true);
-			#end
-		}
-
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
