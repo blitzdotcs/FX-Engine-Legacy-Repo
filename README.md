@@ -27,7 +27,7 @@ This is the repository for FX Engine. A modification of a game that was original
 - [Chocolate Engine Team](https://github.com/Joalor64GH/Chocolate-Engine) - Better Credits
 - [Funkin' Crew](https://github.com/FunkinCrew/) - Original Game Devs
 - [Kade Engine Team](https://github.com/KadeDev/Kade-Engine) - I Stole some code
-- [Psych Engine Team](https://github.com/ShadowMario/FNF-PsychEngine/) - I stole some code + modding system :3
+- [Psych Engine Team](https://github.com/ShadowMario/FNF-PsychEngine/) - I stole some code + modding system :3 (check the experimental psych modding support branch)
 - [EliteMasterEric](https://github.com/EliteMasterEric) - Modcore (used in older versions of FX Engine)
 - FNF Restored Team - Dialogue code and assets
 - OS Engine Devs - Icon bops and TitleState bg thing
