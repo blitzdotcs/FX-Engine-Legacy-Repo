@@ -84,6 +84,27 @@ class ZXNMOption extends Option
 	}
 }
 
+class DialOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.restored = !FlxG.save.data.dialogue;
+		trace('Restored Dialogue : ' + FlxG.save.data.dialogue);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return  FlxG.save.data.dialogue ? "Dialogue On" : "Dialogue Off";
+	}
+}
+
 class BotPlayOption extends Option
 {
 	public function new(desc:String)
@@ -206,5 +227,26 @@ class QuaverBarOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Quaver Bar " + (!FlxG.save.data.quaverbar ? "off" : "on");
+	}
+}
+
+class PTOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.pttauntsound = !FlxG.save.data.pttauntsound;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "PT Sound Effect: " + (!FlxG.save.data.pttauntsound ? "off" : "on");
 	}
 }

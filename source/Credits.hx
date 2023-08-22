@@ -36,7 +36,7 @@ class Credits extends MusicBeatState
 
 	override function create()
 	{
-		var initCreditlist = CoolUtil.coolTextFile(Paths.txt('creditsList'));
+		var initCreditlist = CoolUtil.coolTextFile(Paths.txt('data/creditsList'));
 
 		if (Assets.exists(Paths.txt('creditsList')))
 		{
@@ -51,10 +51,12 @@ class Credits extends MusicBeatState
 		{
 			trace("Cannot find 'creditsList' in data directory.");
 			trace("Replacing it with normal credits...");
-			initCreditlist = "TyDev:Main FX Engine Programmer\n
-            Chocolate Engine Team:Modding System + Better Credits\n
-            Funkin' Team:Original Game Devs\n
-            Kade Engine Team:I Stole some code\n
+			initCreditlist = "TyDev:Main FX Engine Programmer
+			Elite Master Eric:Modding System + ModCore
+            Chocolate Engine Team:Modding System + Better Credits
+            Funkin' Team:Original Game Devs
+			Waltuhr_99:Evil Sk8ter BF Sprites
+            Kade Engine Team:I Stole some code
             Psych Engine Team:I stole some code".trim()
 				.split('\n');
 

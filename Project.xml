@@ -53,11 +53,12 @@
 	<define name="VIDEOS_ALLOWED" if="desktop" />
 	<define name="WEBM_ENABLED" if="android" /> <!-- Set to android for now bc idek if this works -->
 
-	<assets path="mods" embed="false" exclude="*.ogg" if="web" />
-	<assets path="mods" embed="false" exclude="*.mp3" unless="web" />
+	<assets path='example_mods' rename='mods' embed='false'/>
+	<assets path="plugins/" rename='' if="windows"/>
+	<assets path="dlls/" rename='' if="windows"/>
 
-	<library name="videos"        preload="true" />
 	<section if="PRELOAD_ALL">
+		<library name="videos"        preload="true" />
 		<library name="songs"    preload="true" />
 		<library name="shared"   preload="true" />
 		<library name="tutorial" preload="true" />
@@ -71,6 +72,7 @@
 	</section>
 	
 	<section if="NO_PRELOAD_ALL">
+		<library name="videos"        preload="true" />
 		<library name="songs"    preload="false" />
 		<library name="shared"   preload="false" />
 		<library name="tutorial" preload="false" />
@@ -128,8 +130,8 @@
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name= "polymod-enigma" rename="polymod" if="desktop" /> <!-- USE https://github.com/EnigmaEngine/polymod -->
 	<haxelib name="discord_rpc" if="windows"/>
-	<haxelib name="hxCodec" if="desktop || android" />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
+	<--haxelib name="extension-webm" if="desktop"/>
 
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->

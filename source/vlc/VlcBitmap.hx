@@ -1,466 +1,520 @@
 package vlc;
 
-package vlc;
-
-#if !(desktop || android)
-#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us."
-;
-#end
+#if (cpp && !mobile)
+import cpp.Function;
 import cpp.NativeArray;
+import cpp.Pointer;
+import cpp.RawPointer;
 import cpp.UInt8;
+import cpp.vm.Thread;
+import haxe.Timer;
+import haxe.io.Bytes;
+import haxe.io.Bytes;
+import haxe.io.BytesData;
+import haxe.io.BytesData;
+import lime.math.BGRA;
+import lime.utils.ArrayBuffer;
+import lime.utils.ArrayBufferView;
+import lime.utils.UInt8Array;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.PixelSnapping;
-import openfl.utils.ByteArray;
+import openfl.display.Sprite;
+import openfl.display3D.Context3DTextureFormat;
+import openfl.display3D.textures.RectangleTexture;
+import openfl.display3D.textures.Texture;
 import openfl.errors.Error;
 import openfl.events.Event;
 import openfl.geom.Rectangle;
-import haxe.io.Bytes;
+import openfl.utils.ByteArray;
 import vlc.LibVLC;
+
+// import openfl.gl.GLTexture;
 
 /**
  * ...
- * @author Tommy Svensson
+ * @author Tommy S
  */
-/** 
-	This class lets you to use libvlc as a bitmap then you can displaylist along other items.
-	`Bitmap` extend this class. Because without it we cant display the video.
-**/
-/**
-	We need to inject the cpp code to the bitmap
-**/
-@:cppFileCode("#include <LibVLC.cpp>")
-class VLCBitmap extends Bitmap
+#if (cpp && !mobile)
+@:cppFileCode('#include "LibVLC.cpp"')
+#end
+class VlcBitmap extends Bitmap
 {
-	public var videoHeight(get, never):Int;
-	public var videoWidth(get, never):Int;
+	/////////////////////////////////////////////////////////////////////////////////////
+	// ===================================================================================
+	// Consts
+	//-----------------------------------------------------------------------------------
+	// ===================================================================================
+	// Properties
+	//-----------------------------------------------------------------------------------
+	public var videoWidth:Int;
+	public var videoHeight:Int;
+	public var repeat:Int = 0;
+	public var duration:Float;
+	public var length:Float;
+	public var inWindow:Bool;
+	public var initComplete:Bool;
+	public var fullscreen:Bool;
 
-	public var volume(default, set):Float;
+	public var volume(default, set):Float = 1;
 
-	public var initComplete:Bool = false;
-	public var isDisposed:Bool = false;
+	public var isDisposed:Bool;
+	public var isPlaying:Bool;
+	public var disposeOnStop:Bool = false;
+	public var time:Int;
 
-	public var onReady:Void->Void = null;
-	public var onPlay:Void->Void = null;
-	public var onStop:Void->Void = null;
-	public var onPause:Void->Void = null;
-	public var onResume:Void->Void = null;
-	public var onBuffer:Void->Void = null;
-	public var onOpening:Void->Void = null;
-	public var onComplete:Void->Void = null;
-	public var onError:String->Void = null;
-	public var onTimeChanged:Int->Void = null;
-	public var onPositionChanged:Int->Void = null;
-	public var onSeekableChanged:Int->Void = null;
-	public var onForward:Void->Void = null;
-	public var onBackward:Void->Void = null;
+	public var onVideoReady:Void->Void;
+	public var onPlay:Void->Void;
+	public var onStop:Void->Void;
+	public var onPause:Void->Void;
+	public var onResume:Void->Void;
+	public var onSeek:Void->Void;
+	public var onBuffer:Void->Void;
+	public var onProgress:Void->Void;
+	public var onOpening:Void->Void;
+	public var onComplete:Void->Void;
+	public var onError:Void->Void;
 
-	private var bufferMemory:Array<UInt8>;
-	private var libvlc:LibVLC;
+	// ===================================================================================
+	// Declarations
+	//-----------------------------------------------------------------------------------
+	var bufferMem:Array<UInt8>;
+	#if (cpp && !mobile)
+	var libvlc:LibVLC;
+	#end
 
-	private var _width:Null<Float>;
-	private var _height:Null<Float>;
+	// ===================================================================================
+	// Variables
+	//-----------------------------------------------------------------------------------
+	var frameSize:Int;
+	var _width:Null<Float>;
+	var _height:Null<Float>;
+	var texture:RectangleTexture;
+	var texture2:RectangleTexture;
+	var bmdBuf:BitmapData;
+	var bmdBuf2:BitmapData;
+	var oldTime:Int;
+	var flipBuffer:Bool;
+	// var frameBitmap					: Bitmap;
+	var frameRect:Rectangle;
 
-	public function new():Void
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	public function new()
 	{
-		super(bitmapData, PixelSnapping.AUTO, true);
+		super(null, null, true);
 
-		if (stage != null)
-			init();
+		#if (cpp && !mobile)
+		// libvlc = LibVLC.create();
+		// var videoThread = Thread.create(mThread);
+		// videoThread.sendMessage(Thread.current());
+		init();
+		#end
+	}
+
+	function mThread()
+	{
+		init();
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	function init()
+	{
+		#if (cpp && !mobile)
+		addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		#end
+	}
+
+	function onAddedToStage(e:Event):Void
+	{
+		removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		libvlc = LibVLC.create();
+		stage.addEventListener(Event.ENTER_FRAME, vLoop);
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	public function play(?source:String)
+	{
+		#if (cpp && !mobile)
+		libvlc.setRepeat(repeat);
+		if (!inWindow)
+		{
+			if (source != null)
+				libvlc.play(source);
+			else
+				libvlc.play();
+		}
 		else
-			addEventListener(Event.ADDED_TO_STAGE, init);
-	}
-
-	/**
-		Play's the video file you put.
-
-		@param	path	The video path (where the video is located in the files).
-		@param	loop	If you want to loop the video.
-		@param	haccelerated	If you want to have hardware accelerated enable for the video.
-	**/
-	public function playFile(path:String, loop:Bool = false, haccelerated:Bool = true):Void
-	{
-		if (libvlc != null && path != null)
 		{
-			#if HXC_DEBUG_TRACE
-			trace("Video path: " + path);
-			#end
+			if (source != null)
+				libvlc.playInWindow(source);
+			else
+				libvlc.playInWindow();
 
-			libvlc.playFile(path, loop, haccelerated);
+			libvlc.setWindowFullscreen(fullscreen);
 		}
+
+		if (onPlay != null)
+			onPlay();
+		#end
 	}
 
-	/**
-		Play the video.
-	**/
-	public function play():Void
+	public function stop()
 	{
-		if (libvlc != null && !libvlc.isPlaying())
-			libvlc.play();
+		#if (cpp && !mobile)
+		isPlaying = false;
+		libvlc.stop();
+		// if (disposeOnStop)
+		// dispose();
+
+		if (onStop != null)
+			onStop();
+		#end
 	}
 
-	/**
-		Stop the video.
-	**/
-	public function stop():Void
+	public function pause()
 	{
-		if (libvlc != null && libvlc.isPlaying())
-			libvlc.stop();
+		#if (cpp && !mobile)
+		isPlaying = false;
+		libvlc.pause();
+		if (onPause != null)
+			onPause();
+		#end
 	}
 
-	/**
-		Pause the video.
-	**/
-	public function pause():Void
+	public function resume()
 	{
-		if (libvlc != null && libvlc.isPlaying())
-		{
-			libvlc.pause();
-
-			if (onPause != null)
-				onPause();
-		}
+		#if (cpp && !mobile)
+		isPlaying = true;
+		libvlc.resume();
+		if (onResume != null)
+			onResume();
+		#end
 	}
 
-	/**
-		Resume the video.
-	**/
-	public function resume():Void
+	public function seek(seekTotime:Float)
 	{
-		if (libvlc != null && !libvlc.isPlaying())
-		{
-			libvlc.resume();
-
-			if (onResume != null)
-				onResume();
-		}
+		#if (cpp && !mobile)
+		libvlc.setPosition(seekTotime);
+		if (onSeek != null)
+			onSeek();
+		#end
 	}
 
-	/**
-		Pause / Resume the video.
-	**/
-	public function togglePause():Void
+	public function getFPS():Float
 	{
-		if (libvlc != null && !libvlc.isPlaying())
-			libvlc.togglePause();
+		#if (cpp && !mobile)
+		if (libvlc != null && initComplete)
+			return libvlc.getFPS();
+		else
+			return 0;
+		#else
+		return 0;
+		#end
 	}
 
-	/**
-		Seeking the procent of the video.
-
-		@param	seekProcen  The procent you want to seek the video.
-	**/
-	public function seek(seekProcent:Float):Void
-	{
-		if (libvlc != null && (libvlc.isPlaying() && libvlc.isSeekable()))
-			libvlc.setPosition(seekProcent);
-	}
-
-	/**
-		Setting the time of the video.
-
-		@param	time The video time you want to set.
-	**/
-	public function setTime(time:Int):Void
-	{
-		if (libvlc != null && libvlc.isPlaying())
-			libvlc.setTime(time);
-	}
-
-	/**
-		Returns the time of the video.
-	**/
 	public function getTime():Int
 	{
-		if (libvlc != null && libvlc.isPlaying())
+		#if (cpp && !mobile)
+		if (libvlc != null && initComplete)
 			return libvlc.getTime();
 		else
 			return 0;
+		#else
+		return 0;
+		#end
 	}
 
-	/**
-		Setting the volume of the video.
+	/////////////////////////////////////////////////////////////////////////////////////
 
-		@param	vol	 The video volume you want to set.
-	**/
-	public function setVolume(vol:Float):Void
+	function checkFlags()
 	{
-		if (libvlc != null && libvlc.isPlaying())
-			libvlc.setVolume(vol * 100);
+		#if (cpp && !mobile)
+		if (!isDisposed)
+		{
+			if (untyped __cpp__('libvlc->flags[1]') == 1)
+			{
+				untyped __cpp__('libvlc->flags[1]=-1');
+				statusOnPlaying();
+			}
+			if (untyped __cpp__('libvlc->flags[2]') == 1)
+			{
+				untyped __cpp__('libvlc->flags[2]=-1');
+				statusOnPaused();
+			}
+			if (untyped __cpp__('libvlc->flags[3]') == 1)
+			{
+				untyped __cpp__('libvlc->flags[3]=-1');
+				statusOnStopped();
+			}
+			if (untyped __cpp__('libvlc->flags[4]') == 1)
+			{
+				untyped __cpp__('libvlc->flags[4]=-1');
+				statusOnEndReached();
+			}
+			if (untyped __cpp__('libvlc->flags[5]') != -1)
+			{
+				statusOnTimeChanged(untyped __cpp__('libvlc->flags[5]'));
+			}
+			if (untyped __cpp__('libvlc->flags[6]') != -1)
+			{
+				statusOnPositionChanged(untyped __cpp__('libvlc->flags[9]'));
+			}
+			if (untyped __cpp__('libvlc->flags[9]') == 1)
+			{
+				untyped __cpp__('libvlc->flags[9]=-1');
+				statusOnError();
+			}
+			if (untyped __cpp__('libvlc->flags[10]') == 1)
+			{
+				untyped __cpp__('libvlc->flags[10]=-1');
+				statusOnSeekableChanged(0);
+			}
+			if (untyped __cpp__('libvlc->flags[11]') == 1)
+			{
+				untyped __cpp__('libvlc->flags[11]=-1');
+				statusOnOpening();
+			}
+			if (untyped __cpp__('libvlc->flags[12]') == 1)
+			{
+				untyped __cpp__('libvlc->flags[12]=-1');
+				statusOnBuffering();
+			}
+			if (untyped __cpp__('libvlc->flags[13]') == 1)
+			{
+				untyped __cpp__('libvlc->flags[13]=-1');
+				statusOnForward();
+			}
+			if (untyped __cpp__('libvlc->flags[14]') == 1)
+			{
+				untyped __cpp__('libvlc->flags[14]=-1');
+				statusOnBackward();
+			}
+			// if (untyped __cpp__('libvlc->flags[15]')==1)	{ untyped __cpp__('libvlc->flags[15]=-1');	onDisplay();	}
+			// trace(untyped __cpp__('libvlc->flags[15]'));
+		}
+		#end
 	}
 
-	/**
-		Returns the volume of the video.
-	**/
-	public function getVolume():Float
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	function videoInitComplete()
 	{
-		if (libvlc != null && libvlc.isPlaying())
-			return libvlc.getVolume();
-		else
-			return 0;
-	}
+		#if (cpp && !mobile)
+		videoWidth = libvlc.getWidth();
+		videoHeight = libvlc.getHeight();
+		duration = libvlc.getDuration();
+		length = libvlc.getLength();
 
-	/**
-		Returns the duration of the video.
-	**/
-	public function getDuration():Float
-	{
-		if (libvlc != null && libvlc.isPlaying())
-			return libvlc.getDuration();
-		else
-			return 0;
-	}
+		if (this.bitmapData != null)
+			this.bitmapData.dispose();
 
-	/**
-		Returns the length of the video.
-	**/
-	public function getLength():Float
-	{
-		if (libvlc != null && libvlc.isPlaying())
-			return libvlc.getLength();
-		else
-			return 0;
-	}
+		if (texture != null)
+			texture.dispose();
+		if (texture2 != null)
+			texture2.dispose();
 
-	private function checkFlags():Void
-	{
-		if (untyped __cpp__('libvlc -> flags[1]') == 1)
-		{
-			untyped __cpp__('libvlc -> flags[1] = -1');
+		// BitmapData
+		this.bitmapData = new BitmapData(Std.int(videoWidth), Std.int(videoHeight), true, 0);
+		frameRect = new Rectangle(0, 0, Std.int(videoWidth), Std.int(videoHeight));
 
-			if (!initComplete)
-				videoInitComplete();
-
-			if (onPlay != null)
-				onPlay();
-		}
-		if (untyped __cpp__('libvlc -> flags[2]') == 1)
-		{
-			untyped __cpp__('libvlc -> flags[2] = -1');
-			if (onStop != null)
-				onStop();
-		}
-		if (untyped __cpp__('libvlc -> flags[3]') == 1)
-		{
-			untyped __cpp__('libvlc -> flags[3] = -1');
-
-			#if HXC_DEBUG_TRACE
-			trace("The Video got done!");
-			#end
-
-			if (onComplete != null)
-				onComplete();
-		}
-		if (untyped __cpp__('libvlc -> flags[4]') != -1)
-		{
-			var newTime:Int = untyped __cpp__('libvlc -> flags[4]');
-
-			#if HXC_DEBUG_TRACE
-			trace("video time now is: " + newTime);
-			#end
-
-			if (onTimeChanged != null)
-				onTimeChanged(newTime);
-		}
-		if (untyped __cpp__('libvlc -> flags[5]') != -1)
-		{
-			var newPos:Int = untyped __cpp__('libvlc -> flags[5]');
-
-			#if HXC_DEBUG_TRACE
-			trace("the position of the video now is: " + newPos);
-			#end
-
-			if (onPositionChanged != null)
-				onPositionChanged(newPos);
-		}
-		if (untyped __cpp__('libvlc -> flags[6]') != -1)
-		{
-			var newPos:Int = untyped __cpp__('libvlc -> flags[6]');
-
-			#if HXC_DEBUG_TRACE
-			trace("the seeked pos of the video now is: " + newPos);
-			#end
-
-			if (onSeekableChanged != null)
-				onSeekableChanged(newPos);
-		}
-		if (untyped __cpp__('libvlc -> flags[7]') == 1)
-		{
-			untyped __cpp__('libvlc -> flags[7] = -1');
-			if (onError != null)
-				onError(libvlc.getLastError());
-		}
-		if (untyped __cpp__('libvlc -> flags[8]') == 1)
-		{
-			untyped __cpp__('libvlc -> flags[8] = -1');
-			if (onOpening != null)
-				onOpening();
-		}
-		if (untyped __cpp__('libvlc -> flags[9]') == 1)
-		{
-			untyped __cpp__('libvlc -> flags[9] = -1');
-			if (onBuffer != null)
-				onBuffer();
-		}
-		if (untyped __cpp__('libvlc -> flags[10]') == 1)
-		{
-			untyped __cpp__('libvlc -> flags[10] = -1');
-			if (onForward != null)
-				onForward();
-		}
-		if (untyped __cpp__('libvlc -> flags[11]') == 1)
-		{
-			untyped __cpp__('libvlc -> flags[11] = -1');
-			if (onBackward != null)
-				onBackward();
-		}
-	}
-
-	private function videoInitComplete():Void
-	{
-		if (bitmapData != null)
-			bitmapData.dispose();
-
-		bitmapData = new BitmapData(libvlc.getWidth(), libvlc.getHeight(), true, 0);
+		// (Stage3D)
+		// texture = Lib.current.stage.stage3Ds[0].context3D.createRectangleTexture(videoWidth, videoHeight, Context3DTextureFormat.BGRA, true);
+		// this.bitmapData = BitmapData.fromTexture(texture);
 
 		smoothing = true;
 
 		if (_width != null)
-			width = _width;
+			this.width = _width;
 		else
-			width = libvlc.getWidth();
+			this.width = videoWidth;
 
 		if (_height != null)
-			height = _height;
+			this.height = _height;
 		else
-			height = libvlc.getHeight();
+			this.height = videoHeight;
 
-		bufferMemory = [];
+		bufferMem = [];
+		frameSize = videoWidth * videoHeight * 4;
+
+		setVolume(volume);
 
 		initComplete = true;
 
-		if (onReady != null)
-			onReady();
-
-		#if HXC_DEBUG_TRACE
-		trace("Video Loaded!");
+		if (onVideoReady != null)
+			onVideoReady();
 		#end
 	}
 
-	private function init(?e:Event):Void
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	function vLoop(e)
 	{
-		if (hasEventListener(Event.ADDED_TO_STAGE))
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-
-		libvlc = LibVLC.create();
-
-		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-	}
-
-	private function onEnterFrame(?e:Event):Void
-	{
-		render();
+		#if (cpp && !mobile)
 		checkFlags();
+		render();
+		#end
 	}
 
-	private var oldTime:Int = 0;
+	/////////////////////////////////////////////////////////////////////////////////////
 
-	private function render():Void
+	function render()
 	{
-		if (libvlc.isPlaying() && initComplete && !isDisposed)
+		var cTime = Lib.getTimer();
+		if ((cTime - oldTime) > 28) // min 28 ms between renders, but this is not a good way to do it...
 		{
-			var cTime = Lib.getTimer();
+			oldTime = cTime;
 
-			if ((cTime - oldTime) > 28) // min 28 ms between renders, but this is not a good way to do it...
+			#if (cpp && !mobile)
+			// if (isPlaying && texture != null) // (Stage3D)
+			if (isPlaying)
 			{
-				oldTime = cTime;
-
-				#if HXC_DEBUG_TRACE
-				trace("rendering...");
-				#end
-
-				var width = libvlc.getWidth();
-				var height = libvlc.getHeight();
-
-				var length = width * height * 4;
-				if (libvlc.getPixelData() != null) // libvlc.getPixelData() sometimes is null and the app hangs ...
-					NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), length);
-
-				if (bufferMemory != null && bitmapData != null)
+				try
 				{
-					var bytes:ByteArray = Bytes.ofData(cast(bufferMemory));
-					if (bytes.bytesAvailable >= length)
-						bitmapData.setPixels(new Rectangle(0, 0, width, height), bytes);
+					NativeArray.setUnmanagedData(bufferMem, libvlc.getPixelData(), frameSize);
+					if (bufferMem != null)
+					{
+						// BitmapData
+						// libvlc.getPixelData() sometimes is null and the exe hangs ...
+						if (libvlc.getPixelData() != null)
+							this.bitmapData.setPixels(frameRect, Bytes.ofData(bufferMem));
+
+						// (Stage3D)
+						// texture.uploadFromByteArray( Bytes.ofData(cast(bufferMem)), 0 );
+						// this.width++; //This is a horrible hack to force the texture to update... Surely there is a better way...
+						// this.width--;
+					}
+				}
+				catch (e:Error)
+				{
 				}
 			}
+			#end
 		}
 	}
 
-	/**
-		Dispose the hole bitmap.
-	**/
-	public function dispose():Void
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	public function setVolume(vol:Float)
 	{
-		#if HXC_DEBUG_TRACE
-		trace("Disposing the bitmap!");
+		#if (cpp && !mobile)
+		if (libvlc != null && initComplete)
+			libvlc.setVolume(vol * 100);
 		#end
+	}
 
-		libvlc.stop();
+	public function getVolume():Float
+	{
+		#if (cpp && !mobile)
+		if (libvlc != null && initComplete)
+			return libvlc.getVolume();
+		else
+			return 0;
+		#else
+		return 0;
+		#end
+	}
 
-		if (stage.hasEventListener(Event.ENTER_FRAME))
-			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+	/////////////////////////////////////////////////////////////////////////////////////
 
-		if (bitmapData != null)
+	function statusOnOpening()
+	{
+		if (onOpening != null)
+			onOpening();
+	}
+
+	function statusOnBuffering()
+	{
+		if (onBuffer != null)
+			onBuffer();
+	}
+
+	function statusOnPlaying()
+	{
+		if (!initComplete)
 		{
-			bitmapData.dispose();
-			bitmapData = null;
+			isPlaying = true;
+			initComplete = true;
+			videoInitComplete();
 		}
-
-		if (bufferMemory != null)
-			bufferMemory = null;
-
-		onReady = null;
-		onComplete = null;
-		onPause = null;
-		onOpening = null;
-		onPlay = null;
-		onResume = null;
-		onStop = null;
-		onBuffer = null;
-		onTimeChanged = null;
-		onPositionChanged = null;
-		onSeekableChanged = null;
-		onForward = null;
-		onBackward = null;
-		onError = null;
-
-		initComplete = false;
-		isDisposed = true;
 	}
 
-	@:noCompletion private function get_videoHeight():Int
+	function statusOnPaused()
 	{
-		if (libvlc != null && initComplete)
-			return libvlc.getHeight();
+		if (isPlaying)
+			isPlaying = false;
 
-		return 0;
+		if (onPause != null)
+			onPause();
 	}
 
-	@:noCompletion private function get_videoWidth():Int
+	function statusOnStopped()
 	{
-		if (libvlc != null && initComplete)
-			return libvlc.getWidth();
+		if (isPlaying)
+			isPlaying = false;
 
-		return 0;
+		if (onStop != null)
+			onStop();
 	}
+
+	function statusOnEndReached()
+	{
+		if (isPlaying)
+			isPlaying = false;
+
+		// trace("end reached!");
+		if (onComplete != null)
+			onComplete();
+	}
+
+	function statusOnTimeChanged(newTime:Int)
+	{
+		time = newTime;
+		if (onProgress != null)
+			onProgress();
+	}
+
+	function statusOnPositionChanged(newPos:Int)
+	{
+	}
+
+	function statusOnSeekableChanged(newPos:Int)
+	{
+		if (onSeek != null)
+			onSeek();
+	}
+
+	function statusOnForward()
+	{
+	}
+
+	function statusOnBackward()
+	{
+	}
+
+	function onDisplay()
+	{
+		// render();
+	}
+
+	function statusOnError()
+	{
+		trace("VLC ERROR - File not found?");
+		if (onError != null)
+			onError();
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	private override function get_width():Float
 	{
 		return _width;
 	}
 
-	public override function set_width(value:Float):Float
+	private override function set_width(value:Float):Float
 	{
 		_width = value;
 		return super.set_width(value);
@@ -471,20 +525,62 @@ class VLCBitmap extends Bitmap
 		return _height;
 	}
 
-	public override function set_height(value:Float):Float
+	private override function set_height(value:Float):Float
 	{
 		_height = value;
 		return super.set_height(value);
 	}
 
-	private function get_volume():Float
+	function get_volume():Float
 	{
 		return volume;
 	}
 
-	private function set_volume(value:Float):Float
+	function set_volume(value:Float):Float
 	{
 		setVolume(value);
 		return volume = value;
 	}
+
+	// ===================================================================================
+	// Dispose
+	//-----------------------------------------------------------------------------------
+
+	public function dispose()
+	{
+		#if (cpp && !mobile)
+		libvlc.stop();
+		#end
+
+		stage.removeEventListener(Event.ENTER_FRAME, vLoop);
+
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
+		onVideoReady = null;
+		onComplete = null;
+		onPause = null;
+		onPlay = null;
+		onResume = null;
+		onSeek = null;
+		onStop = null;
+		onBuffer = null;
+		onProgress = null;
+		onError = null;
+		bufferMem = null;
+		isDisposed = true;
+
+		#if (cpp && !mobile)
+		while (!isPlaying && !isDisposed)
+		{
+			libvlc.dispose();
+			libvlc = null;
+		}
+		#end
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 }
+#end

@@ -12,7 +12,6 @@ import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import lime.utils.Assets;
 
 class OptionsMenu extends MusicBeatState
 {
@@ -22,6 +21,7 @@ class OptionsMenu extends MusicBeatState
 	var options:Array<OptionCatagory> = [
 		new OptionCatagory("Gameplay", [
 			new ZXNMOption(controls),
+			new DialOption("Restored Dialogue toggle"),
 			new PosBarOption("Song position barr"),
 			new BotPlayOption("Omg ur bad lel")
 		]),
@@ -31,6 +31,7 @@ class OptionsMenu extends MusicBeatState
 		]),
 		new OptionCatagory("Misc", [
 			new QuaverBarOption("Cooler healthBar thing"),
+			new PTOption("Pizza Tower Taunt Sound Effect Toggle"),
 			new IconBopOption("Make the icons bop with the bpm")
 		])
 	];
@@ -43,7 +44,7 @@ class OptionsMenu extends MusicBeatState
 
 	override function create()
 	{
-		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat"));
+		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage("menuDesat"));
 
 		menuBG.color = 0xFFea71fd;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
