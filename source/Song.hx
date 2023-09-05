@@ -8,6 +8,7 @@ import openfl.utils.Assets as OpenFlAssets;
 import sys.io.File;
 import sys.FileSystem;
 #end
+import lime.utils.Assets;
 
 using StringTools;
 
@@ -50,7 +51,16 @@ class Song
 
 	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
 	{
-		var rawJson = null;
+		var rawJson;
+		if(jsonInput == 'events') { //Makes the game not crash while trying to load an events chart, doesn't work on HTML tho
+			#if sys
+			rawJson = sys.io.File.getContent(Paths.json(folder.toLowerCase() + '/events')).trim();
+			#else
+			rawJson = Assets.getText(Paths.json(folder.toLowerCase() + '/events')).trim();
+			#end
+		} else {
+			rawJson = Assets.getText(Paths.json(folder.toLowerCase() + '/' + jsonInput.toLowerCase())).trim();
+		}
 
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 		var formattedSong:String = Paths.formatToSongPath(jsonInput);
