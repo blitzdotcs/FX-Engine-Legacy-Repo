@@ -1792,9 +1792,13 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-		if (FlxG.keys.justPressed.SEVEN)
+		if (FlxG.keys.justPressed.SIX)
 		{
-			FlxG.switchState(new ChartingState());
+			FlxG.switchState(new CharacterSelectState());
+
+			#if cpp
+			DiscordClient.changePresence("In Character Selection Screen!", null, null, true);
+			#end
 		}
 
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
