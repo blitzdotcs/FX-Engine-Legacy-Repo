@@ -44,7 +44,7 @@ using StringTools;
 
 class TitleState extends MusicBeatState
 {
-	static var initialized:Bool = false;
+	public static var initialized:Bool = false;
 	public static var closedState:Bool = false;
 	var mustUpdate:Bool = false;
 	var engineVer:String = "2.0.0";
@@ -103,7 +103,8 @@ class TitleState extends MusicBeatState
 		FlxG.save.bind('fxengine', 'tydev');
 
 		FXEngineData.initSave();
-		
+
+		#if CHECK_FOR_UPDATES
 		if(FXEngineData.checkForUpdates && !closedState) {
 			trace('checking for update');
 			var http = new haxe.Http("https://raw.githubusercontent.com/TyDevX/FX-Engine/main/gitVersion.txt");
@@ -125,6 +126,7 @@ class TitleState extends MusicBeatState
 
 			http.request();
 		}
+		#end
 
 		Highscore.load();
 
@@ -133,20 +135,6 @@ class TitleState extends MusicBeatState
 		FXEngineData.initSave();
 		controls.setKeyboardScheme(KeyboardScheme.Solo);
 		trace("WASD sucks lmfao.");	
-		
-		if (FlxG.save.data.weekUnlocked != null)
-		{
-			// FIX LATER!!!
-			// WEEK UNLOCK PROGRESSION!!
-			// StoryMenuState.weekUnlocked = FlxG.save.data.weekUnlocked;
-
-			if (StoryMenuState.weekUnlocked.length < 4)
-				StoryMenuState.weekUnlocked.insert(0, true);
-
-			// QUICK PATCH OOPS!
-			if (!StoryMenuState.weekUnlocked[0])
-				StoryMenuState.weekUnlocked[0] = true;
-		}
 
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
@@ -210,7 +198,7 @@ class TitleState extends MusicBeatState
 		logoBl.shader = colorShader.shader;
 		add(logoBl);
 
-		titlestatebg = new FlxBackdrop(Paths.image('loading'), 0.2, 0, true, true);
+		titlestatebg = new FlxBackdrop(Paths.loadImage('loading'), 0.2, 0, true, true);
 		titlestatebg.velocity.set(200, 110);
 		titlestatebg.updateHitbox();
 		titlestatebg.alpha = 0.5;
@@ -337,7 +325,11 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
-				FlxG.switchState(new MainMenuState());
+				if (mustUpdate) {
+					MusicBeatState.switchState(new OutdatedSubState());
+				} else {
+					MusicBeatState.switchState(new MainMenuState());
+				}				
 				closedState = true;
 			});			
 		}

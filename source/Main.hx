@@ -81,9 +81,6 @@ class Main extends Sprite
 		// Run this first so we can see logs.
 		Debug.onInitProgram();
 
-		// Gotta run this before any assets get loaded.
-		ModCore.initialize();
-
 		initialState = TitleState;
 
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen));

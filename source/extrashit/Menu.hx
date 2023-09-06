@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
+import psych.MasterEditorMenu;
 
 import flixel.util.FlxSave;
 
@@ -15,7 +16,7 @@ class Menu extends MusicBeatState
 
 	private var grpControls:FlxTypedGroup<Alphabet>;
 
-	var menuItems:Array<String> = ['Mods', 'Modifiers', #if debug 'Save Editor', #end 'exit'];
+	var menuItems:Array<String> = ['Mod Selection', 'Mod Configuration', 'exit'];
 
 	var notice:FlxText;
 
@@ -58,8 +59,10 @@ class Menu extends MusicBeatState
 
 			switch (daSelected)
 			{
-				case "Mods":
-                     FlxG.switchState(new modding.ModsMenuState());
+				case "Mod Selection":
+                    FlxG.switchState(new ModsMenuState());					
+				case "Mod Configuration":
+                    FlxG.switchState(new psych.MasterEditorMenu());			 
 				case "exit":
 					FlxG.switchState(new MainMenuState());
 			}

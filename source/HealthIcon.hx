@@ -7,74 +7,66 @@ using StringTools;
 
 class HealthIcon extends FlxSprite
 {
-	/**
-	 * Used for FreeplayState! If you use it elsewhere, prob gonna annoying
-	 */
 	public var sprTracker:FlxSprite;
+	private var isOldIcon:Bool = false;
+	private var isPlayer:Bool = false;
+	private var char:String = '';
 
-	var char:String = '';
-	var isPlayer:Bool = false;
+	// This is made for allowing these icons to be used without having their suffix deleted
+	var ignoreSplit:Array<String> = ['bf-pixel', 'bf-old'];
+
+	// The following icons have antialiasing forced to be disabled
+	var noAntialiasing:Array<String> = ['bf-pixel', 'senpai', 'spirit'];
 
 	public function new(char:String = 'bf', isPlayer:Bool = false)
 	{
 		super();
-
+		isOldIcon = (char == 'bf-old');
 		this.isPlayer = isPlayer;
-
 		changeIcon(char);
-		antialiasing = true;
 		scrollFactor.set();
 	}
 
-	public var isOldIcon:Bool = false;
-
-	public function swapOldIcon():Void
-	{
-		isOldIcon = !isOldIcon;
-
-		if (isOldIcon)
-			changeIcon('bf-old');
-		else
-			changeIcon(PlayState.SONG.player1);
-	}
-
-	public function changeIcon(newChar:String):Void
-	{
-   		if (newChar != 'bf-pixel' && newChar != 'bf-old')
-        	newChar = newChar.split('-')[0].trim();
-
-    	if (newChar != char)
-    	{
-        	if (animation.getByName(newChar) == null)
-        	{
-            	#if sys
-            	loadGraphic(Paths.loadImage('icons/icon-' + newChar), true, 150, 150);
-            	#else
-            	loadGraphic(Paths.loadImage('icons/icon-' + newChar), true, 150, 150);
-            	#end
-            	animation.add(newChar, [0, 1], 0, false, isPlayer);
-        	}
-        	animation.play(newChar);
-        	char = newChar;
-   		}
-   		else if (animation.getByName(newChar) == null)
-    	{
-       		// Load and set the default icon
-        	#if sys
-        	loadGraphic(Paths.loadImage('icons/default-icon'), true, 150, 150); // Update the path as needed
-       	 	#else
-        	loadGraphic(Paths.loadImage('icons/default-icon'), true, 150, 150); // Update the path as needed
-        	#end
-        	animation.add(newChar, [0], 0, false, isPlayer); // Use a single frame for the default icon
-        	animation.play(newChar);
-    	}
-	}
-		
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
 		if (sprTracker != null)
 			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
+	}
+
+	public function swapOldIcon() {
+		if(isOldIcon = !isOldIcon) changeIcon('bf-old');
+		else changeIcon('bf');
+	}
+
+	public function changeIcon(char:String) {
+		var doSplit:Bool = true;
+		for (i in 0...ignoreSplit.length) {
+			if(char == ignoreSplit[i]) {
+				doSplit = false;
+				break;
+			}
+		}
+
+		if(doSplit) {
+			char = (char.split('-')[0]).trim();
+		}
+
+		if(this.char != char) {
+			var name:String = 'icons/' + char;
+			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-' + char; //Older versions of psych engine's support
+			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-face'; //Prevents crash from missing icon
+			var file:Dynamic = Paths.loadImage(name);
+
+			loadGraphic(file, true, 150, 150);
+			animation.add(char, [0, 1], 0, false, isPlayer);
+			animation.play(char);
+			this.char = char;
+		}
+	}
+
+	public function getCharacter():String {
+		return char;
 	}
 }

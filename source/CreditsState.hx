@@ -22,7 +22,7 @@ import sys.FileSystem;
 
 using StringTools;
 
-class Credits extends MusicBeatState
+class CreditsState extends MusicBeatState
 {
 	var credits:Array<CreditsMetadata> = [];
 
