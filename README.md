@@ -13,7 +13,7 @@ This is the repository for FX Engine. A modification of a game that was original
 - Ghost Tapping
 - Custom Controls!
 - Working settings menu
-- W.i.p. Modding support without source
+- Psych Modding Support!
 - Character Selection!
 - Icon bopping!
 - Custom Credits Menu
