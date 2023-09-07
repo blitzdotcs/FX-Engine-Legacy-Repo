@@ -52,12 +52,14 @@ class CreditsState extends MusicBeatState
 			trace("Cannot find 'creditsList' in data directory.");
 			trace("Replacing it with normal credits...");
 			initCreditlist = "TyDev:Main FX Engine Programmer
-			Elite Master Eric:Modding System + ModCore
-            Chocolate Engine Team:Modding System + Better Credits
-            Funkin' Team:Original Game Devs
-			Waltuhr_99:Evil Sk8ter BF Sprites
-            Kade Engine Team:I Stole some code
-            Psych Engine Team:I stole some code".trim()
+			Elite Master Eric:Modcore
+			Chocolate Engine Team:Modding System and Better Credits
+			Funkin' Team:OG Game Devs
+			Kade Engine Team:I Stole some code
+			Psych Engine Team:Modding system and Char jsons
+			FNF Restored Team:Dialogue code and Assets
+			FPS Plus Devs: Silly tiny guys in charting state
+			OS Engine Devs: Icon bops and TitleState bg thing".trim()
 				.split('\n');
 
 			for (i in 0...initCreditlist.length)
