@@ -128,10 +128,8 @@
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
 	<haxelib name="faxe" if='switch'/>
-	<haxelib name= "polymod-enigma" rename="polymod" if="desktop" /> <!-- USE https://github.com/EnigmaEngine/polymod -->
 	<haxelib name="discord_rpc" if="windows"/>
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
-	<--haxelib name="extension-webm" if="desktop"/>
 
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->

@@ -8,7 +8,7 @@ import flixel.math.FlxRect;
 import flixel.util.FlxTimer;
 import flixel.FlxState;
 
-class MusicBeatState extends FlxUIState
+class MusicBeatState extends modcharting.ModchartMusicBeatState
 {
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;

@@ -45,21 +45,15 @@ class ChartingState extends MusicBeatState
 	private var eventStuff:Array<Dynamic> =
 	[
 		['', "Nothing. Yep, that's right."],
-		['Dadbattle Spotlight', "Used in Dad Battle,\nValue 1: 0/1 = ON/OFF,\n2 = Target Dad\n3 = Target BF"],
-		['Hey!', "Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"],
-		['Set GF Speed', "Sets GF head bopping speed,\nValue 1: 1 = Normal speed,\n2 = 1/2 speed, 4 = 1/4 speed etc.\nUsed on Fresh during the beatbox parts.\n\nWarning: Value must be integer!"],
-		['Philly Glow', "Exclusive to Week 3\nValue 1: 0/1/2 = OFF/ON/Reset Gradient\n \nNo, i won't add it to other weeks."],
-		['Kill Henchmen', "For Mom's songs, don't use this please, i love them :("],
+		['Hey!', "Plays the \"Hey!\" animation from Bopeebo,\nValue 1: 0 = Only Boyfriend, 1 = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"],
+		['Set GF Speed', "Changes GF head bopping speed,\nValue 1: 1 = Normal speed, 2 = Half speed.\nOther values weren't tested\nUsed on Fresh during the beatbox parts.\nWarning: Value must be integer!"],
+		['Blammed Lights', "Value 1: 0 = Turn off, 1 = Blue, 2 = Green,\n3 = Pink, 4 = Red, 5 = Orange, Anything else = Random."],
+		['Kill Henchmen', "For Mom's songs, use this please, i hate them :("],
 		['Add Camera Zoom', "Used on MILF on that one \"hard\" part\nValue 1: Camera zoom add (Default: 0.015)\nValue 2: UI zoom add (Default: 0.03)\nLeave the values blank if you want to use Default."],
-		['BG Freaks Expression', "Should be used only in \"school\" Stage!"],
-		['Trigger BG Ghouls', "Should be used only in \"schoolEvil\" Stage!"],
-		['Play Animation', "Plays an animation on a Character,\nonce the animation is completed,\nthe animation changes to Idle\n\nValue 1: Animation to play.\nValue 2: Character (Dad, BF, GF)"],
-		['Camera Follow Pos', "Value 1: X\nValue 2: Y\n\nThe camera won't change the follow point\nafter using this, for getting it back\nto normal, leave both values blank."],
-		['Alt Idle Animation', "Sets a specified suffix after the idle animation name.\nYou can use this to trigger 'idle-alt' if you set\nValue 2 to -alt\n\nValue 1: Character to set (Dad, BF or GF)\nValue 2: New suffix (Leave it blank to disable)"],
-		['Screen Shake', "Value 1: Camera shake\nValue 2: HUD shake\n\nEvery value works as the following example: \"1, 0.05\".\nThe first number (1) is the duration.\nThe second number (0.05) is the intensity."],
-		['Change Character', "Value 1: Character to change (Dad, BF, GF)\nValue 2: New character's name"],
-		['Change Scroll Speed', "Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."],
-		['Set Property', "Value 1: Variable name\nValue 2: New value"]
+		['Trigger BG Ghouls', "Used on Thorns for the \"Hey!\"s"],
+		['Flip Notes', "Left turns into Right, Up turns into Down."],
+		['Swap Notes', "Similar to Flip Notes, but you can choose which\nspecific notes to swap, swaps note on Value 1\nwith the note on Value 2, values\nshould be 0 (Left), 1 (Down), 2 (Up) or 3 (Right)."],
+		['Play Animation', "Plays an animation on Dad,\nonce the animation is completed,\nthe animation changes to Idle\n\nValue 1: Animation to play."]
 	];
 	var value1InputText:FlxUIInputText;
 	var value2InputText:FlxUIInputText;
@@ -552,44 +546,12 @@ class ChartingState extends MusicBeatState
 		UI_box.addGroup(tab_group_note);
 	}
 
-	var eventDropDown:FlxUIDropDownMenuCustom;
-	var descText:FlxText;
-	var selectedEventText:FlxText;
-	function addEventsUI():Void
+	function addPsychicUI():Void
 	{
 		var tab_group_event = new FlxUI(null, UI_box);
 		tab_group_event.name = 'Events';
 
-		var eventPushedMap:Map<String, Bool> = new Map<String, Bool>();
-		var directories:Array<String> = [];
-
-		#if MODS_ALLOWED
-		directories.push(Paths.mods('custom_events/'));
-		directories.push(Paths.mods(Paths.currentModDirectory + '/custom_events/'));
-		for(mod in Paths.getGlobalMods())
-			directories.push(Paths.mods(mod + '/custom_events/'));
-		#end
-
-		for (i in 0...directories.length) {
-			var directory:String =  directories[i];
-			if(FileSystem.exists(directory)) {
-				for (file in FileSystem.readDirectory(directory)) {
-					var path = haxe.io.Path.join([directory, file]);
-					if (!FileSystem.isDirectory(path) && file != 'readme.txt' && file.endsWith('.txt')) {
-						var fileToCheck:String = file.substr(0, file.length - 4);
-						if(!eventPushedMap.exists(fileToCheck)) {
-							eventPushedMap.set(fileToCheck, true);
-							eventStuff.push([fileToCheck, File.getContent(path)]);
-						}
-					}
-				}
-			}
-		}
-		eventPushedMap.clear();
-		eventPushedMap = null;
-		#end
-
-		descText = new FlxText(20, 200, 0, eventStuff[0][0]);
+		var descText:FlxText = new FlxText(20, 200, 0, eventStuff[0][0]);
 
 		var leEvents:Array<String> = [];
 		for (i in 0...eventStuff.length) {
@@ -598,103 +560,21 @@ class ChartingState extends MusicBeatState
 
 		var text:FlxText = new FlxText(20, 30, 0, "Event:");
 		tab_group_event.add(text);
-		eventDropDown = new FlxUIDropDownMenuCustom(20, 50, FlxUIDropDownMenuCustom.makeStrIdLabelArray(leEvents, true), function(pressed:String) {
-			var selectedEvent:Int = Std.parseInt(pressed);
+		var eventDropDown = new FlxUIDropDownMenu(20, 50, FlxUIDropDownMenu.makeStrIdLabelArray(leEvents, true), function(pressed:String) {
+			selectedEvent= Std.parseInt(pressed);
 			descText.text = eventStuff[selectedEvent][1];
-				if (curSelectedNote != null &&  eventStuff != null) {
-				if (curSelectedNote != null && curSelectedNote[2] == null){
-				curSelectedNote[1][curEventSelected][0] = eventStuff[selectedEvent][0];
-
-				}
-				updateGrid();
+			if(curSelectedNote != null) {
+				curSelectedNote[2] = eventStuff[selectedEvent][0];
 			}
 		});
-		blockPressWhileScrolling.push(eventDropDown);
 
 		var text:FlxText = new FlxText(20, 90, 0, "Value 1:");
 		tab_group_event.add(text);
 		value1InputText = new FlxUIInputText(20, 110, 100, "");
-		blockPressWhileTypingOn.push(value1InputText);
 
 		var text:FlxText = new FlxText(20, 130, 0, "Value 2:");
 		tab_group_event.add(text);
 		value2InputText = new FlxUIInputText(20, 150, 100, "");
-		blockPressWhileTypingOn.push(value2InputText);
-
-		// New event buttons
-		var removeButton:FlxButton = new FlxButton(eventDropDown.x + eventDropDown.width + 10, eventDropDown.y, '-', function()
-		{
-			if(curSelectedNote != null && curSelectedNote[2] == null) //Is event note
-			{
-				if(curSelectedNote[1].length < 2)
-				{
-					_song.events.remove(curSelectedNote);
-					curSelectedNote = null;
-				}
-				else
-				{
-					curSelectedNote[1].remove(curSelectedNote[1][curEventSelected]);
-				}
-
-				var eventsGroup:Array<Dynamic>;
-				--curEventSelected;
-				if(curEventSelected < 0) curEventSelected = 0;
-				else if(curSelectedNote != null && curEventSelected >= (eventsGroup = curSelectedNote[1]).length) curEventSelected = eventsGroup.length - 1;
-
-				changeEventSelected();
-				updateGrid();
-			}
-		});
-		removeButton.setGraphicSize(Std.int(removeButton.height), Std.int(removeButton.height));
-		removeButton.updateHitbox();
-		removeButton.color = FlxColor.RED;
-		removeButton.label.color = FlxColor.WHITE;
-		removeButton.label.size = 12;
-		setAllLabelsOffset(removeButton, -30, 0);
-		tab_group_event.add(removeButton);
-
-		var addButton:FlxButton = new FlxButton(removeButton.x + removeButton.width + 10, removeButton.y, '+', function()
-		{
-			if(curSelectedNote != null && curSelectedNote[2] == null) //Is event note
-			{
-				var eventsGroup:Array<Dynamic> = curSelectedNote[1];
-				eventsGroup.push(['', '', '']);
-
-				changeEventSelected(1);
-				updateGrid();
-			}
-		});
-		addButton.setGraphicSize(Std.int(removeButton.width), Std.int(removeButton.height));
-		addButton.updateHitbox();
-		addButton.color = FlxColor.GREEN;
-		addButton.label.color = FlxColor.WHITE;
-		addButton.label.size = 12;
-		setAllLabelsOffset(addButton, -30, 0);
-		tab_group_event.add(addButton);
-
-		var moveLeftButton:FlxButton = new FlxButton(addButton.x + addButton.width + 20, addButton.y, '<', function()
-		{
-			changeEventSelected(-1);
-		});
-		moveLeftButton.setGraphicSize(Std.int(addButton.width), Std.int(addButton.height));
-		moveLeftButton.updateHitbox();
-		moveLeftButton.label.size = 12;
-		setAllLabelsOffset(moveLeftButton, -30, 0);
-		tab_group_event.add(moveLeftButton);
-
-		var moveRightButton:FlxButton = new FlxButton(moveLeftButton.x + moveLeftButton.width + 10, moveLeftButton.y, '>', function()
-		{
-			changeEventSelected(1);
-		});
-		moveRightButton.setGraphicSize(Std.int(moveLeftButton.width), Std.int(moveLeftButton.height));
-		moveRightButton.updateHitbox();
-		moveRightButton.label.size = 12;
-		setAllLabelsOffset(moveRightButton, -30, 0);
-		tab_group_event.add(moveRightButton);
-
-		selectedEventText = new FlxText(addButton.x - 100, addButton.y + addButton.height + 6, (moveRightButton.x - addButton.x) + 186, 'Selected Event: None');
-		selectedEventText.alignment = CENTER;
-		tab_group_event.add(selectedEventText);
 
 		tab_group_event.add(descText);
 		tab_group_event.add(value1InputText);

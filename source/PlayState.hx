@@ -51,6 +51,9 @@ import openfl.filters.ShaderFilter;
 import sys.FileSystem;
 import sys.io.File;
 #end
+import modcharting.ModchartFuncs;
+import modcharting.NoteMovement;
+import modcharting.PlayfieldRenderer;
 
 using StringTools;
 
@@ -904,6 +907,10 @@ class PlayState extends MusicBeatState
 
 		generateSong(SONG.song);
 
+  		playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
+  		playfieldRenderer.cameras = [camHUD];
+  		add(playfieldRenderer);
+
 		// add(strumLine);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -1158,6 +1165,8 @@ class PlayState extends MusicBeatState
 
 		generateStaticArrows(0);
 		generateStaticArrows(1);
+
+  		NoteMovement.getDefaultStrumPos(this);
 
 		talking = false;
 		startedCountdown = true;

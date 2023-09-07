@@ -14,6 +14,9 @@ using StringTools;
 
 class Note extends FlxSprite
 {
+  	public var mesh:modcharting.SustainStrip = null;
+  	public var z:Float = 0;
+
 	public var strumTime:Float = 0;
 
 	public var mustPress:Bool = false;
