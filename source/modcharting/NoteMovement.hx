@@ -36,24 +36,15 @@ class NoteMovement
         defaultStrumY = []; 
         defaultScale = [];
         arrowSizes = [];
-        keyCount = #if (LEATHER || KADE) PlayState.strumLineNotes.length-PlayState.playerStrums.length #else PlayState.strumLineNotes.length-PlayState.playerStrums.length #end; //base game doesnt have opponent strums as group
-        playerKeyCount = #if (LEATHER || KADE) PlayState.playerStrums.length #else PlayState.playerStrums.length #end;
+        keyCount = PlayState.strumLineNotes.length-PlayState.playerStrums.length;
+        playerKeyCount = PlayState.playerStrums.length;
 
-        for (i in #if (LEATHER || KADE) 0...PlayState.strumLineNotes.members.length #else 0...PlayState.strumLineNotes.members.length #end)
+        for (i in 0...PlayState.strumLineNotes.members.length)
         {
-            #if (LEATHER || KADE) 
             var strum = PlayState.strumLineNotes.members[i];
-            #else 
-            var strum = PlayState.strumLineNotes.members[i];
-            #end
             defaultStrumX.push(strum.x);
             defaultStrumY.push(strum.y);
-            #if LEATHER
-            var localKeyCount = (i < keyCount ? keyCount : playerKeyCount);
-            var s = Std.parseFloat(game.ui_settings[0]) * (Std.parseFloat(game.ui_settings[2]) - (Std.parseFloat(game.mania_size[localKeyCount-1])));
-            #else 
             var s = 0.7;
-            #end
             defaultScale.push(s);
             arrowSizes.push(160*s);
         }

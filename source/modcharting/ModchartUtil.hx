@@ -38,7 +38,7 @@ class ModchartUtil
         #elseif MIC_D_UP //basically no one uses this anymore
         return MainVariables._variables.scroll == "down"
         #else 
-        return false;
+        return FlxG.save.data.downscroll;
         #end
     }
     public static function getMiddlescroll(instance:ModchartMusicBeatState)
