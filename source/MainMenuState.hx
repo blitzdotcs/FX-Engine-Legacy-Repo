@@ -31,7 +31,7 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 
-	var engineVer:String = "1.2.1";
+	var engineVer:String = "2.0.0";
 	
 	override function create()
 	{
@@ -201,7 +201,7 @@ class MainMenuState extends MusicBeatState
 
 										trace("Freeplay Menu Selected");
 									case 'credits':
-										FlxG.switchState(new Credits());	
+										FlxG.switchState(new CreditsState());	
 									case 'options':
 										//FlxTransitionableState.skipNextTransIn = true;
 										//FlxTransitionableState.skipNextTransOut = true;

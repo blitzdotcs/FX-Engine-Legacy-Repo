@@ -14,6 +14,9 @@ using StringTools;
 
 class Note extends FlxSprite
 {
+  	public var mesh:modcharting.SustainStrip = null;
+  	public var z:Float = 0;
+
 	public var strumTime:Float = 0;
 
 	public var mustPress:Bool = false;
@@ -45,7 +48,7 @@ class Note extends FlxSprite
 		isSustainNote = sustainNote;
 
 		x += (FlxG.save.data.middleScroll ? -218.8 : 50);
-		y -= 2000;
+		y -= 9999;
 		this.strumTime = strumTime;
 
 		this.noteData = noteData;
