@@ -4,7 +4,7 @@
 
 # How to port them lmaoz
 
-* Drag and drop the 0.6.x (and below) mods in the mods folder lmao
+* Drag and drop the 0.6.x (and below) mod folder in the mods folder lmao
 
 * That's literally all.
 
