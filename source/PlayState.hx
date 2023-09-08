@@ -54,6 +54,8 @@ import sys.io.File;
 import modcharting.ModchartFuncs;
 import modcharting.NoteMovement;
 import modcharting.PlayfieldRenderer;
+import scripting.hscript.HScript;
+
 
 using StringTools;
 
@@ -76,7 +78,6 @@ class PlayState extends MusicBeatState
 	public static var changedDifficulty:Bool = false;
 	public static var selectedBF:String = 'bf';
 	public static var freeplayChar:Bool = false;
-	public static var instance:PlayState;
 	public static var seenCutscene:Bool = false;
 
 	public static var hasPlayedOnce:Bool = false;
@@ -195,6 +196,14 @@ class PlayState extends MusicBeatState
 
 	var inCutscene:Bool = false;
 
+	// FunkinScript shit
+	public static var instance:PlayState;
+	#if (MODS_ALLOWED && SScript)
+	public var hscriptInterps:Array<HScript> = [];
+	public var hscriptArray:Array<HScript> = [];
+	#end
+	public var variables:Map<String, Dynamic> = new Map<String, Dynamic>();
+
 	override function add(object:FlxBasic):FlxBasic
 	{
 		if (Reflect.hasField(object, "antialiasing"))
@@ -225,6 +234,9 @@ class PlayState extends MusicBeatState
 			case 2:
 				storyDifficultyText = "Hard";
 		}
+
+		// FunkinScript
+		instance = this;
 
 		iconRPC = SONG.player2;
 
@@ -881,6 +893,19 @@ class PlayState extends MusicBeatState
 		add(dad);
 		add(boyfriend);
 
+		// FunkinScript, this is disabled for now
+		/*
+		#if MODS_ALLOWED
+		var foldersToCheck:Array<String> = Paths.directoriesWithFile(Paths.getPreloadPath(), 'scripts/');
+		for (folder in foldersToCheck)
+			for (file in FileSystem.readDirectory(folder))
+			{
+				if(file.toLowerCase().endsWith('.hx'))
+					initHScript(folder + file);
+			}
+		#end
+		*/
+
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
 		// doof.x += 70;
 		// doof.y = FlxG.height * 0.5;
@@ -1003,6 +1028,7 @@ class PlayState extends MusicBeatState
 		scoreTxt.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];		
 		doof.cameras = [camHUD];
+		notecomboSpritelol.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -1287,7 +1313,7 @@ class PlayState extends MusicBeatState
 		#if desktop
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ")", "Score: " + songScore + " | Misses: " + misses  , iconRPC);
-		#end
+		#end	
 	}
 
 	function updateLoop()
@@ -2917,6 +2943,13 @@ class PlayState extends MusicBeatState
 
 		boyfriend.playAnim('scared', true);
 		gf.playAnim('scared', true);
+	}
+
+	// FunkinScript
+	override function destroy() 
+	{
+		instance = null;
+		super.destroy();
 	}
 
 	override function stepHit()

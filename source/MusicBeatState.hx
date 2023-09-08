@@ -67,7 +67,8 @@ class MusicBeatState extends modcharting.ModchartMusicBeatState
 		// Custom made Trans in
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
-		if(!FlxTransitionableState.skipNextTransIn) {
+		if(!FlxTransitionableState.skipNextTransIn) 
+		{
 			leState.openSubState(new CustomFadeTransition(0.7, false));
 			if(nextState == FlxG.state) {
 				CustomFadeTransition.finishCallback = function() {
@@ -82,12 +83,28 @@ class MusicBeatState extends modcharting.ModchartMusicBeatState
 			}
 			return;
 		}
+		if(FlxTransitionableState.skipNextTransIn) FlxG.switchState(nextState);
+		else startTransition(nextState);
 		FlxTransitionableState.skipNextTransIn = false;
-		FlxG.switchState(nextState);
 	}
 
 	public static function resetState() {
-		MusicBeatState.switchState(FlxG.state);
+		if(FlxTransitionableState.skipNextTransIn) FlxG.resetState();
+		else startTransition();
+		FlxTransitionableState.skipNextTransIn = false;	
+	}
+
+	// Pulled from psych :skull:
+	public static function startTransition(nextState:FlxState = null)
+	{
+		if(nextState == null)
+			nextState = FlxG.state;
+
+		FlxG.state.openSubState(new CustomFadeTransition(0.6, false));
+		if(nextState == FlxG.state)
+			CustomFadeTransition.finishCallback = function() FlxG.resetState();
+		else
+			CustomFadeTransition.finishCallback = function() FlxG.switchState(nextState);
 	}
 
 	public static function getState():MusicBeatState {
