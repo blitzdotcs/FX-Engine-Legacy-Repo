@@ -60,6 +60,7 @@ class CreditsState extends MusicBeatState
 			Psych Engine Team:Modding system and Char jsons
 			FNF Restored Team:Dialogue code and Assets
 			FPS Plus Devs: Silly tiny guys in charting state
+			TheZoroForce240: OG FNF ModCharting Tools Creator
 			OS Engine Devs: Icon bops and TitleState bg thing".trim()
 				.split('\n');
 

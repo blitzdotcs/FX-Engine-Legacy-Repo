@@ -8,9 +8,15 @@
 
 * WIP LITTLE GUYS IN THE CHART EDITORR FROM FPS PLUS (I LOVE THEM SO FUCKING MUCH AAAAAAAAAAAAA)
 
+* Winning Icons from OS Engine!
+
 # Updates
 
 * Updated Discord.hx (obv)
+
+* Renamed Credits.hx to CreditsState.hx
+
+* Added credits for Rozebud/FPS Plus Devs and AD1340
 
 # Removals
 

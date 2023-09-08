@@ -48,7 +48,7 @@ class Note extends FlxSprite
 		isSustainNote = sustainNote;
 
 		x += (FlxG.save.data.middleScroll ? -218.8 : 50);
-		y -= 2000;
+		y -= 9999;
 		this.strumTime = strumTime;
 
 		this.noteData = noteData;
