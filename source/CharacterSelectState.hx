@@ -1,5 +1,8 @@
 package;
 
+#if desktop
+import Discord.DiscordClient;
+#end
 import Section.SwagSection;
 import Song.SwagSong;
 import flixel.FlxG;
@@ -52,6 +55,12 @@ class CharacterSelectState extends MusicBeatState
 
     override function create() 
     {
+
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence("Selecting a character!", null);
+		#end
+
         menuBG = new FlxSprite().loadGraphic(Paths.image('BG4'));
         menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
         menuBG.updateHitbox();
