@@ -31,15 +31,14 @@ This is the repository for FX Engine. A modification of a game that was original
 - [EliteMasterEric](https://github.com/EliteMasterEric) - Modcore (used in older versions of FX Engine)
 - FNF Restored Team - Dialogue code and assets
 - OS Engine Devs - Icon bops and TitleState bg thing
-- Bob Mod Team - Run (Used as the KE chart test)
 
 ### Build instructions
 
 ## Installing the Required Programs
 
 First, you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep updated with that setup (which is pretty simple). 
-1. [Install Haxe 4.2.0](https://haxe.org/download/version/4.2.0/) (Any ver should work but I use 4.2.0)
-2. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) after downloading Haxe
+1. [Install Haxe 4.2.5](https://haxe.org/download/version/4.2.5/) (or latest)
+2. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) - Do this after downloading Haxe
 3. Look at the shit that's in the workflow lmao
 
 You should have everything ready for compiling the game! Follow the guide below to continue!
