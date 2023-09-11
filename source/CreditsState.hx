@@ -51,7 +51,8 @@ class CreditsState extends MusicBeatState
 		{
 			trace("Cannot find 'creditsList' in data directory.");
 			trace("Replacing it with normal credits...");
-			initCreditlist = "TyDev:Main FX Engine Programmer
+			initCreditlist = "Blitz:Main FX Engine Programmer
+			TyDev:Original Main FX Engine Programmer
 			AD1340:Beta Tester
 			Elite Master Eric:Modcore
 			Chocolate Engine Team:Modding System and Better Credits
