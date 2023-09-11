@@ -22,8 +22,8 @@ This is the repository for FX Engine. A modification of a game that was original
 - And more!
 
 # FX Engine Main Credits
-
-- [TyDev](https://twitter.com/TyDev_) - Main FX Engine Programmer
+- [BlitzEX](https://twitter.com/BlitzEXlmao) - Main FX Engine Programmer
+- [TyDev](https://twitter.com/TyDev_) - Original Main FX Engine Programmer
 - [Chocolate Engine Team](https://github.com/Joalor64GH/Chocolate-Engine) - Better Credits
 - [Funkin' Crew](https://github.com/FunkinCrew/) - Original Game Devs
 - [Kade Engine Team](https://github.com/KadeDev/Kade-Engine) - I Stole some code
