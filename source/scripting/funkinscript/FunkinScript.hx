@@ -1,60 +1,141 @@
 package scripting.funkinscript;
 
-import WeekData;
-import Highscore;
-import Song;
-
+import scripting.hscript.Interp;
+import scripting.hscript.Parser;
 import openfl.Lib;
-import openfl.utils.Assets;
-import openfl.display.BitmapData;
 import flixel.FlxBasic;
-import flixel.FlxObject;
-import flixel.addons.transition.FlxTransitionableState;
+import scripting.funkinscript.*;
 
-#if (!flash && sys)
-import flixel.addons.display.FlxRuntimeShader;
-#end
+/*
+* Based on Hscript api from fnf wednesdays infidelity by lunarcleint, credits to him
+*/
+class FunkinScript extends FlxBasic {
+	
+	public var hscript:Interp;
+	public var parser:Parser;
+        var code:String = '';
 
-#if sys
-import sys.FileSystem;
-import sys.io.File;
-#end
-
-import Note;
-import NoteSplash;
-import Character;
-
-import MainMenuState;
-import StoryMenuState;
-import FreeplayState;
-
-import PauseSubState;
-import GameOverSubstate;
-import GameOverState;
-import hscript.HScript;
-
-class FunkinScript 
-{
-    #if (SScript >= "3.0.0")
-	public var hscript:HScript = null;
-	#end
-
-	public function new(scriptName:String) 
-    {
-        #if (SScript >= "3.0.0") HScript.implement(this); #end
-		call('onCreate', []);
-		#end
-    }
-
-	public function stop() 
-    {
-		#if (SScript >= "3.0.0")
-		if(hscript != null)
+	public function new(path:String)
+	{
+                super();
+		code = sys.io.File.getContent(#if android Paths.gamePath() + #end path);
+		
+		hscript = new Interp();
+		
+		parser = new Parser();
+		parser.allowJSON = true;
+		parser.allowTypes = true;
+		parser.allowMetadata = true;
+		
+		setVariable('script', this);
+		setVariable('import', function(daClass:String)
 		{
-			hscript.active = false;
-			hscript = null;
-		}
-		#end
+			final splitClassName:Array<String> = [for (e in daClass.split('.')) e.trim()];
+			final className:String = splitClassName.join('.');
+			final daClass:Class<Dynamic> = Type.resolveClass(className);
+			final daEnum:Enum<Dynamic> = Type.resolveEnum(className);
+
+			if (daClass == null && daEnum == null)
+				Lib.application.window.alert('Class / Enum at $className does not exist.', 'Hscript Error!');
+			else
+			{
+				if (daEnum != null)
+				{
+					for (daConstructor in daEnum.getConstructors())
+						Reflect.setField({}, daConstructor, daEnum.createByName(daConstructor));
+					setVariable(splitClassName[splitClassName.length - 1], {});
+				}
+				else
+					setVariable(splitClassName[splitClassName.length - 1], daClass);
+			}
+		});
+		setVariable('Date', Date);
+		setVariable('DateTools', DateTools);
+		setVariable('EReg', EReg);
+		setVariable('Lambda', Lambda);
+		setVariable('Math', Math);
+		setVariable('Reflect', Reflect);
+		setVariable('Std', Std);
+		setVariable('StringBuf', StringBuf);
+		setVariable('StringTools', StringTools);
+		setVariable('Sys', Sys);
+		setVariable('Type', Type);
+		setVariable('Xml', Xml);
+		setVariable('Globals', Globals);
+		setVariable('FlxColor', FlxColor_hscript);
+		setVariable('HClass', HornyClass);
+		setVariable('HState', HornyState);
+		setVariable('HSubState', HornySubState);
+		setVariable('HObject', HornyObject);
+		setVariable('HScript', FunkinScript);
 	}
 
-} 
+        public function run()
+        {
+                try
+		{
+			var ast:Any = parser.parseString(code);
+
+			hscript.execute(ast);
+		}
+		catch (e)
+		{
+			Lib.application.window.alert(e.message, "HSCRIPT ERROR!1111");
+		}
+        }
+
+	public function setVariable(name:String, val:Dynamic)
+	{
+		hscript.variables.set(name, val);
+	}
+
+	public function getVariable(name:String):Dynamic
+	{
+		return hscript.variables.get(name);
+	}
+
+	public function executeFunc(funcName:String, ?args:Array<Any>):Dynamic
+	{
+		if (hscript == null)
+			return null;
+
+		if (hscript.variables.exists(funcName))
+		{
+			var func = hscript.variables.get(funcName);
+			if (args == null)
+			{
+				var result = null;
+				try
+				{
+					result = func();
+				}
+				catch (e)
+				{
+					trace('$e');
+				}
+				return result;
+			}
+			else
+			{
+				var result = null;
+				try
+				{
+					result = Reflect.callMethod(null, func, args);
+				}
+				catch (e)
+				{
+					trace('$e');
+				}
+				return result;
+			}
+		}
+		return null;
+	}
+
+	override public function destroy()
+	{
+		hscript = null;
+		parser = null;
+		super.destroy();
+	}
+}

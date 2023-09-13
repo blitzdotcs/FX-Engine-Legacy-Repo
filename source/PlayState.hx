@@ -54,7 +54,6 @@ import sys.io.File;
 import modcharting.ModchartFuncs;
 import modcharting.NoteMovement;
 import modcharting.PlayfieldRenderer;
-import scripting.hscript.HScript;
 
 
 using StringTools;
@@ -93,6 +92,9 @@ class PlayState extends MusicBeatState
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
 	#end
+
+	// ModchartFuncs shit
+	public static var instance:PlayState;
 
 	private var vocals:FlxSound;
 
@@ -196,28 +198,6 @@ class PlayState extends MusicBeatState
 
 	var inCutscene:Bool = false;
 
-	// FunkinScript shit
-	public static var instance:PlayState;
-	#if (MODS_ALLOWED && SScript)
-	public var hscriptInterps:Array<HScript> = [];
-	public var hscriptArray:Array<HScript> = [];
-	#end
-	public var variables:Map<String, Dynamic> = new Map<String, Dynamic>();
-
-	override function add(object:FlxBasic):FlxBasic
-	{
-		if (Reflect.hasField(object, "antialiasing"))
-		{
-			Reflect.setField(object, "antialiasing", false);
-		}
-
-		return super.add(object);
-	}
-
-    // API stuff
-	public function addObject(object:FlxBasic) { add(object); }
-	public function removeObject(object:FlxBasic) { remove(object); }
-
 	override public function create()
 	{
 		if (FlxG.sound.music != null)
@@ -234,9 +214,6 @@ class PlayState extends MusicBeatState
 			case 2:
 				storyDifficultyText = "Hard";
 		}
-
-		// FunkinScript
-		instance = this;
 
 		iconRPC = SONG.player2;
 
@@ -892,19 +869,6 @@ class PlayState extends MusicBeatState
 
 		add(dad);
 		add(boyfriend);
-
-		// FunkinScript, this is disabled for now
-		/*
-		#if MODS_ALLOWED
-		var foldersToCheck:Array<String> = Paths.directoriesWithFile(Paths.getPreloadPath(), 'scripts/');
-		for (folder in foldersToCheck)
-			for (file in FileSystem.readDirectory(folder))
-			{
-				if(file.toLowerCase().endsWith('.hx'))
-					initHScript(folder + file);
-			}
-		#end
-		*/
 
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
 		// doof.x += 70;
@@ -2943,13 +2907,6 @@ class PlayState extends MusicBeatState
 
 		boyfriend.playAnim('scared', true);
 		gf.playAnim('scared', true);
-	}
-
-	// FunkinScript
-	override function destroy() 
-	{
-		instance = null;
-		super.destroy();
 	}
 
 	override function stepHit()

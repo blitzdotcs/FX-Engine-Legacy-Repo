@@ -130,10 +130,8 @@
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="discord_rpc" if="windows"/>
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
-	<haxelib name="SScript" />
-	<haxedef name="openflPos" />
-	<haxedef name="hscriptPos" />
-	
+	<haxelib name="hscript" />	
+
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->
 
@@ -162,6 +160,9 @@
 
 	<!--Disable the Flixel sound management code-->
 	<!--<haxedef name="FLX_NO_SOUND_SYSTEM" />-->
+
+	<!-- FunkinScript Defines -->
+	<haxedef name="hscriptPos" />
 
 	<!--Disable the Flixel core focus lost screen-->
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />

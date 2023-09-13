@@ -10,6 +10,8 @@
 
 * Winning Icons from OS Engine!
 
+* Hscript support via Funkin' Script
+
 # Updates
 
 * Updated Discord.hx (obv)
