@@ -10,7 +10,7 @@
 
 * Winning Icons from OS Engine!
 
-* Hscript support via Funkin' Script
+* Hscript support via Funkin' Script (Doesn't fully work yet but yk it's there)
 
 # Updates
 
