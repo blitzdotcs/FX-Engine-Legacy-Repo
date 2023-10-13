@@ -1770,10 +1770,10 @@ class PlayState extends MusicBeatState
 				FlxG.switchState(new GitarooPause());
 			}
 			else
-			if (FlxG.random.bool(1.0))
+			// chance of getting "crash handler" menu lol
+			if (FlxG.random.bool(5.0))
 			{
-				// gitaroo man easter egg
-				FlxG.switchState(new FumoGameOver());
+				FlxG.switchState(new CrashHandler(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 			}
 			else			
 			{

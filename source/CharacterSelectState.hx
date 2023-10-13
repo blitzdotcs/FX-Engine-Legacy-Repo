@@ -1,8 +1,5 @@
 package;
 
-#if desktop
-import Discord.DiscordClient;
-#end
 import Section.SwagSection;
 import Song.SwagSong;
 import flixel.FlxG;
@@ -16,8 +13,9 @@ import flixel.effects.FlxFlicker;
 import flixel.util.FlxTimer;
 import lime.utils.Assets;
 import haxe.Json;
-import Boyfriend.Boyfriend;
+import CharSelectBoyfriend.CharSelectBoyfriend;
 import Character.Character;
+import HealthIcon.HealthIcon;
 import flixel.ui.FlxBar;
 
 typedef CharacterMenu = {
@@ -28,11 +26,12 @@ typedef CharacterMenu = {
 
 class CharacterSelectState extends MusicBeatState
 {
-    var menuItems:Array<String> = ['bf', 'tauntbf', 'pico-player'];
+    var menuItems:Array<String> = ['bf', 'tauntbf', 'pico', 'tankman'];
     var curSelected:Int = 0;
     var txtDescription:FlxText;
     var shitCharacter:FlxSprite;
-	var shitCharacterBetter:Boyfriend;
+	var shitCharacterBetter:CharSelectBoyfriend;
+    var icon:HealthIcon;
     var menuBG:FlxSprite;
     public var tagertY:Float = 0;
     var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
@@ -42,6 +41,7 @@ class CharacterSelectState extends MusicBeatState
     private var grpMenuImage:FlxTypedGroup<FlxSprite>;
     var alreadySelected:Bool = false;
     var doesntExist:Bool = false;
+    private var iconArray:Array<CharSelectBoyfriend> = [];
 
     var names:Array<String> = 
     [
@@ -55,12 +55,6 @@ class CharacterSelectState extends MusicBeatState
 
     override function create() 
     {
-
-		#if desktop
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Selecting a character!", null);
-		#end
-
         menuBG = new FlxSprite().loadGraphic(Paths.image('BG4'));
         menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
         menuBG.updateHitbox();
@@ -83,6 +77,14 @@ class CharacterSelectState extends MusicBeatState
             //songText.x += 40;
             //DON'T PUT X IN THE FIRST PARAMETER OF new ALPHABET()!
             //songText.screenCenter(X);
+            var icon:CharSelectBoyfriend = new CharSelectBoyfriend(0, 0, menuItems[i]);
+
+            icon.sprTracker = songText;
+            icon.scale.set(0.8, 0.8);
+
+            //Using a FlxGroup is too much fuss!
+            iconArray.push(icon);
+            add(icon);
         }
 
         txtDescription = new FlxText(FlxG.width * 0.075, menuBG.y + 200, 0, "", 32);
@@ -126,6 +128,9 @@ class CharacterSelectState extends MusicBeatState
                 txtOptionTitle.text = '';
             }    
 
+        if (iconArray[curSelected].animation.curAnim.name == 'idle' && iconArray[curSelected].animation.curAnim.finished && doesntExist)
+            iconArray[curSelected].playAnim('idle', true);
+
         var upP = controls.LEFT_P;
         var downP = controls.RIGHT_P;
         var accepted = controls.ACCEPT;
@@ -150,6 +155,7 @@ class CharacterSelectState extends MusicBeatState
                     if (menuItems[curSelected] != 'bf')
                         PlayState.SONG.player1 = daSelected;
 
+                    FlxFlicker.flicker(iconArray[curSelected], 0);
                     new FlxTimer().start(1, function(tmr:FlxTimer)
                         {
                             LoadingState.loadAndSwitchState(new PlayState());
@@ -178,6 +184,13 @@ class CharacterSelectState extends MusicBeatState
 
             var otherInt:Int = 0;
 
+            for (i in 0...iconArray.length)
+                {
+                    iconArray[i].alpha = 1;
+                }
+            
+            iconArray[curSelected].alpha = 1;
+
             for (item in grpMenu.members)
                 {
                     item.targetY = otherInt - curSelected;
@@ -200,6 +213,7 @@ class CharacterSelectState extends MusicBeatState
                 doesntExist = false;
                 var daSelected:String = menuItems[curSelected];
                 var storedColor:FlxColor = 0xFFFFFF;
+                remove(icon);
 
                 switch (daSelected)
                 {
@@ -232,6 +246,11 @@ class CharacterSelectState extends MusicBeatState
                 healthBar.visible = false;
                 // healthBar
                 add(healthBar);
-
+                icon = new HealthIcon(menuItems[curSelected], true);
+                icon.y = healthBar.y - (icon.height / 2);
+                icon.screenCenter(X);
+                icon.setGraphicSize(-4);
+                icon.y -= 20;
+                add(icon); 
             }
 }
