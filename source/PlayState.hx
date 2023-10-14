@@ -274,6 +274,7 @@ class PlayState extends MusicBeatState
 
 		foregroundSprites = new FlxTypedGroup<BGSprite>();
 		if (FlxG.save.data.dialogue)
+		{	
 			switch (SONG.song.toLowerCase())
             {
 				case 'tutorial':
@@ -311,10 +312,9 @@ class PlayState extends MusicBeatState
 				case 'roses':
 					dialogue = CoolUtil.coolTextFile(Paths.txt('data/songs/roses/rosesDialogue'));
 				case 'thorns':
-					dialogue = CoolUtil.coolTextFile(Paths.txt('data/songs/thorns/thornsDialogue'));
-				case 'run':
-					dialogue = CoolUtil.coolTextFile(Paths.txt('data/songs/run/DumbDialogPhloxMade'));										
+					dialogue = CoolUtil.coolTextFile(Paths.txt('data/songs/thorns/thornsDialogue'));									
 			}
+		}	
 
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
 		if (isStoryMode)
