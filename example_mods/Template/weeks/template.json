@@ -1,6 +1,6 @@
 {
 	"storyName": "Your New Week",
-	"difficulties": "taiko,mania",
+	"difficulties": "easy,normal,hard",
 	"hideFreeplay": false,
 	"weekBackground": "stage",
 	"freeplayColor": [

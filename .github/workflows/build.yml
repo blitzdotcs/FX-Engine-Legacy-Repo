@@ -35,7 +35,7 @@ jobs:
           haxelib install flixel-addons 2.11.0
           haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib install hscript 2.5.0
-          haxelib git polymod-enigma https://github.com/EnigmaEngine/polymod
+          haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
           haxelib set flixel 4.11.0

@@ -54,7 +54,7 @@ import sys.io.File;
 import modcharting.ModchartFuncs;
 import modcharting.NoteMovement;
 import modcharting.PlayfieldRenderer;
-
+import funkscript.FunkScript;
 
 using StringTools;
 
@@ -198,10 +198,15 @@ class PlayState extends MusicBeatState
 
 	var inCutscene:Bool = false;
 
+	var script = new SongScript();
+
 	override public function create()
 	{
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
+
+	//	script.loadScript(SONG.song.toLowerCase());
+	//	script.call('create', []);
 
 		#if desktop
 		// Making difficulty text for Discord Rich Presence.
@@ -1685,6 +1690,8 @@ class PlayState extends MusicBeatState
         	}
     	}
 
+	//	script.call('update', [elapsed]);
+
 		if (FlxG.keys.justPressed.NINE)
 		{
 			if (iconP1.animation.curAnim.name == 'bf-old')
@@ -2015,6 +2022,8 @@ class PlayState extends MusicBeatState
 
 			deathCounter += 1;
 
+		//	script.call('playerDeath', []);
+
 			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
@@ -2076,6 +2085,8 @@ class PlayState extends MusicBeatState
 						if (SONG.notes[Math.floor(curStep / 16)].altAnim)
 							altAnim = '-alt';
 					}
+
+				//	script.call('cpuNoteHit', []);
 
 					switch (Math.abs(daNote.noteData))
 					{
@@ -2223,6 +2234,8 @@ class PlayState extends MusicBeatState
 			Highscore.saveScore(SONG.song, songScore, storyDifficulty);
 			#end
 		}
+
+	//	script.call('songFinish', []);
 
 		if (isStoryMode)
 		{
@@ -2689,6 +2702,8 @@ class PlayState extends MusicBeatState
 			if (health > 0)
 				health -= 0.04;
 
+		//	script.call('noteMiss', []);
+
 			if (combo > 5 && gf.animOffsets.exists('sad'))
 			{
 				gf.playAnim('sad');
@@ -2756,6 +2771,8 @@ class PlayState extends MusicBeatState
 
 	function goodNoteHit(note:Note):Void
 	{
+	//	script.call('noteHit', []);
+
 		if (!note.wasGoodHit)
 		{
 			if (!note.isSustainNote)
@@ -2924,6 +2941,9 @@ class PlayState extends MusicBeatState
 	override function beatHit()
 	{
 		super.beatHit();
+
+	//	script.call('beatHit', [curBeat]);
+
 		if (generatedMusic)
 		{
 			notes.sort(FlxSort.byY, FlxSort.DESCENDING);

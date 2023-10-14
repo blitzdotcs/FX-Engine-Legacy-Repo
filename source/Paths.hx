@@ -36,6 +36,7 @@ class Paths
 		'custom_events',
 		'custom_notetypes',
 		'data',
+		'scripts',
 		'songs',
 		'music',
 		'sounds',
@@ -129,6 +130,17 @@ class Paths
 	inline static public function lua(key:String, ?library:String)
 	{
 		return getPath('$key.lua', TEXT, library);
+	}
+
+	inline static public function getScript(key:String, ?library:String)
+	{
+		return getPath('scripts/$key.hx', TEXT, library);
+	}
+
+	public static function getSongScript(song:String) 
+	{
+		trace('Loading scripts for: ' + song);
+		return 'mods/data/$song/Modchart.hx';
 	}
 
 	static public function video(key:String)
@@ -412,7 +424,18 @@ class Paths
 		return modFolders('images/' + key + '.txt');
 	}
 
-	static public function modFolders(key:String) {
+    public static function getmodScript(file:String) {
+		return modFolders('scripts/$file.hx');
+	}
+
+	public static function getmodSongScript(song:String) {
+		trace('Loading custom scripts for: ' + modsSongs);
+		return modFolders('data/$song/Modchart.hx');
+
+	}
+
+	static public function modFolders(key:String) 
+	{
 		if(currentModDirectory != null && currentModDirectory.length > 0) {
 			var fileToCheck:String = mods(currentModDirectory + '/' + key);
 			if(FileSystem.exists(fileToCheck)) {
