@@ -22,4 +22,4 @@
 
 # Removals
 
-* Character Select State (Will be added back lmao)
+* Nothing I thinkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk (I swear I'll release this update soon.)
